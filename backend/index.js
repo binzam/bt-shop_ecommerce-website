@@ -2,6 +2,7 @@ import { PORT, mongoDbURL } from './config.js';
 import express from 'express';
 import mongoose from 'mongoose';
 import productsRoute from './routes/productsRoute.js';
+import usersRoute from './routes/usersRoute.js';
 
 const app = express();
 app.use(express.json());
@@ -11,6 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/products', productsRoute);
+app.use('/users', usersRoute);
 
 mongoose
   .connect(mongoDbURL)
