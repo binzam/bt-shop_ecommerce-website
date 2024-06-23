@@ -14,29 +14,47 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-router.post('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(400).json({
+        message: 'Product not found',
+      });
+    }
+    return res.status(200).json(product);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+router.post('/add', async (req, res) => {
+  try {
+    const { title, category, description, image, price, ratingCount, rating } =
+      req.body;
     if (
-      !req.body.title ||
-      !req.body.category ||
-      !req.body.description ||
-      !req.body.image ||
-      !req.body.price ||
-      !req.body.ratingCount ||
-      !req.body.rating
+      !title ||
+      !category ||
+      !description ||
+      !image ||
+      !price ||
+      !ratingCount ||
+      !rating
     ) {
       return res.status(400).json({
         message: 'Send all required fields',
       });
     }
     const newProduct = {
-      title: req.body.title,
-      category: req.body.category,
-      description: req.body.description,
-      image: req.body.image,
-      price: req.body.price,
-      ratingCount: req.body.ratingCount,
-      rating: req.body.rating,
+      title,
+      category,
+      description,
+      image,
+      price,
+      ratingCount,
+      rating,
     };
     const product = await Product.create(newProduct);
     return res.status(201).json(product);
@@ -47,14 +65,16 @@ router.post('/', async (req, res) => {
 });
 router.put('/:id', async (req, res) => {
   try {
+    const { title, category, description, image, price, ratingCount, rating } =
+      req.body;
     if (
-      !req.body.title ||
-      !req.body.category ||
-      !req.body.description ||
-      !req.body.image ||
-      !req.body.price ||
-      !req.body.ratingCount ||
-      !req.body.rating
+      !title ||
+      !category ||
+      !description ||
+      !image ||
+      !price ||
+      !ratingCount ||
+      !rating
     ) {
       return res.status(400).json({
         message: 'Send all required fields',

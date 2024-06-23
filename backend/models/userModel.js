@@ -17,8 +17,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    firstName: String,
-    lastName: String,
     address: {
       street: String,
       city: String,
@@ -43,6 +41,5 @@ const userSchema = new Schema(
   }
 );
 
-const User = model('User', userSchema);
+export const User = model('User', userSchema);
 
-export default User;

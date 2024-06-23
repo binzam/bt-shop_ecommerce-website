@@ -3,7 +3,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import productsRoute from './routes/productsRoute.js';
 import usersRoute from './routes/usersRoute.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
 app.use(express.json());
 
@@ -23,5 +25,5 @@ mongoose
     });
   })
   .catch((error) => {
-    console.log(error);
+    console.log(error.message);
   });
