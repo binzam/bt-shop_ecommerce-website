@@ -8,7 +8,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
 app.use(express.json());
-
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Credentials', 'true'); 
+  next();
+});
 app.get('/', (req, res) => {
   return res.status(200).json('Welcome to bt-shop');
 });

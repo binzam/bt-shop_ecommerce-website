@@ -30,6 +30,11 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
+    // stock: {
+    //   type: Number,
+    //   required: true,
+    //   default: 0,
+    // },
   },
   {
     timestamps: true,
@@ -37,4 +42,3 @@ const productSchema = new Schema(
 );
 
 export const Product = model('Product', productSchema);
-
