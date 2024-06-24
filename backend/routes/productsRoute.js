@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find({});
-    return res.status(200).send({
+    return res.status(200).json({
       productCount: products.length,
       data: products,
     });

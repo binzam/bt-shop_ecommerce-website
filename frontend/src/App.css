@@ -5,18 +5,47 @@
   padding-bottom: 60px;
   position: relative;
 }
-header{
+header {
   background-color: rgb(0, 0, 0);
   height: 60px;
-  padding:0 2rem;
+  padding: 0 2rem;
+  display: flex;
+  gap: 2rem;
+  position: relative;
 }
-main{
+ul {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.modal {
+  position: fixed;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.616);
+}
+.register_form input {
+  margin: 1rem 0;
+}
+.close_modal {
+  color: red;
+  text-decoration: underline;
+  cursor: pointer;
+}
+main {
   background-color: aliceblue;
   min-height: calc(100vh - 120px);
   padding: 2rem;
   color: black;
 }
-footer{
+footer {
   background-color: rgb(0, 0, 0);
   width: 100%;
   height: 60px;

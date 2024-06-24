@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 
-
 const userSchema = new Schema(
   {
     username: {
@@ -29,12 +28,11 @@ const userSchema = new Schema(
         ref: 'Order',
       },
     ],
-    wishlist: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-      },
-    ],
+    role: {
+      type: String,
+      enum: ['admin', 'user'],
+      default: 'user',
+    },
   },
   {
     timestamps: true,
@@ -42,4 +40,3 @@ const userSchema = new Schema(
 );
 
 export const User = model('User', userSchema);
-
