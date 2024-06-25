@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const RegisterForm = ({ handleClose }) => {
+const RegisterForm = ({ handleClose, handleRegister }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -18,6 +18,16 @@ const RegisterForm = ({ handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (
+      firstName.trim() === '' ||
+      lastName.trim() === '' ||
+      email.trim() === '' ||
+      password.trim() === '' ||
+      confirmPassword.trim() === ''
+    ) {
+      alert('Please fill in all fields');
+      return;
+    }
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
@@ -32,9 +42,7 @@ const RegisterForm = ({ handleClose }) => {
           password,
         }
       );
-      console.log('Registration successful:', data);
-    localStorage.setItem("userInfo", JSON.stringify(data));
-      handleClose()
+      handleRegister(data);
     } catch (error) {
       alert(`Error: ${error.response.data.message}`);
     }

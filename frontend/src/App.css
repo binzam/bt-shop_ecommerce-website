@@ -12,6 +12,7 @@ header {
   display: flex;
   gap: 2rem;
   position: relative;
+  color: aliceblue;
 }
 ul {
   display: flex;
@@ -52,4 +53,5 @@ footer {
   padding: 0 2rem;
   position: absolute;
   bottom: 0;
+  color: white;
 }

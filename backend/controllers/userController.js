@@ -2,6 +2,36 @@ import bcrypt from 'bcryptjs';
 import { User } from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 
+const connectUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        message: 'Email and password are required',
+      });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ messgae: 'Invalid credentials' });
+    }
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({ message: 'Invalid password' });
+    }
+    const token = generateToken(user._id);
+    res.status(200).json({
+      token,
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ messge: 'Invalid email or password' });
+  }
+};
+
 const registerUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -39,78 +69,86 @@ const registerUser = async (req, res) => {
   }
 };
 
-const getUsers = async(req, res)=>{
-    try {
-        const users = await User.find({});
-        return res.status(200).json({
-          userCount: users.length,
-          data: users,
-        });
-      } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ message: error.message });
-      }
-}
-const getUserById = async(req, res)=>{
-    try {
-        const { id } = req.params;
-        const user = await User.findById(id);
-        if (!user) {
-          return res.status(400).json({
-            message: 'User not found',
-          });
-        }
-        return res.status(200).json({ user });
-      } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ message: error.message });
-      }
-}
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    return res.status(200).json({
+      userCount: users.length,
+      data: users,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(400).json({
+        message: 'User not found',
+      });
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 
-const updateUser = async(req, res)=>{
-    try {
-        const { id } = req.params;
-        const { firstName, lastName, email, password } = req.body;
-        if (!firstName || !lastName || !email || !password) {
-          return res.status(400).json({
-            message: 'All fields are required',
-          });
-        }
-        const user = await User.findById(id);
-        if (!user) {
-          return res.status(400).json({
-            message: 'User not found',
-          });
-        }
-        const username = `${firstName} ${lastName}`;
-        const hashedPassword = await bcrypt.hash(password, 10);
-    
-        user.username = username;
-        user.email = email;
-        user.password = hashedPassword;
-        const token = generateToken(user._id);
-        return res
-          .status(200)
-          .json({ message: 'User updated successfully', token, user });
-      } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ message: error.message });
-      }
-}
-const deleteUser = async(req, res)=>{
-    try {
-        const { id } = req.params;
-    
-        const result = await User.findByIdAndDelete(id);
-    
-        if (!result) {
-          return res.status(404).json({ message: 'User not found' });
-        }
-    
-        return res.status(200).json({ message: 'User deleted successfully' });
-      } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ message: error.message });
-      }
-}
-export { registerUser, getUsers, getUserById, updateUser, deleteUser };
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { firstName, lastName, email, password } = req.body;
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({
+        message: 'All fields are required',
+      });
+    }
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(400).json({
+        message: 'User not found',
+      });
+    }
+    const username = `${firstName} ${lastName}`;
+    const hashedPassword = await bcrypt.hash(password, 10);
+// check if current password is correct. macth it from the db by decroptong
+    user.username = username;
+    user.email = email;
+    user.password = hashedPassword;
+    const token = generateToken(user._id);
+    return res.status(200).json({
+      message: 'User updated successfully',
+      data: { token, username, email, _id: id },
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await User.findByIdAndDelete(id);
+
+    if (!result) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+export {
+  registerUser,
+  getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  connectUser,
+};
