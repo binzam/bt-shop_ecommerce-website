@@ -3,69 +3,40 @@ import { User } from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 
 const connectUser = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({
-        message: 'Email and password are required',
-      });
-    }
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ messgae: 'Invalid credentials' });
-    }
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(400).json({ message: 'Invalid password' });
-    }
+    const user = await User.login(email, password)
+    
     const token = generateToken(user._id);
     res.status(200).json({
       token,
       _id: user._id,
       username: user.username,
-      email: user.email,
+      email,
       role: user.role,
     });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ messge: 'Invalid email or password' });
+    res.status(400).json({ error: error.message});
   }
 };
 
 const registerUser = async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
+  const username = `${firstName} ${lastName}`;
   try {
-    const { firstName, lastName, email, password } = req.body;
-    if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({
-        message: 'All fields are required',
-      });
-    }
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
-    const username = `${firstName} ${lastName}`;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = {
+    const user = await User.signup(email, password, username);
+
+    const token = generateToken(user._id);
+
+    return res.status(200).json({
+      token,
+      _id: user._id,
       username,
       email,
-      password: hashedPassword,
-    };
-    const savedUser = await User.create(newUser);
-    if (savedUser) {
-      const token = generateToken(savedUser._id);
-
-      return res.status(201).json({
-        token,
-        _id: savedUser._id,
-        username: savedUser.username,
-        email: savedUser.email,
-        role: savedUser.role,
-      });
-    }
+      role: user.role,
+    });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
