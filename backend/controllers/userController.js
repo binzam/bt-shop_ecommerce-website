@@ -97,11 +97,11 @@ const getUserById = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUserPassword = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, password } = req.body;
-    if (!firstName || !lastName || !email || !password) {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
       return res.status(400).json({
         message: 'All fields are required',
       });
@@ -112,22 +112,40 @@ const updateUser = async (req, res) => {
         message: 'User not found',
       });
     }
-    const username = `${firstName} ${lastName}`;
-    const hashedPassword = await bcrypt.hash(password, 10);
-// check if current password is correct. macth it from the db by decroptong
-    user.username = username;
-    user.email = email;
-    user.password = hashedPassword;
-    const token = generateToken(user._id);
+    const validPassword = await bcrypt.compare(currentPassword, user.password);
+    if (!validPassword) {
+      return res.status(500).json({ error: 'Invaild password' });
+    }
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const updatedUser = await User.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        password: newHashedPassword,
+      },
+      {
+        new: true,
+      }
+    );
+
+    const token = generateToken(updatedUser._id);
     return res.status(200).json({
       message: 'User updated successfully',
-      data: { token, username, email, _id: id },
+      data: {
+        token,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        _id: updatedUser._id,
+      },
     });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
+
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -148,7 +166,7 @@ export {
   registerUser,
   getUsers,
   getUserById,
-  updateUser,
+  updateUserPassword,
   deleteUser,
   connectUser,
 };

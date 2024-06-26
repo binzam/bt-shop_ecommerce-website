@@ -19,7 +19,7 @@ const orderSchema = new Schema(
           required: true,
         },
         price: {
-          type: Number,
+          type: String,
           required: true,
         },
       },
@@ -45,6 +45,5 @@ const orderSchema = new Schema(
   }
 );
 
-const Order = model('Order', orderSchema);
+export const Order = model('Order', orderSchema);
 
-export default Order;

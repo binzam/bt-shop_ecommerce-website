@@ -1,23 +1,6 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
-const ProductsPage = () => {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:5555/products');
-        if (!response.ok) {
-          throw new Error('Failed to fetch products');
-        }
-        const data = await response.json();
-        console.log(data);
-        setProducts(data.data);
-      } catch (error) {
-        console.error('Error fetching products:', error.message);
-      }
-    };
-    fetchProducts();
-  }, []);
+const ProductsPage = ({ products }) => {
   return (
     <div>
       <h1>ProductsPage</h1>
@@ -26,11 +9,10 @@ const ProductsPage = () => {
         <h2>Product List</h2>
         <ul>
           {products.map((product) => (
-            <li key={product._id}>
+            <li style={{ border: '1px solid black' }} key={product._id}>
               <img width={100} height={100} src={product.image} alt="" />
-              {product.title} -
-               -{product.category} - $
-              {product.price}
+              {product.title} - -{product.category} - ${product.price}
+              <Link to={`/products/${product._id}`}>More info</Link>
             </li>
           ))}
         </ul>

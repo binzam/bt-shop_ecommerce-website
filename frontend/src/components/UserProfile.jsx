@@ -3,14 +3,14 @@ import { useState } from 'react';
 import UpdatePassword from './UpdatePassword';
 
 const UserProfile = ({ userInfo, handleClose }) => {
-   const [showUpdatePassForm, setShowUpdatePassForm] = useState(false)
-   const handleOpenChangePassword = ()=>{
-    setShowUpdatePassForm(true)
-   }
-   const handleCloseChangePassword = ()=>{
-    setShowUpdatePassForm(false)
-   }
-
+  const [showUpdatePassForm, setShowUpdatePassForm] = useState(false);
+  const handleOpenChangePassword = () => {
+    setShowUpdatePassForm(true);
+  };
+  const handleCloseChangePassword = () => {
+    setShowUpdatePassForm(false);
+  };
+  console.log(userInfo);
   return (
     <div className="modal">
       <span onClick={handleClose} className="close_modal">
@@ -25,18 +25,17 @@ const UserProfile = ({ userInfo, handleClose }) => {
         <div>
           <strong>Email:</strong> {userInfo.email}
         </div>
-        <div>
-          <strong>Address:</strong> {userInfo.address}
-        </div>
-        <div>
-          <strong>Phone:</strong> {userInfo.phone}
-        </div>
       </div>
       <div className="account_settings">
         <h2>Account Settings</h2>
         <div>
           <strong onClick={handleOpenChangePassword}>Change Password</strong>
-          {showUpdatePassForm && <UpdatePassword handleClose={handleCloseChangePassword} userInfo={userInfo} />}
+          {showUpdatePassForm && (
+            <UpdatePassword
+              handleClose={handleCloseChangePassword}
+              userInfo={userInfo}
+            />
+          )}
         </div>
         <div>
           <strong>Update Address</strong>

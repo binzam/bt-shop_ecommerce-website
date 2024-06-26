@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import productsRoute from './routes/productsRoute.js';
 import usersRoute from './routes/usersRoute.js';
+import ordersRoute from './routes/ordersRoute.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/products', productsRoute);
 app.use('/users', usersRoute);
+app.use('/orders', ordersRoute);
 
 mongoose
   .connect(mongoDbURL)

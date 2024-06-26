@@ -3,9 +3,9 @@ import {
   registerUser,
   getUsers,
   getUserById,
-  updateUser,
   deleteUser,
   connectUser,
+  updateUserPassword,
 } from '../controllers/userController.js';
 // import { verifyAdmin } from '../middleware/authMiddleware.js';
 
@@ -19,6 +19,7 @@ router.post('/register', registerUser);
 router.post('/login', connectUser);
 
 // get user by id, update user, delete user
-router.route('/:id').get(getUserById).put(updateUser).delete(deleteUser);
-
+router.route('/:id').get(getUserById).delete(deleteUser);
+// update user password
+router.route('/update_pass/:id').put(updateUserPassword)
 export default router;

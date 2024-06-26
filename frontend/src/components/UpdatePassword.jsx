@@ -3,39 +3,33 @@ import axios from 'axios';
 import { useState } from 'react';
 
 const UpdatePassword = ({ userInfo, handleClose }) => {
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   const handleSubmitPassword = (e) => {
     e.preventDefault();
-    
-    handleUpdatePassword(password, newPassword);
-    setPassword('');
+    if (newPassword !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    handleUpdatePassword(currentPassword, newPassword);
+    setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
   };
-  const handleUpdatePassword = async (password, newPassword) => {
-    const [firstName, lastName] = userInfo.username.split(' ');
+  const handleUpdatePassword = async (currentPassword, newPassword) => {
     try {
-      const response = await axios.put(
-        `http://localhost:5555/users/${userInfo._id}`,
-        {
-          firstName,
-          lastName,
-          email: userInfo.email,
-          password: newPassword,
-        }
+      const { data } = await axios.put(
+        `http://localhost:5555/users/update_pass/${userInfo._id}`,
+        { currentPassword, newPassword }
       );
 
-      if (response.status === 200) {
-        console.log(response.data);
-        handleClose()
-      } else {
-        console.error('Password update failed:', response.data.message);
-      }
+      console.log(data);
+      localStorage.setItem('userInfo', JSON.stringify(data.data));
+      handleClose();
     } catch (error) {
-      console.error('An error occurred while updating the password:', error);
+      console.error(error.message);
     }
   };
 
@@ -45,8 +39,8 @@ const UpdatePassword = ({ userInfo, handleClose }) => {
       <br />
       <input
         type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={currentPassword}
+        onChange={(e) => setCurrentPassword(e.target.value)}
         required
       />
       <div>

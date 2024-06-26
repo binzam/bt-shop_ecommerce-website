@@ -55,17 +55,15 @@ const Header = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('userInfo');
   };
-  console.log(userInfo);
+  // console.log(userInfo);
   return (
     <header>
-      This is a Header
-      {isLoggedIn && (
-        <div>
-          Welcome {userInfo.username}
-          <button onClick={handleLogout}>Logout</button>
-        
-        </div>
-      )}
+      <a href="/home" className="logo-link">
+        <span className="logo-text">bt-shop</span>
+        {userInfo !== null && (
+          <span className="username"> [ {userInfo?.username} ]</span>
+        )}
+      </a>
       <nav>
         <ul>
           <li>Home</li>
@@ -76,7 +74,9 @@ const Header = () => {
         <ul>
           <li>Cart</li>
           {isLoggedIn ? (
-            <li><button onClick={handleOpenUserProfile}>User Profile</button></li>
+            <li>
+              <button onClick={handleOpenUserProfile}>User Profile</button>
+            </li>
           ) : (
             <li>
               <button onClick={handleOpenRegisterModal}>Sign up</button>
@@ -86,19 +86,21 @@ const Header = () => {
           )}
         </ul>
       </nav>
-        {showRegisterModal && (
-          <RegisterForm
-            handleRegister={handleRegister}
-            handleClose={handleCloseRegisterModal}
-          />
-        )}
-        {showLoginModal && (
-          <LoginForm
-            handleLogin={handleLogin}
-            handleClose={handleCloseLoginModal}
-          />
-        )}
-        {showUserProfile && <UserProfile handleClose={handleCloseUserProfile}  userInfo={userInfo} />}
+      {showRegisterModal && (
+        <RegisterForm
+          handleRegister={handleRegister}
+          handleClose={handleCloseRegisterModal}
+        />
+      )}
+      {showLoginModal && (
+        <LoginForm
+          handleLogin={handleLogin}
+          handleClose={handleCloseLoginModal}
+        />
+      )}
+      {showUserProfile && (
+        <UserProfile handleClose={handleCloseUserProfile} userInfo={userInfo} />
+      )}
     </header>
   );
 };
