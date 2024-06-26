@@ -51,13 +51,12 @@ ul {
   background-color: rgba(0, 0, 0, 0.616);
 } */
 .navigation {
-  width: 30%;
+  /* width: 30%; */
   display: flex;
   align-items: center;
 }
 /* NAV LINKS/MEN,WOMEN,ELECTRONICS... */
 .nav-links {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;

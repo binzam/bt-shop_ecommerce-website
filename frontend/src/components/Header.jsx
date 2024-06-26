@@ -3,6 +3,8 @@ import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
 import { Link } from 'react-router-dom';
+import CartIcon from '../assets/icon-cart.svg';
+import UserIcon from '../assets/avatar.svg';
 
 const Header = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -66,7 +68,7 @@ const Header = () => {
         )}
       </a>
       <nav className="navigation">
-        <ul className='nav-links'>
+        <ul className="nav-links">
           <li>
             <Link to="/home" className="nav-link">
               Home
@@ -86,6 +88,20 @@ const Header = () => {
             <Link to="/categories/womens-clothing" className="nav-link">
               Women
             </Link>
+          </li>
+        </ul>
+        <ul className='nav-links'>
+          <li>
+            <div className="cart-nav">
+              <img src={CartIcon} alt="Cart-icon" className="cart-icon" />
+
+              <span className="cart-counter">0</span>
+            </div>
+          </li>
+          <li>
+            <div className="user-profile-pic">
+              <img src={UserIcon} alt="avatar" />
+            </div>
           </li>
         </ul>
       </nav>
