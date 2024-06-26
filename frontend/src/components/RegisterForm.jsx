@@ -48,7 +48,6 @@ const RegisterForm = ({ handleClose, handleRegister }) => {
     }
   };
   return (
-    <div className="modal">
       <div className="modal_content">
         <span className="close_modal" onClick={handleClose}>
           close form
@@ -99,7 +98,6 @@ const RegisterForm = ({ handleClose, handleRegister }) => {
           <button type="submit">Register</button>
         </form>
       </div>
-    </div>
   );
 };
 

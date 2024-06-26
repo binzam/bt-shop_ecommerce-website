@@ -21,7 +21,7 @@ function App() {
     if (storedUserInfo) {
       setUserInfo(JSON.parse(storedUserInfo));
       setIsLoggedIn(true);    }
-  }, [userInfo.role]);
+  },[]);
   
   const fetchProducts = async () => {
     try {

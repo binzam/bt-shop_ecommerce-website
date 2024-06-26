@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -64,43 +65,50 @@ const Header = () => {
           <span className="username"> [ {userInfo?.username} ]</span>
         )}
       </a>
-      <nav>
-        <ul>
-          <li>Home</li>
-          <li>Shop</li>
-          <li>Men</li>
-          <li>Women</li>
-        </ul>
-        <ul>
-          <li>Cart</li>
-          {isLoggedIn ? (
-            <li>
-              <button onClick={handleOpenUserProfile}>User Profile</button>
-            </li>
-          ) : (
-            <li>
-              <button onClick={handleOpenRegisterModal}>Sign up</button>
-
-              <button onClick={handleOpenLoginModal}>Login</button>
-            </li>
-          )}
+      <nav className="navigation">
+        <ul className='nav-links'>
+          <li>
+            <Link to="/home" className="nav-link">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link to="/categories/all" className="nav-link">
+              Shop
+            </Link>
+          </li>
+          <li>
+            <Link to="/categories/mens-clothing" className="nav-link">
+              Men
+            </Link>
+          </li>
+          <li>
+            <Link to="/categories/womens-clothing" className="nav-link">
+              Women
+            </Link>
+          </li>
         </ul>
       </nav>
-      {showRegisterModal && (
-        <RegisterForm
-          handleRegister={handleRegister}
-          handleClose={handleCloseRegisterModal}
-        />
-      )}
-      {showLoginModal && (
-        <LoginForm
-          handleLogin={handleLogin}
-          handleClose={handleCloseLoginModal}
-        />
-      )}
-      {showUserProfile && (
-        <UserProfile handleClose={handleCloseUserProfile} userInfo={userInfo} />
-      )}
+      <div className="modal">
+        {showRegisterModal && (
+          <RegisterForm
+            handleRegister={handleRegister}
+            handleClose={handleCloseRegisterModal}
+          />
+        )}
+        {showLoginModal && (
+          <LoginForm
+            handleLogin={handleLogin}
+            handleClose={handleCloseLoginModal}
+          />
+        )}
+        {showUserProfile && (
+          <UserProfile
+            handleClose={handleCloseUserProfile}
+            userInfo={userInfo}
+          />
+        )}
+      </div>
     </header>
   );
 };
