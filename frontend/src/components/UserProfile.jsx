@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import UpdatePassword from './UpdatePassword';
 import { useLogout } from '../hooks/useLogout';
+import { useAuthContext } from '../hooks/useAuthContext';
 
-const UserProfile = ({ userInfo, handleClose }) => {
+const UserProfile = ({ handleClose }) => {
+  const { user } = useAuthContext();
   const { logout } = useLogout();
 
   const [showUpdatePassForm, setShowUpdatePassForm] = useState(false);
@@ -26,10 +28,10 @@ const UserProfile = ({ userInfo, handleClose }) => {
         <div className="user_info">
           <h2>User Profile</h2>
           <div>
-            <strong>Name:</strong> {userInfo.username}
+            <strong>Name:</strong> {user.username}
           </div>
           <div>
-            <strong>Email:</strong> {userInfo.email}
+            <strong>Email:</strong> {user.email}
           </div>
         </div>
         <div className="account_settings">
@@ -39,7 +41,6 @@ const UserProfile = ({ userInfo, handleClose }) => {
             {showUpdatePassForm && (
               <UpdatePassword
                 handleClose={handleCloseChangePassword}
-                userInfo={userInfo}
               />
             )}
           </div>

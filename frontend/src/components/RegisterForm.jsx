@@ -3,19 +3,19 @@ import { useState } from 'react';
 import { useSignup } from '../hooks/useSignup';
 
 const RegisterForm = ({ handleClose }) => {
-  const [formData, setFormData] = useState({
+  const [registerForm, setRegisterForm] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
-  const { firstName, lastName, email, password, confirmPassword } = formData;
+  const { firstName, lastName, email, password, confirmPassword } = registerForm;
   const { signup, error, isLoading } = useSignup();
 
-  //   console.log(formData);
+  //   console.log(registerForm);
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -49,6 +49,7 @@ const RegisterForm = ({ handleClose }) => {
             name="firstName"
             value={firstName}
             onChange={handleChange}
+            autoComplete='false'
           />
           <br />
 
@@ -58,6 +59,7 @@ const RegisterForm = ({ handleClose }) => {
             name="lastName"
             value={lastName}
             onChange={handleChange}
+            autoComplete='false'
           />
           <br />
           <input
@@ -66,6 +68,7 @@ const RegisterForm = ({ handleClose }) => {
             name="email"
             value={email}
             onChange={handleChange}
+            autoComplete='false'
           />
           <br />
 
@@ -75,6 +78,7 @@ const RegisterForm = ({ handleClose }) => {
             name="password"
             value={password}
             onChange={handleChange}
+            autoComplete='false'
           />
           <br />
 
@@ -84,6 +88,7 @@ const RegisterForm = ({ handleClose }) => {
             name="confirmPassword"
             value={confirmPassword}
             onChange={handleChange}
+            autoComplete='false'
           />
           <br />
 

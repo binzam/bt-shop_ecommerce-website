@@ -5,18 +5,17 @@ import generateToken from '../utils/generateToken.js';
 const connectUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.login(email, password)
-    
+    const user = await User.login(email, password);
+
     const token = generateToken(user._id);
     res.status(200).json({
       token,
-      _id: user._id,
       username: user.username,
       email,
       role: user.role,
     });
   } catch (error) {
-    res.status(400).json({ error: error.message});
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -30,7 +29,6 @@ const registerUser = async (req, res) => {
 
     return res.status(200).json({
       token,
-      _id: user._id,
       username,
       email,
       role: user.role,
@@ -70,31 +68,25 @@ const getUserById = async (req, res) => {
 
 const updateUserPassword = async (req, res) => {
   try {
-    const { id } = req.params;
     const { currentPassword, newPassword } = req.body;
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({
-        message: 'All fields are required',
-      });
-    }
-    const user = await User.findById(id);
+    const _id  = req.user._id;
+    const user = await User.findById(_id);
     if (!user) {
-      return res.status(400).json({
-        message: 'User not found',
-      });
+      return res.status(404).json({ error: 'User not found' });
     }
     const validPassword = await bcrypt.compare(currentPassword, user.password);
     if (!validPassword) {
-      return res.status(500).json({ error: 'Invaild password' });
+      return res.status(401).json({ error: 'Invaild current password' });
     }
-    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     const updatedUser = await User.findOneAndUpdate(
       {
-        _id: id,
+        _id,
       },
       {
-        password: newHashedPassword,
+        password: hashedPassword,
       },
       {
         new: true,
@@ -103,16 +95,13 @@ const updateUserPassword = async (req, res) => {
 
     const token = generateToken(updatedUser._id);
     return res.status(200).json({
-      message: 'User updated successfully',
+      message: 'Password updated successfully',
       data: {
         token,
-        username: updatedUser.username,
         email: updatedUser.email,
-        _id: updatedUser._id,
       },
     });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };

@@ -1,25 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import { Link } from 'react-router-dom';
 import CartIcon from '../assets/icon-cart.svg';
 import UserIcon from '../assets/avatar.svg';
 import UserOptions from './UserOptions';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const Header = () => {
+  const { user } = useAuthContext();
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
-  const [isAccountPopupOpen, setIsAccountPopupOpen] = useState(false);
-
-  useEffect(() => {
-    const storedUserInfo = localStorage.getItem('userInfo');
-    if (storedUserInfo) {
-      setUserInfo(JSON.parse(storedUserInfo));
-      setIsLoggedIn(true);
-    }
-  }, []);
+  const [showUserOptions, setShowUserOptions] = useState(false);
 
   const handleOpenRegisterModal = () => {
     setShowRegisterModal(true);
@@ -35,33 +27,24 @@ const Header = () => {
     setShowLoginModal(false);
   };
 
-  const handleLogin = (data) => {
-    setUserInfo(data);
-    setIsLoggedIn(true);
+  const handleLogin = () => {
     setShowLoginModal(false);
     setShowRegisterModal(false);
-    toggleUserPopup()
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    toggleUserModal();
   };
-  const handleRegister = (data) => {
-    setUserInfo(data);
-    setIsLoggedIn(true);
+  const handleRegister = () => {
     setShowRegisterModal(false);
     setShowLoginModal(false);
-    localStorage.setItem('userInfo', JSON.stringify(data));
   };
-  function toggleUserPopup() {
-    setIsAccountPopupOpen(!isAccountPopupOpen);
+  function toggleUserModal() {
+    setShowUserOptions(!showUserOptions);
   }
 
-  // console.log(userInfo);
   return (
     <header>
       <a href="/home" className="logo-link">
         <span className="logo-text">bt-shop</span>
-        {userInfo !== null && (
-          <span className="username"> [ {userInfo?.username} ]</span>
-        )}
+        {user && <span className="username"> [ {user.username} ]</span>}
       </a>
       <nav className="navigation">
         <ul className="nav-links">
@@ -96,34 +79,31 @@ const Header = () => {
           </li>
           <li>
             <div className="user-profile-pic">
-              <img onClick={toggleUserPopup} src={UserIcon} alt="avatar" />
+              <img onClick={toggleUserModal} src={UserIcon} alt="avatar" />
             </div>
           </li>
         </ul>
       </nav>
       <aside>
-        {isAccountPopupOpen && (
+        {showUserOptions && (
           <UserOptions
-            userInfo={userInfo}
-            toggleUserPopup={toggleUserPopup}
-            isLoggedIn={isLoggedIn}
+            toggleUserModal={toggleUserModal}
             handleOpenLoginModal={handleOpenLoginModal}
             handleOpenRegisterModal={handleOpenRegisterModal}
           />
         )}
-        {showRegisterModal && (
+        {showRegisterModal && !user && (
           <RegisterForm
             handleRegister={handleRegister}
             handleClose={handleCloseRegisterModal}
           />
         )}
-        {showLoginModal && (
+        {showLoginModal && !user && (
           <LoginForm
             handleLogin={handleLogin}
             handleClose={handleCloseLoginModal}
           />
         )}
-      
       </aside>
     </header>
   );

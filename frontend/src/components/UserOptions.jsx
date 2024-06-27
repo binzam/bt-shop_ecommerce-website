@@ -1,18 +1,18 @@
 /* eslint-disable react/prop-types */
-import UserProfile from "./UserProfile";
+import UserProfile from './UserProfile';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const UserOptions = ({
-  toggleUserPopup,
+  toggleUserModal,
   handleOpenLoginModal,
   handleOpenRegisterModal,
-  isLoggedIn,
-  userInfo,
 }) => {
+  const { user } = useAuthContext();
   return (
     <div className="modal">
-      {!isLoggedIn && (
+      {!user && (
         <div className="login_signup_div">
-          <button onClick={toggleUserPopup} className="stay_out_btn">
+          <button onClick={toggleUserModal} className="stay_out_btn">
             Stay signed out
           </button>
           <div className="login_signup_header">
@@ -28,11 +28,8 @@ const UserOptions = ({
           </div>
         </div>
       )}
-      {isLoggedIn && (
-         <UserProfile
-         handleClose={toggleUserPopup}
-         userInfo={userInfo}
-       />
+      {user && (
+        <UserProfile handleClose={toggleUserModal} />
       )}
     </div>
   );

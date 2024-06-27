@@ -1,34 +1,26 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import axios from 'axios';
+import { useLogin } from '../hooks/useLogin';
 
-const LoginForm = ({ handleClose, handleLogin }) => {
-  const [formData, setFormData] = useState({
+const LoginForm = ({ handleClose }) => {
+  const [LoginForm, setLoginForm] = useState({
     email: '',
     password: '',
   });
-  const { email, password } = formData;
-  //   console.log(formData);
+  const { email, password } = LoginForm;
+  const { login, error, isLoading } = useLogin();
+  //   console.log(LoginForm);
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setLoginForm({ ...LoginForm, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-        console.log("Please fill in all fields");
-        return;
-      }
-    try {
-      const { data } = await axios.post('http://localhost:5555/users/login', {
-        email,
-        password,
-      });
-      console.log('Login successful:', data);
-      handleLogin(data);
-    } catch (error) {
-      alert(`Error: ${error.response.data.message}`);
+      console.log('Please fill in all fields');
+      return;
     }
+    await login(email, password);
   };
   return (
     <div className="modal">
@@ -43,6 +35,7 @@ const LoginForm = ({ handleClose, handleLogin }) => {
             name="email"
             value={email}
             onChange={handleChange}
+            autoComplete='false'
           />
           <br />
 
@@ -52,10 +45,12 @@ const LoginForm = ({ handleClose, handleLogin }) => {
             name="password"
             value={password}
             onChange={handleChange}
+            autoComplete='false'
           />
           <br />
 
-          <button type="submit">Sign in</button>
+          <button disabled={isLoading}>Sign in</button>
+          {error && <div className="error">{error}</div>}
         </form>
       </div>
     </div>

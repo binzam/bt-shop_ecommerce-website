@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
 import { useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 
-const UpdatePassword = ({ userInfo, handleClose }) => {
+const UpdatePassword = ({ handleClose }) => {
+  const { user } = useAuthContext();
+
   const [currentPassword, setCurrentPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSubmitPassword = (e) => {
     e.preventDefault();
@@ -14,25 +18,30 @@ const UpdatePassword = ({ userInfo, handleClose }) => {
       return;
     }
     handleUpdatePassword(currentPassword, newPassword);
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
+    // setCurrentPassword('');
+    // setNewPassword('');
+    // setConfirmPassword('');
   };
   const handleUpdatePassword = async (currentPassword, newPassword) => {
     try {
-      const { data } = await axios.put(
-        `http://localhost:5555/users/update_pass/${userInfo._id}`,
-        { currentPassword, newPassword }
+      const response = await axios.put(
+        'http://localhost:5555/users/update_pass',
+        { currentPassword, newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
 
-      console.log(data);
-      localStorage.setItem('userInfo', JSON.stringify(data.data));
+      console.log(response);
+      localStorage.setItem('userInfo', JSON.stringify(response.data));
       handleClose();
     } catch (error) {
-      console.error(error.message);
+      setError(error.response.data.error);
     }
   };
-
+  // abcABC123$
   return (
     <form onSubmit={handleSubmitPassword}>
       <label>Current Password:</label>
@@ -65,6 +74,7 @@ const UpdatePassword = ({ userInfo, handleClose }) => {
         />
       </div>
       <button type="submit">Update Password</button>
+      {error && <div className="error">{error}</div>}
     </form>
   );
 };
