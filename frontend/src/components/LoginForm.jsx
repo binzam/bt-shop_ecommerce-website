@@ -36,7 +36,7 @@ const LoginForm = ({ handleClose, handleLogin }) => {
         <span className="close_modal" onClick={handleClose}>
           close form
         </span>
-        <form className="register_form" onSubmit={handleSubmit}>
+        <form className="login_form" onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="Email"

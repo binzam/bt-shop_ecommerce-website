@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import axios from 'axios';
+import { useSignup } from '../hooks/useSignup';
 
-const RegisterForm = ({ handleClose, handleRegister }) => {
+const RegisterForm = ({ handleClose }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -11,6 +11,8 @@ const RegisterForm = ({ handleClose, handleRegister }) => {
     confirmPassword: '',
   });
   const { firstName, lastName, email, password, confirmPassword } = formData;
+  const { signup, error, isLoading } = useSignup();
+
   //   console.log(formData);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,22 +34,10 @@ const RegisterForm = ({ handleClose, handleRegister }) => {
       alert('Passwords do not match');
       return;
     }
-    try {
-      const { data } = await axios.post(
-        'http://localhost:5555/users/register',
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-        }
-      );
-      handleRegister(data);
-    } catch (error) {
-      alert(`Error: ${error.response.data.message}`);
-    }
+    await signup(email, password, firstName, lastName);
   };
   return (
+    <div className="modal">
       <div className="modal_content">
         <span className="close_modal" onClick={handleClose}>
           close form
@@ -60,6 +50,8 @@ const RegisterForm = ({ handleClose, handleRegister }) => {
             value={firstName}
             onChange={handleChange}
           />
+          <br />
+
           <input
             type="text"
             placeholder="Last Name"
@@ -95,9 +87,11 @@ const RegisterForm = ({ handleClose, handleRegister }) => {
           />
           <br />
 
-          <button type="submit">Register</button>
+          <button disabled={isLoading}>Register</button>
+          {error && <div className='error'>{error}</div> }
         </form>
       </div>
+    </div>
   );
 };
 

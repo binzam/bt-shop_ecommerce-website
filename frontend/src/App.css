@@ -38,7 +38,7 @@ ul {
   gap: 1rem;
   flex-wrap: wrap;
 }
-/* .modal {
+.modal {
   position: fixed;
   z-index: 999;
   display: flex;
@@ -49,11 +49,12 @@ ul {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.616);
-} */
+}
 .navigation {
-  /* width: 30%; */
+  width: 70%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 /* NAV LINKS/MEN,WOMEN,ELECTRONICS... */
 .nav-links {
@@ -82,9 +83,17 @@ ul {
   text-decoration: underline;
   cursor: pointer;
 }
+div.error {
+  padding: 10px;
+  background: #ffefef;
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: 4px;
+  margin: 20px 0;
+}
 main {
   background-color: rgb(255, 255, 255);
-  min-height: calc(100vh - 150px);
+  min-height: calc(100vh - 130px);
   padding: 2rem;
   color: black;
   width: 100%;

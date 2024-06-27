@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
-import UserProfile from './UserProfile';
 import { Link } from 'react-router-dom';
 import CartIcon from '../assets/icon-cart.svg';
 import UserIcon from '../assets/avatar.svg';
+import UserOptions from './UserOptions';
 
 const Header = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [showUserProfile, setShowUserProfile] = useState(false);
+  const [isAccountPopupOpen, setIsAccountPopupOpen] = useState(false);
+
   useEffect(() => {
     const storedUserInfo = localStorage.getItem('userInfo');
     if (storedUserInfo) {
@@ -19,12 +20,7 @@ const Header = () => {
       setIsLoggedIn(true);
     }
   }, []);
-  const handleOpenUserProfile = () => {
-    setShowUserProfile(true);
-  };
-  const handleCloseUserProfile = () => {
-    setShowUserProfile(false);
-  };
+
   const handleOpenRegisterModal = () => {
     setShowRegisterModal(true);
   };
@@ -44,6 +40,7 @@ const Header = () => {
     setIsLoggedIn(true);
     setShowLoginModal(false);
     setShowRegisterModal(false);
+    toggleUserPopup()
     localStorage.setItem('userInfo', JSON.stringify(data));
   };
   const handleRegister = (data) => {
@@ -53,11 +50,10 @@ const Header = () => {
     setShowLoginModal(false);
     localStorage.setItem('userInfo', JSON.stringify(data));
   };
-  const handleLogout = () => {
-    setUserInfo(null);
-    setIsLoggedIn(false);
-    localStorage.removeItem('userInfo');
-  };
+  function toggleUserPopup() {
+    setIsAccountPopupOpen(!isAccountPopupOpen);
+  }
+
   // console.log(userInfo);
   return (
     <header>
@@ -70,7 +66,7 @@ const Header = () => {
       <nav className="navigation">
         <ul className="nav-links">
           <li>
-            <Link to="/home" className="nav-link">
+            <Link to="/" className="nav-link">
               Home
             </Link>
           </li>
@@ -90,7 +86,7 @@ const Header = () => {
             </Link>
           </li>
         </ul>
-        <ul className='nav-links'>
+        <ul className="nav-links">
           <li>
             <div className="cart-nav">
               <img src={CartIcon} alt="Cart-icon" className="cart-icon" />
@@ -100,12 +96,21 @@ const Header = () => {
           </li>
           <li>
             <div className="user-profile-pic">
-              <img src={UserIcon} alt="avatar" />
+              <img onClick={toggleUserPopup} src={UserIcon} alt="avatar" />
             </div>
           </li>
         </ul>
       </nav>
-      <div className="modal">
+      <aside>
+        {isAccountPopupOpen && (
+          <UserOptions
+            userInfo={userInfo}
+            toggleUserPopup={toggleUserPopup}
+            isLoggedIn={isLoggedIn}
+            handleOpenLoginModal={handleOpenLoginModal}
+            handleOpenRegisterModal={handleOpenRegisterModal}
+          />
+        )}
         {showRegisterModal && (
           <RegisterForm
             handleRegister={handleRegister}
@@ -118,13 +123,8 @@ const Header = () => {
             handleClose={handleCloseLoginModal}
           />
         )}
-        {showUserProfile && (
-          <UserProfile
-            handleClose={handleCloseUserProfile}
-            userInfo={userInfo}
-          />
-        )}
-      </div>
+      
+      </aside>
     </header>
   );
 };

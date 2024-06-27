@@ -1,13 +1,12 @@
-import { PORT, mongoDbURL } from './config.js';
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import productsRoute from './routes/productsRoute.js';
 import usersRoute from './routes/usersRoute.js';
 import ordersRoute from './routes/ordersRoute.js';
-import dotenv from 'dotenv';
-import cors from 'cors';
 
-dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors())
@@ -28,13 +27,13 @@ app.use('/users', usersRoute);
 app.use('/orders', ordersRoute);
 
 mongoose
-  .connect(mongoDbURL)
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('App connected to database');
-    app.listen(PORT, () => {
-      console.log(`App is listening on port: ${PORT}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`App is listening on port: ${process.env.PORT}`);
     });
   })
   .catch((error) => {
-    console.log(error.message);
+    console.log(error);
   });

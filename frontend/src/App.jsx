@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/HomePage';
 import Header from './components/Header';
@@ -12,15 +12,11 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [userInfo, setUserInfo] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     fetchProducts();
-    const storedUserInfo = localStorage.getItem('userInfo');
-    if (storedUserInfo) {
-      setUserInfo(JSON.parse(storedUserInfo));
-      setIsLoggedIn(true);    }
+   
   },[]);
   
   const fetchProducts = async () => {
@@ -36,7 +32,7 @@ function App() {
     }
   };
   return (
-    <>
+    <BrowserRouter>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <main>
         <Routes>
@@ -55,7 +51,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
-    </>
+    </BrowserRouter>
   );
 }
 
