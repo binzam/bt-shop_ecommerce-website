@@ -1,24 +1,22 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/HomePage';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import ProductDescription from './pages/ProductDescription';
 import ProductsPage from './pages/ProductsPage';
 import OrdersPage from './pages/OrdersPage';
 import PaymentPage from './pages/PaymentPage';
 import AdminDashboard from './pages/AdminDashboard';
 import { useEffect, useState } from 'react';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     fetchProducts();
-   
-  },[]);
-  
+  }, []);
+
   const fetchProducts = async () => {
     try {
       const response = await fetch('http://localhost:5555/products');
@@ -32,8 +30,8 @@ function App() {
     }
   };
   return (
-    <BrowserRouter>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+    <>
+      <Header />
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -51,7 +49,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
-    </BrowserRouter>
+    </>
   );
 }
 

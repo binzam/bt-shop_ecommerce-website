@@ -1,0 +1,123 @@
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
+import { useSignup } from '../../hooks/useSignup';
+import closeIcon from '../../assets/close_btn.svg';
+
+const RegisterForm = ({ handleClose }) => {
+  const [registerForm, setRegisterForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const { firstName, lastName, email, password, confirmPassword } =
+    registerForm;
+  const { signup, error, isLoading } = useSignup();
+
+  //   console.log(registerForm);
+  const handleChange = (e) => {
+    setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      firstName.trim() === '' ||
+      lastName.trim() === '' ||
+      email.trim() === '' ||
+      password.trim() === '' ||
+      confirmPassword.trim() === ''
+    ) {
+      alert('Please fill in all fields');
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    await signup(email, password, firstName, lastName);
+  };
+  return (
+    <div className="modal">
+      <div className="modal_content">
+        <div onClick={handleClose} className="close_popup_icon">
+          <img src={closeIcon} alt="close login form" />
+        </div>
+        <form className="register_form" onSubmit={handleSubmit}>
+          <h2>Create an account</h2>
+          <div className="signup_form_group">
+            <label htmlFor="name">First Name</label>
+            <input
+              type="text"
+              id="name"
+              name="firstName"
+              placeholder="Enter your first name"
+              value={firstName}
+              onChange={handleChange}
+              required
+              autoComplete="false"
+            />
+          </div>
+          <div className="signup_form_group">
+            <label htmlFor="name">Last Name</label>
+            <input
+              type="text"
+              id="name"
+              name="lastName"
+              placeholder="Enter your last name"
+              value={lastName}
+              onChange={handleChange}
+              required
+              autoComplete="false"
+            />
+          </div>
+          <div className="signup_form_group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email account"
+              value={email}
+              onChange={handleChange}
+              required
+              autoComplete="false"
+            />
+          </div>
+          <div className="signup_form_group">
+            <label htmlFor="password">Create password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Create password"
+              value={password}
+              onChange={handleChange}
+              required
+              autoComplete="false"
+            />
+          </div>
+          <div className="signup_form_group">
+            <label htmlFor="password">Confirm password</label>
+            <input
+              type="password"
+              id="password"
+              name="confirmPassword"
+              placeholder="Create password"
+              value={confirmPassword}
+              onChange={handleChange}
+              required
+              autoComplete="false"
+            />
+          </div>
+
+          <button type="submit" disabled={isLoading} className='signup_form_btn'>Register</button>
+          {error && <div className="error">{error}</div>}
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default RegisterForm;

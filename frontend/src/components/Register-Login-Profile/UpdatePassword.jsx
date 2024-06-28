@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
 import { useState } from 'react';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const UpdatePassword = ({ handleClose }) => {
   const { user } = useAuthContext();
