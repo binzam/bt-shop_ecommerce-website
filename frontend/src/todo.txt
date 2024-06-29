@@ -1,0 +1,6 @@
+finish page description page
+add to cart function (maybe using context)
+remove from cart
+place order function and route
+checkout page
+...
