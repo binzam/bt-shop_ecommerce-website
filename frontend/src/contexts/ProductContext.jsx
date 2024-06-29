@@ -6,6 +6,8 @@ export const ProductContext = createContext();
 export const ProductContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchProducts();
@@ -20,9 +22,12 @@ export const ProductContextProvider = ({ children }) => {
       const data = await response.json();
       setProducts(data.data);
     } catch (error) {
-      console.error('Error fetching products:', error.message);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
   useEffect(() => {
     const storedCart = localStorage.getItem('cartItems');
     if (storedCart) {
@@ -56,7 +61,7 @@ export const ProductContextProvider = ({ children }) => {
 
   return (
     <ProductContext.Provider
-      value={{ products, cartItems, addToCart, removeFromCart }}
+      value={{ products, cartItems, addToCart, removeFromCart, loading, error }}
     >
       {children}
     </ProductContext.Provider>
