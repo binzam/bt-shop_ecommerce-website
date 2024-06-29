@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({}, '-updatedAt -createdAt -__v');
     return res.status(200).json({
       productCount: products.length,
       data: products,

@@ -19,7 +19,7 @@ export const useLogin = () => {
         }
       );
       if (response.status === 200) {
-        console.log("Login successful");
+        // console.log("Login successful");
         localStorage.setItem('userInfo', JSON.stringify(response.data));
 
         dispatch({ type: 'LOGIN', payload: response.data });
