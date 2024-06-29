@@ -32,7 +32,7 @@ function App() {
   return (
     <>
       <Header />
-      <main>
+      <main className='main_content'>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route

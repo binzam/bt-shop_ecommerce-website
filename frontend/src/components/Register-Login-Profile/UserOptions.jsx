@@ -2,21 +2,32 @@
 import { useAuthContext } from '../../hooks/useAuthContext';
 import UserProfile from './UserProfile';
 import './UserOptions.css';
+import { useState } from 'react';
+import RegisterForm from './RegisterForm';
+import LoginForm from './LoginForm';
 
-const UserOptions = ({
-  toggleUserModal,
-  handleOpenLoginModal,
-  handleOpenRegisterModal,
-}) => {
+const UserOptions = ({ handleClose }) => {
   const { user } = useAuthContext();
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const handleOpenRegisterModal = () => {
+    setShowRegisterModal(true);
+    setShowLoginModal(false);
+  };
+  const handleOpenLoginModal = () => {
+    setShowLoginModal(true);
+    setShowRegisterModal(false);
+  };
+
+  const handleCloseModals = () => {
+    setShowRegisterModal(false);
+    setShowLoginModal(false);
+  };
   return (
     <div className="modal">
       <div className="modal_content">
-        {!user && (
+        {!user && !showRegisterModal && !showLoginModal && (
           <div className="login_signup_div">
-            <button onClick={toggleUserModal} className="stay_out_btn">
-              Stay signed out
-            </button>
             <div className="login_signup_btns">
               <button onClick={handleOpenLoginModal} className="login_btn">
                 Log In
@@ -25,9 +36,18 @@ const UserOptions = ({
                 Sign Up
               </button>
             </div>
+            <button onClick={handleClose} className="stay_out_btn">
+              Stay signed out
+            </button>
           </div>
         )}
-        {user && <UserProfile handleClose={toggleUserModal} />}
+        {user && <UserProfile handleClose={handleClose} />}
+        {showRegisterModal && !user && (
+          <RegisterForm handleClose={handleCloseModals} />
+        )}
+        {showLoginModal && !user && (
+          <LoginForm handleClose={handleCloseModals} />
+        )}
       </div>
     </div>
   );

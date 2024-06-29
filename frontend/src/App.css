@@ -1,3 +1,10 @@
+.main_content {
+  background-color: #ffffff;
+  min-height: calc(100vh - 130px);
+  width: 100%;
+  margin: 10px auto;
+  
+}
 
 .close_modal {
   color: red;
@@ -10,12 +17,4 @@
   border: 1px solid var(--error);
   color: var(--error);
   border-radius: 4px;
-}
-main {
-  background-color: rgb(255, 255, 255);
-  min-height: calc(100vh - 130px);
-  padding: 2rem;
-  color: black;
-  width: 100%;
-  margin: 10px auto;
 }
