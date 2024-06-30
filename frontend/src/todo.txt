@@ -2,5 +2,9 @@ finish page description page
 add to cart function (maybe using context)
 remove from cart
 place order function and route
+...
+make cartitems persistent even after page reload
+make products page with category filter / price filter
 checkout page
+backend> place order route
 ...
