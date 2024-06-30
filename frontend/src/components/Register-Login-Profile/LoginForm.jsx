@@ -61,7 +61,7 @@ const LoginForm = ({ handleClose }) => {
         <button disabled={isLoading} type="submit" className="login_form_btn">
           Sign In
         </button>
-        {error && <div className="error">{error}</div>}
+        {error && <div className="form_error">{error}</div>}
       </form>
     </>
   );

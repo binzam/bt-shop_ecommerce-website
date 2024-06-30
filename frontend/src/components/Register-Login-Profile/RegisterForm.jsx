@@ -114,7 +114,7 @@ const RegisterForm = ({ handleClose }) => {
         <button type="submit" disabled={isLoading} className="signup_form_btn">
           Register
         </button>
-        {error && <div className="error">{error}</div>}
+        {error && <div className="form_error">{error}</div>}
       </form>
     </>
   );

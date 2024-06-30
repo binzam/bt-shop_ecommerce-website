@@ -74,7 +74,7 @@ const UpdatePassword = ({ handleClose }) => {
         />
       </div>
       <button type="submit">Update Password</button>
-      {error && <div className="error">{error}</div>}
+      {error && <div className="form_error">{error}</div>}
     </form>
   );
 };

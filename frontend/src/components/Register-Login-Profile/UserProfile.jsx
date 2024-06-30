@@ -21,7 +21,7 @@ const UserProfile = ({ handleClose }) => {
   return (
     <div className="modal">
       <div className="modal_content">
-        <span onClick={handleClose} className="close_modal">
+        <span onClick={handleClose} className="close_user_profile">
           close
         </span>
         <br />

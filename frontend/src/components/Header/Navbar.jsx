@@ -2,8 +2,11 @@
 import { Link } from 'react-router-dom';
 import CartIcon from '../../assets/icon-cart.svg';
 import UserIcon from '../../assets/avatar.svg';
+import { useContext } from 'react';
+import { ProductContext } from '../../contexts/ProductContext';
 
 const Navbar = ({ openUserOptions, openCart }) => {
+  const { cartItems } = useContext(ProductContext);
   return (
     <nav className="navigation">
       <ul className="nav_links">
@@ -33,11 +36,17 @@ const Navbar = ({ openUserOptions, openCart }) => {
           <div onClick={openCart} className="cart_icon_wrapper" title="Cart">
             <img src={CartIcon} alt="Cart icon" className="cart-icon" />
 
-            <span className="cart_counter">10</span>
+            {cartItems && (
+              <span className="cart_counter">{cartItems.length}</span>
+            )}
           </div>
         </li>
         <li>
-          <div onClick={openUserOptions} className="user_profile_icon" title="User">
+          <div
+            onClick={openUserOptions}
+            className="user_profile_icon"
+            title="User"
+          >
             <img src={UserIcon} alt="avatar" />
           </div>
         </li>
