@@ -14,9 +14,8 @@ const Header = () => {
     setShowUserOptions(true);
     setShowCart(false);
   }
-  function handleOpenCart() {
-    setShowCart(true);
-    setShowUserOptions(false);
+  function toggleCart() {
+    setShowCart(!showCart);
   }
   function handleCloseCart() {
     setShowCart(false);
@@ -27,14 +26,11 @@ const Header = () => {
 
   return (
     <header>
-      <a href="/home" className="logo">
+      <a href="/" className="logo">
         <span className="logo_text">bt-shop</span>
         {user && <span className="username">{user.username}</span>}
       </a>
-      <Navbar
-        openUserOptions={handleOpenUserOptions}
-        openCart={handleOpenCart}
-      />
+      <Navbar openUserOptions={handleOpenUserOptions} toggleCart={toggleCart} />
 
       {showUserOptions && <UserOptions handleClose={handleCloseModals} />}
       {showCart && <Cart handleCloseCart={handleCloseCart} />}

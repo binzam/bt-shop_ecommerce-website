@@ -2,13 +2,17 @@
 import { useContext } from 'react';
 import closeIcon from '../../assets/close_btn.svg';
 import RemoveIcon from '../../assets/icon-remove.svg';
-import { ProductContext } from '../../contexts/ProductContext';
+import { CartContext } from '../../contexts/CartContext.jsx';
 import { Link } from 'react-router-dom';
 import './Cart.css';
+
 const Cart = ({ handleCloseCart }) => {
-  const { cartItems, removeFromCart } = useContext(ProductContext);
+  const { cartItems, removeFromCart } = useContext(CartContext);
   const handleRemoveFromCart = (id) => {
     removeFromCart(id);
+  };
+  const calculateTotal = (price, quantity) => {
+    return (price * quantity).toFixed(2);
   };
   return (
     <div className="cart">
@@ -31,10 +35,12 @@ const Cart = ({ handleCloseCart }) => {
                 <div className="item_details">
                   <span className="item_title">{item.title}</span>
                   <div className="item_price_details">
-                    <span className="item_price">{item.price}</span>
+                    <span className="item_price">${item.price}</span>
                     <span className="multiply_sign">&times;</span>
                     <span className="item_amount">{item.quantity}</span>
-                    <span className="item_total">$135.00</span>
+                    <span className="item_total">
+                      ${calculateTotal(item.price, item.quantity)}
+                    </span>
                   </div>
                 </div>
                 <button

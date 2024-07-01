@@ -5,10 +5,12 @@ import './ProductDescription.css';
 import CartIcon from '../../assets/icon-cart-btn.svg';
 import PlusIcon from '../../assets/icon-plus.svg';
 import MinusIcon from '../../assets/icon-minus.svg';
-import { ProductContext } from '../../contexts/ProductContext';
+import { ProductContext } from '../../contexts/ProductContext.jsx';
+import { CartContext } from '../../contexts/CartContext.jsx';
 
 const ProductDescription = () => {
-  const { addToCart, products, loading, error } = useContext(ProductContext);
+  const { products, loading, error } = useContext(ProductContext);
+  const { addToCart } = useContext(CartContext);
   const { id } = useParams();
   const [displayedProduct, setDisplayedProduct] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -29,13 +31,12 @@ const ProductDescription = () => {
     }
   };
 
+  
+  const { image, title, price, description } = displayedProduct;
+  
   const handleAddToCart = () => {
     addToCart(displayedProduct, quantity);
   };
-
-  const { image, title, price, description } = displayedProduct;
-
-
   return (
     <div className="product_description_page">
       {loading && (
@@ -43,7 +44,7 @@ const ProductDescription = () => {
           <div className="loading_animation"></div>
         </div>
       )}
-      {error &&  (
+      {error && (
         <div className="error_container">
           <div className="error_message">Error: {error}</div>
         </div>
@@ -77,7 +78,10 @@ const ProductDescription = () => {
                 </button>
               </div>
 
-              <button onClick={handleAddToCart} className="add_to_cart_btn">
+              <button
+                onClick={() => handleAddToCart()}
+                className="add_to_cart_btn"
+              >
                 Add to Cart
                 <img src={CartIcon} alt="Cart" />
               </button>

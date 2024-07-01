@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import CartIcon from '../../assets/icon-cart.svg';
 import UserIcon from '../../assets/avatar.svg';
 import { useContext } from 'react';
-import { ProductContext } from '../../contexts/ProductContext';
+import { CartContext } from '../../contexts/CartContext.jsx';
 
-const Navbar = ({ openUserOptions, openCart }) => {
-  const { cartItems } = useContext(ProductContext);
+const Navbar = ({ openUserOptions, toggleCart }) => {
+  const { cartItems } = useContext(CartContext);
   return (
     <nav className="navigation">
       <ul className="nav_links">
@@ -33,7 +33,7 @@ const Navbar = ({ openUserOptions, openCart }) => {
       </ul>
       <ul className="nav_icons">
         <li>
-          <div onClick={openCart} className="cart_icon_wrapper" title="Cart">
+          <div onClick={toggleCart} className="cart_icon_wrapper" title="Cart">
             <img src={CartIcon} alt="Cart icon" className="cart-icon" />
 
             {cartItems && (
