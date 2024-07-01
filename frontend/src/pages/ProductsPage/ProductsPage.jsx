@@ -76,7 +76,7 @@ const ProductsPage = () => {
             Electronics
           </button>
         </div>
-        <h4 className="category_title">PRICE</h4>
+        <h4 className="sort_title">PRICE</h4>
         <div className="price_sorting_bar">
           <button
             className="sort_by_price_btn"
@@ -96,7 +96,7 @@ const ProductsPage = () => {
         {products &&
           filteredProducts.map((product) => (
             <article key={product._id} className="product_box">
-              <h3 className="product_title">{product.title}</h3>
+              <h3 className="product_title">{product.title.slice(0, 20)}</h3>
               <div className="product_image">
                 <img src={product.image} alt={product.title} />
               </div>
@@ -107,7 +107,9 @@ const ProductsPage = () => {
               >
                 <img src={CartIcon} alt="Cart" /> Add to Cart
               </button>
-              <p className="product_description">{product.description}</p>
+              <p className="product_description">
+                {product.description.slice(0, 70)}...
+              </p>
               <Link
                 className="view_details_link"
                 to={`/products/${product._id}`}

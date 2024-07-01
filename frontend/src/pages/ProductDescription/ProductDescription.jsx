@@ -85,6 +85,9 @@ const ProductDescription = () => {
                 Add to Cart
                 <img src={CartIcon} alt="Cart" />
               </button>
+              <Link to="/checkout" className="prd_checkout_btn">
+                Checkout
+              </Link>
             </div>
           </div>
         </div>

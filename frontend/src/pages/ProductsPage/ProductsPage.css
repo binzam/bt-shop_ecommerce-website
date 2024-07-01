@@ -10,9 +10,10 @@
   border-radius: 5px 10px 15px 2px;
   margin-bottom: 10px;
 }
-.category_title {
+.category_title,
+.sort_title {
   color: #333;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -27,7 +28,7 @@
 }
 .category_btn,
 .sort_by_price_btn {
-  padding: 10px 15px 10px 20px;
+  padding: 5px 15px 5px 20px;
   border: 1px solid #ed9121;
   border-radius: 5px;
   display: block;
@@ -89,10 +90,10 @@
 }
 
 .product_description {
-  max-height: 70px;
-  overflow: hidden;
+  /* max-height: 70px; */
   color: #666;
-  text-overflow: ellipsis;
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
 }
 .view_details_link {
   position: absolute;

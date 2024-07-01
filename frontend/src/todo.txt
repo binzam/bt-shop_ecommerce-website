@@ -2,9 +2,12 @@ finish page description page: done
 add to cart function (maybe using context): done
 remove from cart: done
 make cartitems persistent even after page reload: done
+make products page with category filter / price filter: done
 ...
-place order function and route
-make products page with category filter / price filter
 checkout page
+place order function and route
 backend> place order route
+homepage
+product rating 
+
 ...

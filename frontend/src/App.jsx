@@ -9,6 +9,7 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { ProductContextProvider } from './contexts/ProductContext.jsx';
 import { CartContextProvider } from './contexts/CartContext.jsx';
+import CheckoutPage from './pages/CheckoutPage/CheckoutPage.jsx';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDescription />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/place_order" element={<OrdersPage />} />
             <Route path="/payment" element={<PaymentPage />} />
           </Routes>
