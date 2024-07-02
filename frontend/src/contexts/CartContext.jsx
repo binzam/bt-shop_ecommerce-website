@@ -8,7 +8,23 @@ const CartContextProvider = ({ children }) => {
 
   const [showUserOptions, setShowUserOptions] = useState(false);
   const [showCart, setShowCart] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
+  const handleOpenRegisterModal = () => {
+    setShowRegisterModal(true);
+    setShowLoginModal(false);
+  };
+  const handleOpenLoginModal = () => {
+    setShowLoginModal(true);
+    setShowRegisterModal(false);
+  };
+
+  const handleCloseForms = () => {
+    setShowRegisterModal(false);
+    setShowLoginModal(false);
+  };
   function handleOpenUserOptions() {
     setShowUserOptions(true);
     setShowCart(false);
@@ -21,6 +37,11 @@ const CartContextProvider = ({ children }) => {
   }
   const handleCloseModals = () => {
     setShowUserOptions(false);
+  };
+  const handleShowProfile = () => {
+    setShowProfile(!showProfile);
+    setShowUserOptions(false);
+
   };
 
   useEffect(() => {
@@ -68,6 +89,13 @@ const CartContextProvider = ({ children }) => {
         cartItems,
         addToCart,
         removeFromCart,
+        showLoginModal,
+        showRegisterModal,
+        handleOpenRegisterModal,
+        handleOpenLoginModal,
+        handleCloseForms,
+        showProfile,
+        handleShowProfile,
       }}
     >
       {children}

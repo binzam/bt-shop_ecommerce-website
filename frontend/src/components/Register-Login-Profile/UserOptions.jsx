@@ -4,25 +4,21 @@ import UserProfile from './UserProfile';
 import './UserOptions.css';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { CartContext } from '../../contexts/CartContext';
 
-const UserOptions = ({ handleClose }) => {
+const UserOptions = () => {
   const { user } = useAuthContext();
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const handleOpenRegisterModal = () => {
-    setShowRegisterModal(true);
-    setShowLoginModal(false);
-  };
-  const handleOpenLoginModal = () => {
-    setShowLoginModal(true);
-    setShowRegisterModal(false);
-  };
+  const {
+    showLoginModal,
+    showRegisterModal,
+    handleOpenRegisterModal,
+    handleOpenLoginModal,
+    handleCloseForms,
+    handleCloseModals,
+    showProfile,
+  } = useContext(CartContext);
 
-  const handleCloseModals = () => {
-    setShowRegisterModal(false);
-    setShowLoginModal(false);
-  };
   return (
     <div className="modal">
       <div className="modal_content">
@@ -36,17 +32,17 @@ const UserOptions = ({ handleClose }) => {
                 Sign Up
               </button>
             </div>
-            <button onClick={handleClose} className="stay_out_btn">
+            <button onClick={handleCloseModals} className="stay_out_btn">
               Stay signed out
             </button>
           </div>
         )}
-        {user && <UserProfile handleClose={handleClose} />}
+        {user && showProfile && <UserProfile />}
         {showRegisterModal && !user && (
-          <RegisterForm handleClose={handleCloseModals} />
+          <RegisterForm handleClose={handleCloseForms} />
         )}
         {showLoginModal && !user && (
-          <LoginForm handleClose={handleCloseModals} />
+          <LoginForm handleClose={handleCloseForms} />
         )}
       </div>
     </div>

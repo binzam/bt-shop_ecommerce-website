@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import './Header.css';
 import UserOptions from '../Register-Login-Profile/UserOptions';
@@ -7,16 +7,19 @@ import Cart from './Cart/Cart';
 import { CartContext } from '../../contexts/CartContext';
 const Header = () => {
   const { user } = useAuthContext();
-  const { showUserOptions, showCart, handleCloseModals } = useContext(CartContext);
+
+  const { showUserOptions, showCart, handleCloseModals } =
+    useContext(CartContext);
+ 
   return (
     <header>
       <a href="/" className="logo">
         <span className="logo_text">bt-shop</span>
         {user && <span className="username">{user.username}</span>}
       </a>
-      <Navbar />
+      <Navbar  />
 
-      {showUserOptions && <UserOptions handleClose={handleCloseModals} />}
+      {showUserOptions && <UserOptions/>}
       {showCart && <Cart />}
     </header>
   );

@@ -3,11 +3,17 @@ add to cart function (maybe using context): done
 remove from cart: done
 make cartitems persistent even after page reload: done
 make products page with category filter / price filter: done
+checkout page: done
 ...
-checkout page
 place order function and route
 backend> place order route
 homepage
 product rating 
-
+A small popup after succesful login/registration
+contact page form
+about page
+privacy policy page
+footer
+trending products
+responsivencess
 ...
