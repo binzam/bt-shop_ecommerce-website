@@ -5,7 +5,24 @@ const CartContext = createContext();
 
 const CartContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  
+
+  const [showUserOptions, setShowUserOptions] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+
+  function handleOpenUserOptions() {
+    setShowUserOptions(true);
+    setShowCart(false);
+  }
+  function toggleCart() {
+    setShowCart(!showCart);
+  }
+  function handleCloseCart() {
+    setShowCart(false);
+  }
+  const handleCloseModals = () => {
+    setShowUserOptions(false);
+  };
+
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -40,7 +57,19 @@ const CartContextProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{
+        showUserOptions,
+        showCart,
+        handleOpenUserOptions,
+        toggleCart,
+        handleCloseCart,
+        handleCloseModals,
+        cartItems,
+        addToCart,
+        removeFromCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

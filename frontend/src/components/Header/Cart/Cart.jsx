@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import './Cart.css';
 import CartItems from './CartItems.jsx';
 
-const Cart = ({ handleCloseCart }) => {
-  const { cartItems } = useContext(CartContext);
+const Cart = () => {
+  const { cartItems, handleCloseCart } = useContext(CartContext);
 
   return (
     <div className="cart">

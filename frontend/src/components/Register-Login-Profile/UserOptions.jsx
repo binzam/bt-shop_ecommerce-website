@@ -2,9 +2,9 @@
 import { useAuthContext } from '../../hooks/useAuthContext';
 import UserProfile from './UserProfile';
 import './UserOptions.css';
-import { useState } from 'react';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
+import { useState } from 'react';
 
 const UserOptions = ({ handleClose }) => {
   const { user } = useAuthContext();

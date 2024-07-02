@@ -5,8 +5,9 @@ import UserIcon from '../../assets/avatar.svg';
 import { useContext } from 'react';
 import { CartContext } from '../../contexts/CartContext.jsx';
 
-const Navbar = ({ openUserOptions, toggleCart }) => {
-  const { cartItems } = useContext(CartContext);
+const Navbar = () => {
+  const { cartItems, toggleCart, handleOpenUserOptions } =
+    useContext(CartContext);
   return (
     <nav className="navigation">
       <ul className="nav_links">
@@ -43,7 +44,7 @@ const Navbar = ({ openUserOptions, toggleCart }) => {
         </li>
         <li>
           <div
-            onClick={openUserOptions}
+            onClick={handleOpenUserOptions}
             className="user_profile_icon"
             title="User"
           >

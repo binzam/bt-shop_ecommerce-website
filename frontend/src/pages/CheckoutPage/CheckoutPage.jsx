@@ -8,7 +8,8 @@ import { Link } from 'react-router-dom';
 
 const CheckoutPage = () => {
   const { user } = useAuthContext();
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, handleOpenUserOptions } = useContext(CartContext);
+
   const calculateTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
@@ -31,20 +32,14 @@ const CheckoutPage = () => {
       <div className="orders_content">
         <div className="orders">
           <span className="pending_orders_count">
-            Pending Orders : [<span>{cartItems.length}</span>]
+            Pending Orders  [<span>{cartItems.length}</span>]
           </span>
           {cartItems.length > 0 ? (
             <div className="pending_orders">
               <CartItems />
             </div>
           ) : (
-            <div className="no_orders_wrapper">
-              <p className="no_orders">You have no Pending orders</p>
-              <Link className="shop_link" to="/products">
-                <img src={Arrow} alt="Shop link" />
-                SHOP
-              </Link>
-            </div>
+            <p className="no_orders">You have no Pending orders</p>
           )}
         </div>
         <div className="order_summary">
@@ -72,6 +67,20 @@ const CheckoutPage = () => {
               <p className="left total">Order Total:</p>
               <p className="right order_total">${calculateTotal()}</p>
             </div>
+          </div>
+          <div className="checkout_option_btns">
+            <Link className="shop_link" to="/products">
+              <img src={Arrow} alt="Shop link" />
+              Back to Shop
+            </Link>
+            {!user && cartItems.length > 0 && (
+              <button
+                onClick={handleOpenUserOptions}
+                className="checkout_login_btn"
+              >
+                Login to Continue
+              </button>
+            )}
           </div>
         </div>
       </div>
