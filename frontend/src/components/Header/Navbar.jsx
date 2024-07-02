@@ -16,7 +16,7 @@ const Navbar = ({ openUserOptions, toggleCart }) => {
           </Link>
         </li>
         <li>
-          <Link to="/categories/all" className="nav_link">
+          <Link to="/products" className="nav_link">
             Shop
           </Link>
         </li>

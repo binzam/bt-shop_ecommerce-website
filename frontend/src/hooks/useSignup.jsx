@@ -20,7 +20,6 @@ export const useSignup = () => {
           password,
         }
       );
-      console.log(response);
       if (response.status === 200) {
         localStorage.setItem('userInfo', JSON.stringify(response.data));
 

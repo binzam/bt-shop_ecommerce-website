@@ -3,7 +3,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import './Header.css';
 import UserOptions from '../Register-Login-Profile/UserOptions';
 import Navbar from './Navbar';
-import Cart from './Cart';
+import Cart from './Cart/Cart';
 const Header = () => {
   const { user } = useAuthContext();
 
