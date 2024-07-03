@@ -1,12 +1,12 @@
-import axios from 'axios';
 import './Forms.css';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import axios from 'axios';
 
 const ShippingForm = () => {
-  const { user } = useAuthContext();
+  const { user, dispatch } = useAuthContext();
   const [error, setError] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [shippingAddress, setShippingAddress] = useState({
     username: '',
     street: '',
@@ -27,10 +27,8 @@ const ShippingForm = () => {
   const { username, street, city, country } = shippingAddress;
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!street || !city || !country || !username) {
-      alert('All fields are required');
-      return;
-    }
+    setIsLoading(true);
+    setError(null);
 
     try {
       const response = await axios.put(
@@ -44,13 +42,20 @@ const ShippingForm = () => {
       );
       if (response.status === 200) {
         setError(null);
+        console.log(response);
+        dispatch({ type: 'UPDATE_SHIPPING_ADDRESS', payload: response.data });
+      } else {
+        setIsLoading(false);
+        setError(response.data.message);
       }
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
-    <form className="shipping_form">
+    <form onSubmit={handleSubmit} className="shipping_form">
       <div className="shipping_header">Shipping Address</div>
       <div className="shipping_form_group">
         <label htmlFor="username">Name</label>
@@ -101,11 +106,7 @@ const ShippingForm = () => {
           autoComplete="false"
         />
       </div>
-      <button
-        onClick={handleSubmit}
-        type="submit"
-        className="shipping_form_btn"
-      >
+      <button disabled={isLoading} type="submit" className="shipping_form_btn">
         Submit
       </button>
       {error && <div className="form_error">{error}</div>}

@@ -5,6 +5,7 @@ make cartitems persistent even after page reload: done
 make products page with category filter / price filter: done
 checkout page: done
 ...
+update user info
 place order function and route
 backend> place order route
 homepage

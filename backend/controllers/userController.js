@@ -117,7 +117,6 @@ const updateUserInfo = async (req, res) => {
     ) {
       throw Error('All fields must be filled');
     }
-    console.log('shipping address', shippingAddress);
     const updatedUser = await User.findOneAndUpdate(
       {
         _id,
@@ -131,12 +130,9 @@ const updateUserInfo = async (req, res) => {
     );
     const token = generateToken(updatedUser._id);
     return res.status(200).json({
-      message: 'Shipping address updated successfully',
-      data: {
-        token,
-        email: updatedUser.email,
-        address: updatedUser.address,
-      },
+      token,
+      email: updatedUser.email,
+      address: updatedUser.address,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

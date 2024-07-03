@@ -1,30 +1,39 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../../contexts/CartContext';
-import { useAuthContext } from '../../hooks/useAuthContext';
 import './CheckoutPage.css';
 import CartItems from '../../components/Header/Cart/CartItems';
 import ArrowLeft from '../../assets/arrow-left.svg';
 import ArrowRight from '../../assets/arrow-right-solid.svg';
 import ShippingForm from '../../components/Forms/ShippingForm';
 import { Link } from 'react-router-dom';
+import PaymentForm from '../../components/Forms/PaymentForm';
+import OrderSummary from '../../components/OrderSummary';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const CheckoutPage = () => {
-  const { user } = useAuthContext();
+  const { user } = useContext(AuthContext);
   const { cartItems, handleOpenUserOptions } = useContext(CartContext);
-  const [showOrderSummary, setShowOrderSummary] = useState(false);
-  const [showShippingForm, setShowShippingForm] = useState(true);
-
-  const calculateTotal = () => {
-    let total = 0;
-    cartItems.forEach((item) => {
-      total += item.price * item.quantity;
-    });
-    return total.toFixed(2);
-  };
-
+  const [showOrderSummary, setShowOrderSummary] = useState(true);
+  const [showShippingForm, setShowShippingForm] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [shippingAddressData, setShippingAddressData] = useState(null);
+  console.log(shippingAddressData);
+  useEffect(() => {
+    if (user) {
+      const address = user.shippingAddress;
+      setShippingAddressData(address);
+    } else {
+      setShippingAddressData(null);
+    }
+  }, [user]);
   const handleShippingForm = () => {
     setShowOrderSummary(false);
     setShowShippingForm(true);
+  };
+  const handlePaymentForm = () => {
+    setShowOrderSummary(false);
+    setShowShippingForm(false);
+    setShowPaymentForm(true);
   };
   return (
     <div className="checkout_page">
@@ -52,42 +61,10 @@ const CheckoutPage = () => {
           )}
         </div>
         <div className="checkout_progress_wrapper">
-          {showOrderSummary && (
-            <div className="order_summary">
-              <div className="order_summary_header">Order Summary</div>
-              <div className="pricing_summary">
-                <div>
-                  <p className="left">
-                    Items ( <span>{cartItems.length}</span> ) :
-                  </p>
-                  <p className="right">${calculateTotal()}</p>
-                </div>
-                <div>
-                  <p className="left">Shipping & Handling:</p>
-                  <p className="right">$0.00</p>
-                </div>
-                <div>
-                  <p className="left">Total Before TAX: </p>
-                  <p className="right">${calculateTotal()}</p>
-                </div>
-                <div>
-                  <p className="left">Estimated TAX to be collected: </p>
-                  <p className="right">
-                    ${(calculateTotal() * 0.15).toFixed(2)}
-                  </p>
-                </div>
-                <div>
-                  <p className="left total">Order Total:</p>
-                  <p className="right order_total">
-                    {' '}
-                    <span className="dollar_sign">$</span>
-                    {calculateTotal()}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+          {showOrderSummary && <OrderSummary />}
           {showShippingForm && <ShippingForm />}
+          {showPaymentForm && <PaymentForm />}
+
           <div className="checkout_option_btns">
             <Link className="shop_link" to="/products">
               <img src={ArrowLeft} alt="Shop link" />
@@ -102,10 +79,12 @@ const CheckoutPage = () => {
               </button>
             ) : (
               <button
-                onClick={handleShippingForm}
+                onClick={
+                  shippingAddressData ? handlePaymentForm : handleShippingForm
+                }
                 className="checkout_shipping_btn"
               >
-                Shipping
+                {!shippingAddressData ? 'Shipping' : 'Payment'}
                 <img src={ArrowRight} alt="shipping button" />
               </button>
             )}
