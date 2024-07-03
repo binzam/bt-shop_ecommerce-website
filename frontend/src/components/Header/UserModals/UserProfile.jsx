@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from 'react';
-import UpdatePassword from './UpdatePassword';
-import { useLogout } from '../../hooks/useLogout';
-import { useAuthContext } from '../../hooks/useAuthContext';
-import { CartContext } from '../../contexts/CartContext';
+import UpdatePassword from '../../Forms/UpdatePassword';
+import { useLogout } from '../../../hooks/useLogout';
+import { useAuthContext } from '../../../hooks/useAuthContext';
+import { CartContext } from '../../../contexts/CartContext';
 
 const UserProfile = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
-  const { handleCloseForms } = useContext(CartContext);
+  const { handleCloseModals } = useContext(CartContext);
   const [showUpdatePassForm, setShowUpdatePassForm] = useState(false);
   const handleOpenChangePassword = () => {
     setShowUpdatePassForm(true);
@@ -22,7 +22,7 @@ const UserProfile = () => {
   return (
     <div className="modal">
       <div className="modal_content">
-        <span onClick={handleCloseForms} className="close_user_profile">
+        <span onClick={handleCloseModals} className="close_user_profile">
           close
         </span>
         <br />

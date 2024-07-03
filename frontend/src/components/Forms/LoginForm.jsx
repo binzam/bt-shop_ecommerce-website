@@ -2,17 +2,18 @@
 import { useState } from 'react';
 import { useLogin } from '../../hooks/useLogin';
 import closeIcon from '../../assets/close_btn.svg';
-
+import './Forms.css';
 const LoginForm = ({ handleClose }) => {
-  const [LoginForm, setLoginForm] = useState({
+  const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
   });
-  const { email, password } = LoginForm;
+
+  const { email, password } = loginForm;
   const { login, error, isLoading } = useLogin();
-  //   console.log(LoginForm);
+  //   console.log(loginForm);
   const handleChange = (e) => {
-    setLoginForm({ ...LoginForm, [e.target.name]: e.target.value });
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -39,7 +40,6 @@ const LoginForm = ({ handleClose }) => {
             name="email"
             value={email}
             onChange={handleChange}
-            style={error ? { border: '1px solid red' } : null}
             required
             autoComplete="false"
           />
@@ -52,7 +52,6 @@ const LoginForm = ({ handleClose }) => {
             name="password"
             value={password}
             onChange={handleChange}
-            style={error ? { border: '1px solid red' } : null}
             required
             autoComplete="false"
           />

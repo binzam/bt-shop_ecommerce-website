@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useAuthContext } from '../../hooks/useAuthContext';
 import UserProfile from './UserProfile';
 import './UserOptions.css';
-import RegisterForm from './RegisterForm';
-import LoginForm from './LoginForm';
+import RegisterForm from '../../Forms/RegisterForm';
+import LoginForm from '../../Forms/LoginForm';
 import { useContext } from 'react';
-import { CartContext } from '../../contexts/CartContext';
+import { useAuthContext } from '../../../hooks/useAuthContext';
+import { CartContext } from '../../../contexts/CartContext';
 
 const UserOptions = () => {
   const { user } = useAuthContext();
@@ -16,7 +16,6 @@ const UserOptions = () => {
     handleOpenLoginModal,
     handleCloseForms,
     handleCloseModals,
-    showProfile,
   } = useContext(CartContext);
 
   return (
@@ -37,7 +36,7 @@ const UserOptions = () => {
             </button>
           </div>
         )}
-        {user && showProfile && <UserProfile />}
+        {user && <UserProfile />}
         {showRegisterModal && !user && (
           <RegisterForm handleClose={handleCloseForms} />
         )}

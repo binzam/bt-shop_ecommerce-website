@@ -10,7 +10,6 @@ const CartContextProvider = ({ children }) => {
   const [showCart, setShowCart] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
 
   const handleOpenRegisterModal = () => {
     setShowRegisterModal(true);
@@ -37,11 +36,6 @@ const CartContextProvider = ({ children }) => {
   }
   const handleCloseModals = () => {
     setShowUserOptions(false);
-  };
-  const handleShowProfile = () => {
-    setShowProfile(!showProfile);
-    setShowUserOptions(false);
-
   };
 
   useEffect(() => {
@@ -94,8 +88,6 @@ const CartContextProvider = ({ children }) => {
         handleOpenRegisterModal,
         handleOpenLoginModal,
         handleCloseForms,
-        showProfile,
-        handleShowProfile,
       }}
     >
       {children}

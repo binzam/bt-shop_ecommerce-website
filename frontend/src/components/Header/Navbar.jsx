@@ -4,12 +4,12 @@ import CartIcon from '../../assets/icon-cart.svg';
 import UserIcon from '../../assets/avatar.svg';
 import { useContext } from 'react';
 import { CartContext } from '../../contexts/CartContext.jsx';
-import { AuthContext } from '../../contexts/AuthContext.jsx';
+// import { AuthContext } from '../../contexts/AuthContext.jsx';
 
 const Navbar = () => {
-  const { cartItems, toggleCart, handleOpenUserOptions, handleShowProfile } =
+  // const { user } = useContext(AuthContext);
+  const { cartItems, toggleCart, handleOpenUserOptions} =
     useContext(CartContext);
-  const { user } = useContext(AuthContext);
   return (
     <nav className="navigation">
       <ul className="nav_links">
@@ -24,13 +24,13 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/checkout" className="nav_link">
-            Checkout
+          <Link to="/trending" className="nav_link">
+            Trending
           </Link>
         </li>
         <li>
-          <Link to="/trending" className="nav_link">
-            Trending
+          <Link to="/checkout" className="nav_link">
+            Checkout
           </Link>
         </li>
       </ul>
@@ -46,7 +46,7 @@ const Navbar = () => {
         </li>
         <li>
           <div
-            onClick={user ? handleShowProfile : handleOpenUserOptions}
+          onClick={handleOpenUserOptions}
             className="user_profile_icon"
             title="User"
           >

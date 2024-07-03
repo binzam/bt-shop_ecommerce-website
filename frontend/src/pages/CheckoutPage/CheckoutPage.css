@@ -4,10 +4,11 @@
   position: relative;
   border-top-left-radius: 15px;
   border-bottom-right-radius: 15px;
-  background-color: #ffffff;
+  background-color: #f7f7f7;
 }
 .checkout_header {
   width: 100%;
+  height: 75px;
   background-color: #ed9121;
   padding: 10px;
   color: #ffffff;
@@ -45,12 +46,24 @@
 .orders_content {
   width: 100%;
   display: flex;
+  justify-content: space-between;
   height: 100%;
   padding: 10px;
 }
 .orders,
+.checkout_progress_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.orders {
+  width: 48%;
+}
+.checkout_progress_wrapper {
+  width: 48%;
+}
 .order_summary {
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -72,9 +85,11 @@
 .pending_orders {
   width: 100%;
   padding: 20px;
-  max-height: 60vh;
+  max-height: calc(100vh - 290px);
   overflow: overlay;
-  border-right: 2px solid cadetblue;
+  border: 5px solid cadetblue;
+  background-color: #ffffff;
+  border-radius: 4px;
 }
 .order_summary_header {
   color: black;
@@ -113,8 +128,16 @@
   color: rgb(255, 255, 255);
   border-radius: 5px;
   box-shadow: 2px 2px 2px black;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
-.shop_link {
+.dollar_sign{
+  color: rgb(153, 255, 0);
+  font-size: 20px;
+}
+.shop_link,
+.checkout_shipping_btn {
   padding: 15px;
   border: none;
   background-color: teal;
@@ -127,14 +150,21 @@
   font-size: 16px;
   gap: 10px;
 }
+.checkout_shipping_btn {
+  background-color: #028a18;
+}
 .shop_link:hover {
   background-color: #ed9121;
+}
+.checkout_shipping_btn:hover {
+  background-color: green;
 }
 .checkout_option_btns {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px;
 }
 .checkout_login_btn {
   padding: 15px;

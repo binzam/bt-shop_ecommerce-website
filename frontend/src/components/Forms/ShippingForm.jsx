@@ -1,0 +1,116 @@
+import axios from 'axios';
+import './Forms.css';
+import { useEffect, useState } from 'react';
+import { useAuthContext } from '../../hooks/useAuthContext';
+
+const ShippingForm = () => {
+  const { user } = useAuthContext();
+  const [error, setError] = useState(null);
+
+  const [shippingAddress, setShippingAddress] = useState({
+    username: '',
+    street: '',
+    city: '',
+    country: '',
+  });
+  useEffect(() => {
+    if (user) {
+      setShippingAddress((prevShippingAddress) => ({
+        ...prevShippingAddress,
+        username: user.username,
+      }));
+    }
+  }, [user]);
+  const handleChange = (e) => {
+    setShippingAddress({ ...shippingAddress, [e.target.name]: e.target.value });
+  };
+  const { username, street, city, country } = shippingAddress;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!street || !city || !country || !username) {
+      alert('All fields are required');
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        'http://localhost:5555/users/update_user',
+        shippingAddress,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setError(null);
+      }
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+  return (
+    <form className="shipping_form">
+      <div className="shipping_header">Shipping Address</div>
+      <div className="shipping_form_group">
+        <label htmlFor="username">Name</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={username}
+          onChange={handleChange}
+          placeholder="Enter your name"
+          autoComplete="true"
+          readOnly
+        />
+      </div>
+      <div className="shipping_form_group">
+        <label htmlFor="street">Street</label>
+        <input
+          type="text"
+          id="street"
+          name="street"
+          value={street}
+          placeholder="Enter your street"
+          onChange={handleChange}
+          autoComplete="false"
+        />
+      </div>
+      <div className="shipping_form_group">
+        <label htmlFor="city">City</label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          value={city}
+          placeholder="Enter your city"
+          onChange={handleChange}
+          autoComplete="false"
+        />
+      </div>
+      <div className="shipping_form_group">
+        <label htmlFor="country">Country</label>
+        <input
+          type="text"
+          id="country"
+          name="country"
+          value={country}
+          placeholder="Enter your country"
+          onChange={handleChange}
+          autoComplete="false"
+        />
+      </div>
+      <button
+        onClick={handleSubmit}
+        type="submit"
+        className="shipping_form_btn"
+      >
+        Submit
+      </button>
+      {error && <div className="form_error">{error}</div>}
+    </form>
+  );
+};
+
+export default ShippingForm;

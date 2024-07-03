@@ -69,7 +69,7 @@ const getUserById = async (req, res) => {
 const updateUserPassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const _id  = req.user._id;
+    const _id = req.user._id;
     const user = await User.findById(_id);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -106,6 +106,43 @@ const updateUserPassword = async (req, res) => {
   }
 };
 
+const updateUserInfo = async (req, res) => {
+  try {
+    const _id = req.user._id;
+    const shippingAddress = req.body;
+    if (
+      !shippingAddress.street ||
+      !shippingAddress.city ||
+      !shippingAddress.country
+    ) {
+      throw Error('All fields must be filled');
+    }
+    console.log('shipping address', shippingAddress);
+    const updatedUser = await User.findOneAndUpdate(
+      {
+        _id,
+      },
+      {
+        address: shippingAddress,
+      },
+      {
+        new: true,
+      }
+    );
+    const token = generateToken(updatedUser._id);
+    return res.status(200).json({
+      message: 'Shipping address updated successfully',
+      data: {
+        token,
+        email: updatedUser.email,
+        address: updatedUser.address,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -129,4 +166,5 @@ export {
   updateUserPassword,
   deleteUser,
   connectUser,
+  updateUserInfo,
 };

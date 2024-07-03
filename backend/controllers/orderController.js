@@ -1,26 +1,25 @@
 import { Order } from '../models/orderModel.js';
 
 const createOrder = async (req, res) => {
-  const { customerData, cartItemData } = req.body;
-  const { user } = req;
-  console.log('iser', user);
-  console.log('cust daaata', customerData);
-  console.log('cartitem data', cartItemData);
-  const newOrder = {
-    user: req.user._id,
-    orders: [
-      { product: cartItemData[0].productId },
-      { quantity: cartItemData[0].quantity },
-      { price: cartItemData[0].price },
-    ],
-    totalAmount: cartItemData[0].quantity ,
+  try {
+    const { user, orders, totalAmount, shippingAddress, status } = req.body;
 
-  };
+    const order = await Order.create({
+      user,
+      orders,
+      totalAmount,
+      shippingAddress,
+      status,
+    });
 
-  const createdOrder = await Order.create(newOrder);
 
-  res.status(201).json(createdOrder);
-  console.log('new order', newOrder);
+    return res.status(201).json({ message: 'Order created successfully' });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: 'An error occurred while creating the order' });
+  }
 };
 
 export { createOrder };

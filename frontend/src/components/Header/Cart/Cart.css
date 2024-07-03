@@ -69,6 +69,7 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
+  background-color: #ffffff;
 }
 .cart_item {
   width: 100%;

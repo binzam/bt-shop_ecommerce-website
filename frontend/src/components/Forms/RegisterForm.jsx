@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useSignup } from '../../hooks/useSignup';
 import closeIcon from '../../assets/close_btn.svg';
+import './Forms.css';
 
 const RegisterForm = ({ handleClose }) => {
   const [registerForm, setRegisterForm] = useState({

@@ -1,72 +1,3 @@
-.modal {
-  position: fixed;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.616);
-}
-.modal_content {
-  width: 50%;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 3px;
-  position: relative;
-}
-.login_signup_div {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-.stay_out_btn {
-  border: none;
-  background-color: transparent;
-  outline: none;
-  color: rgb(212, 0, 0);
-}
-.stay_out_btn:hover {
-  color: black;
-  text-decoration: underline;
-}
-
-.signup_txt {
-  font-size: 1rem;
-  color: #333;
-  font-weight: 600;
-}
-.login_signup_btns {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.login_btn,
-.signup_btn {
-  padding: 0.7rem 1rem;
-  border: 2px solid transparent;
-  outline: none;
-  border-radius: 4px;
-  width: 45%;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-.login_btn {
-  background-color: #ed9121;
-}
-.login_btn:hover {
-  border: 2px solid #333;
-}
-.signup_btn {
-  background-color: #333;
-}
-.signup_btn:hover {
-  border: 2px solid #ed9121;
-}
 /* LOGIN FORM */
 .login_form {
   width: 100%;
@@ -184,7 +115,62 @@
 .form_error {
   padding: 10px;
   background: #ffefef;
-  border: 1px solid  #e7195a;
-  color:  #e7195a;
+  border: 1px solid #e7195a;
+  color: #e7195a;
   border-radius: 4px;
+}
+/* SHIPPING FORM */
+.shipping_form {
+  width: 100%;
+  margin-bottom: 40px;
+  padding: 0 20px;
+
+}
+.shipping_header {
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px 0;
+  text-align: center;
+}
+.shipping_form_group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+.shipping_form_group label {
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+.shipping_form_group input {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.3rem;
+  letter-spacing: 1px;
+  color: #333;
+  background-color: #ffffff;
+  border: 1px solid #333;
+  outline: 1px solid transparent;
+  border-radius: 3px;
+}
+.shipping_form_group input:focus {
+  border: 1px solid transparent;
+  outline: 1px solid #ed9121;
+}
+.shipping_form_btn {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #000000;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  outline: none;
+  margin: 10px auto;
+}
+.shipping_form_btn:hover {
+  background-color: #ed9121;
+  border: 1px solid #333;
 }

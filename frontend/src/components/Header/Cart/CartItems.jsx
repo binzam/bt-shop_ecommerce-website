@@ -35,7 +35,6 @@ const CartItems = () => {
           >
             <img src={RemoveIcon} alt="remove" />
           </button>
-          :
         </li>
       ))}
     </ul>

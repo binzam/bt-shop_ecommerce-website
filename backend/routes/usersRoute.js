@@ -6,6 +6,7 @@ import {
   deleteUser,
   connectUser,
   updateUserPassword,
+  updateUserInfo,
 } from '../controllers/userController.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
 
@@ -17,6 +18,7 @@ router.get('/', getUsers);
 router.post('/register', registerUser);
 // login user
 router.post('/login', connectUser);
+router.put('/update_user', requireAuth, updateUserInfo);
 
 // get user by id, update user, delete user
 router.route('/:id').get(getUserById).delete(deleteUser);
