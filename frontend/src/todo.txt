@@ -16,6 +16,6 @@ place order function and route
 backend> place order route
 product rating / endpoint
 A small popup after succesful login/registration
-
+admin panel
 responsivencess
 ...
