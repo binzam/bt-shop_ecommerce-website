@@ -6,26 +6,9 @@ import WomensImg from '../../assets/womes-clothing.jpg';
 import ElectronicsImg from '../../assets/electronics-1.jpg';
 import JeweleryImg from '../../assets/jewelery-1.jpg';
 const Homepage = () => {
-  const socialMediaLinks = [
-    {
-      id: 1,
-      platform: 'Facebook',
-      url: 'https://www.facebook.com/example',
-    },
-    {
-      id: 2,
-      platform: 'Twitter',
-      url: 'https://www.twitter.com/example',
-    },
-    {
-      id: 3,
-      platform: 'Instagram',
-      url: 'https://www.instagram.com/example',
-    },
-  ];
   return (
     <div className="home_page">
-      <section id='heading' className="home_header">
+      <section id="heading" className="home_header">
         <p>Explore our wide range of products and start shopping today!</p>
       </section>
       <section className="grid_images_container">
@@ -48,7 +31,7 @@ const Homepage = () => {
           </Link>
         </div>
         <div className="grid etrn-grid">
-          <Link to={`/products/categories/${"electronics"}`}>
+          <Link to={`/products/categories/${'electronics'}`}>
             <div className="over_lay"></div>
             <img
               className="electronics-grid-img"
@@ -59,7 +42,7 @@ const Homepage = () => {
           </Link>
         </div>
         <div className="grid jwl-grid">
-          <Link to={`/products/categories/${"jewelery"}`}>
+          <Link to={`/products/categories/${'jewelery'}`}>
             <div className="over_lay"></div>
             <img
               className="jewelery-grid-img"
@@ -71,10 +54,51 @@ const Homepage = () => {
         </div>
       </section>
       <TrendingProducts />
-
-      <div>
+      <div className="home-category-section">
+        <h2 className="category-header">Categories</h2>
+        <ul className="home-page-category-list">
+          <li>
+            <Link className="category-link" to="/products">
+              All Products
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="category-link"
+              to={`/products/categories/${"men's clothing"}`}
+            >
+              Men&apos;s
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="category-link"
+              to={`/products/categories/${"women's clothing"}`}
+            >
+              Women&apos;s
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="category-link"
+              to={`/products/categories/${'electronics'}`}
+            >
+              Electronics
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="category-link"
+              to={`/products/categories/${'jewelery'}`}
+            >
+              Jewelery
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="contact_info">
         <h2>Contact Information</h2>
-        <p>
+        <p className="contact_txt">
           If you have any questions or need assistance, feel free to reach out
           to us using the contact information below:
         </p>
@@ -84,15 +108,34 @@ const Homepage = () => {
           <li>Address: 123 Main Street, City, Country</li>
         </ul>
         <div>
-          <h2>Connect with Us on Social Media</h2>
-          <ul>
-            {socialMediaLinks.map((link) => (
-              <li key={link.id}>
-                <a href={link.url} target="_blank" rel="noopener noreferrer">
-                  {link.platform}
-                </a>
-              </li>
-            ))}
+          <ul className="social_links">
+            <li>
+              <i className="fa-brands fa-facebook"></i>
+              <a
+                className="social_link"
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              ></a>
+            </li>
+            <li>
+              <i className="fa-brands fa-instagram"></i>
+              <a
+                className="social_link"
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              ></a>
+            </li>
+            <li>
+              <i className="fa-brands fa-x-twitter"></i>
+              <a
+                className="social_link"
+                href="https://www.x.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              ></a>
+            </li>
           </ul>
         </div>
       </div>

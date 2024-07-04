@@ -9,6 +9,8 @@ import { ProductContext } from '../../contexts/ProductContext.jsx';
 import { CartContext } from '../../contexts/CartContext.jsx';
 import Loading from '../../components/Loading.jsx';
 import Error from '../../components/Error.jsx';
+import StarIcon from '../../assets/star_icon.svg';
+import ProductRatingForm from '../../components/Forms/ProductRatingForm.jsx';
 
 const ProductDescription = () => {
   const { products, loading, error } = useContext(ProductContext);
@@ -16,6 +18,8 @@ const ProductDescription = () => {
   const { id } = useParams();
   const [displayedProduct, setDisplayedProduct] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [showRatingForm, setShowRatingForm] = useState(false);
+
   const selectedProduct = products.find((prd) => prd._id === id);
   useEffect(() => {
     if (selectedProduct) {
@@ -47,42 +51,53 @@ const ProductDescription = () => {
         Back
       </Link>
 
-      {!loading && !error && (
-        <div className="product_info">
-          <div className="product_image_div">
-            <img src={image} alt={title} />
-          </div>
+      <div className="product_info">
+        <div className="product_image_div">
+          <img src={image} alt={title} />
+        </div>
 
-          <div className="product_details">
-            <h2 className="prd_name">{title}</h2>
-            <strong className="prd_price">${price}</strong>
-            <p className="prd_description">{description}</p>
+        <div className="product_details">
+          <h2 className="prd_name">{title}</h2>
+          <strong className="prd_price">${price}</strong>
+          <p className="prd_description">{description}</p>
 
-            <div className="add_select_product">
-              <div className="quantity_selector">
-                <button onClick={decreaseQuantity} className="minus_btn">
-                  {/* <img src={MinusIcon} alt="minus" /> */}
-                </button>
-                <span className="quantity">{quantity}</span>
-
-                <button onClick={increaseQuantity} className="plus_btn">
-                  <img src={PlusIcon} alt="Plus" />
-                </button>
-              </div>
-
-              <button
-                onClick={() => handleAddToCart()}
-                className="add_to_cart_btn"
-              >
-                Add to Cart
-                <img src={CartIcon} alt="Cart" />
+          <div className="add_select_product">
+            <div className="quantity_selector">
+              <button onClick={decreaseQuantity} className="minus_btn">
+                {/* <img src={MinusIcon} alt="minus" /> */}
               </button>
-              <Link to="/checkout" className="prd_checkout_btn">
-                Checkout
-              </Link>
+              <span className="quantity">{quantity}</span>
+
+              <button onClick={increaseQuantity} className="plus_btn">
+                <img src={PlusIcon} alt="Plus" />
+              </button>
             </div>
+
+            <button
+              onClick={() => handleAddToCart()}
+              className="add_to_cart_btn"
+            >
+              Add to Cart
+              <img src={CartIcon} alt="Cart" />
+            </button>
+            <Link to="/checkout" className="prd_checkout_btn">
+              Checkout
+            </Link>
           </div>
         </div>
+      </div>
+      <button
+        onClick={() => setShowRatingForm(!showRatingForm)}
+        className="rate_prd_btn"
+      >
+        <img src={StarIcon} alt="star" />
+        Rate Product
+      </button>
+      {showRatingForm && (
+        <ProductRatingForm
+          productId={id}
+          setShowRatingForm={setShowRatingForm}
+        />
       )}
     </div>
   );

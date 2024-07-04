@@ -108,3 +108,58 @@
 .grid_title:hover .over_lay {
   background-color: rgba(0, 0, 0, 0.3);
 }
+.contact_info {
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+.social_links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.contact_txt {
+  width: 40%;
+}
+.home-category-section {
+  padding: 30px;
+  width: 100%;
+  text-align: center;
+  background-color: #333;
+}
+/* CATEGORY SECTION HEADER */
+.category-header {
+  text-transform: uppercase;
+  font-size: 30px;
+  color: #ed9121;
+  letter-spacing: 15px;
+  margin: 20px 0;
+}
+/* CATEGORY LIST */
+.home-page-category-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* CATEGORY LIST ITEM */
+.category-link {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  display: block;
+  color: #ffffff;
+  padding: 20px 10px;
+  border: 2px solid #ed9121;
+  border-radius: 4px;
+  transition: all 0.4s ease;
+}
+
+.category-link:hover {
+  background-color: cadetblue;
+  color: #fff;
+  padding-left: 20px;
+  border-radius: 5px;
+  letter-spacing: 5px;
+  border: 2px solid transparent;
+}

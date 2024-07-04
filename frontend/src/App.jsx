@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage.jsx';
 import ProductDescription from './pages/ProductDescription/ProductDescription';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
@@ -14,8 +14,13 @@ import TrendingProducts from './components/TrendingProducts/TrendingProducts.jsx
 import PrivacyPolicy from './pages/PrivacyPolicyPage/PrivacyPolicy.jsx';
 import Contact from './pages/ContactPage/Contact.jsx';
 import About from './pages/AboutPage/About.jsx';
+import { useEffect } from 'react';
 
 function App() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
   return (
     <CartContextProvider>
       <Header />

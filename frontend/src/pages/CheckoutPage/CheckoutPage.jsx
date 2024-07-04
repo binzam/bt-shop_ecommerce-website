@@ -18,11 +18,12 @@ const CheckoutPage = () => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [shippingAddressData, setShippingAddressData] = useState(null);
   useEffect(() => {
-    if (user) {
-      const address = user.shippingAddress;
-      setShippingAddressData(address);
+    if (user && user.shippingAddress) {
+      setShippingAddressData(user.shippingAddress);
+      setShowPaymentForm(true);
     } else {
       setShippingAddressData(null);
+      setShowPaymentForm(false);
     }
   }, [user]);
   const handleShippingForm = () => {
@@ -34,6 +35,7 @@ const CheckoutPage = () => {
     setShowShippingForm(false);
     setShowPaymentForm(true);
   };
+  console.log(shippingAddressData);
   return (
     <div className="checkout_page">
       <div className="checkout_header">
@@ -61,7 +63,7 @@ const CheckoutPage = () => {
         </div>
         <div className="checkout_progress_wrapper">
           {showOrderSummary && <OrderSummary />}
-          {showShippingForm && <ShippingForm />}
+          {showShippingForm && !shippingAddressData && <ShippingForm />}
           {showPaymentForm && <PaymentForm />}
 
           <div className="checkout_option_btns">

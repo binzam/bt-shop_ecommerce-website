@@ -4,17 +4,18 @@ remove from cart: done
 make cartitems persistent even after page reload: done
 make products page with category filter / price filter: done
 checkout page: done
+contact page form:done
+about page:done
+privacy policy page:done
+footer:done
+trending products:done
+update user info:done
+homepage:done
 ...
-update user info
 place order function and route
 backend> place order route
-homepage
-product rating 
+product rating / endpoint
 A small popup after succesful login/registration
-contact page form
-about page
-privacy policy page
-footer
-trending products
+
 responsivencess
 ...
