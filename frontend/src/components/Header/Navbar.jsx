@@ -8,8 +8,9 @@ import { CartContext } from '../../contexts/CartContext.jsx';
 
 const Navbar = () => {
   // const { user } = useContext(AuthContext);
-  const { cartItems, toggleCart, handleOpenUserOptions} =
+  const { cartItems, toggleCart, handleOpenUserOptions } =
     useContext(CartContext);
+
   return (
     <nav className="navigation">
       <ul className="nav_links">
@@ -20,7 +21,7 @@ const Navbar = () => {
         </li>
         <li>
           <Link to="/products" className="nav_link">
-            Shop
+            Products
           </Link>
         </li>
         <li>
@@ -46,7 +47,7 @@ const Navbar = () => {
         </li>
         <li>
           <div
-          onClick={handleOpenUserOptions}
+            onClick={handleOpenUserOptions}
             className="user_profile_icon"
             title="User"
           >

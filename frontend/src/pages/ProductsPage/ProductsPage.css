@@ -43,10 +43,15 @@
   background-color: #fff;
   border: 1px solid #000;
 }
-
+.category_btn.active,
+.sort_by_price_btn.active {
+  color: #fff;
+  background-color: cadetblue;
+  border: 1px solid transparent;
+}
 .products_list {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  gap: 10px;
 }

@@ -4,9 +4,11 @@ import Arrow from '../../assets/arrow-left.svg';
 import './ProductDescription.css';
 import CartIcon from '../../assets/icon-cart-btn.svg';
 import PlusIcon from '../../assets/icon-plus.svg';
-import MinusIcon from '../../assets/icon-minus.svg';
+// import MinusIcon from '../../assets/icon-minus.svg';
 import { ProductContext } from '../../contexts/ProductContext.jsx';
 import { CartContext } from '../../contexts/CartContext.jsx';
+import Loading from '../../components/Loading.jsx';
+import Error from '../../components/Error.jsx';
 
 const ProductDescription = () => {
   const { products, loading, error } = useContext(ProductContext);
@@ -31,24 +33,15 @@ const ProductDescription = () => {
     }
   };
 
-  
   const { image, title, price, description } = displayedProduct;
-  
+
   const handleAddToCart = () => {
     addToCart(displayedProduct, quantity);
   };
   return (
     <div className="product_description_page">
-      {loading && (
-        <div className="loading_container">
-          <div className="loading_animation"></div>
-        </div>
-      )}
-      {error && (
-        <div className="error_container">
-          <div className="error_message">Error: {error}</div>
-        </div>
-      )}
+      {loading && <Loading />}
+      {error && <Error />}
       <Link className="back_btn" to="/products">
         <img src={Arrow} alt="back button" />
         Back
@@ -68,9 +61,8 @@ const ProductDescription = () => {
             <div className="add_select_product">
               <div className="quantity_selector">
                 <button onClick={decreaseQuantity} className="minus_btn">
-                  <img src={MinusIcon} alt="minus" />
+                  {/* <img src={MinusIcon} alt="minus" /> */}
                 </button>
-
                 <span className="quantity">{quantity}</span>
 
                 <button onClick={increaseQuantity} className="plus_btn">

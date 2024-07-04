@@ -8,16 +8,15 @@ import ShippingForm from '../../components/Forms/ShippingForm';
 import { Link } from 'react-router-dom';
 import PaymentForm from '../../components/Forms/PaymentForm';
 import OrderSummary from '../../components/OrderSummary';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const CheckoutPage = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthContext();
   const { cartItems, handleOpenUserOptions } = useContext(CartContext);
   const [showOrderSummary, setShowOrderSummary] = useState(true);
   const [showShippingForm, setShowShippingForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [shippingAddressData, setShippingAddressData] = useState(null);
-  console.log(shippingAddressData);
   useEffect(() => {
     if (user) {
       const address = user.shippingAddress;

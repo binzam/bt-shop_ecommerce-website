@@ -1,0 +1,11 @@
+.privacy-policy-page {
+  width: 100%;
+  min-height: calc(100vh - 140px);
+  background-color: aliceblue;
+  padding: 30px;
+}
+.privacy-policy-page h1,
+.privacy-policy-page p {
+  width: 70%;
+  margin: 20px auto;
+}

@@ -6,6 +6,7 @@ import cors from 'cors';
 import productsRoute from './routes/productsRoute.js';
 import usersRoute from './routes/usersRoute.js';
 import ordersRoute from './routes/ordersRoute.js';
+import feedbackRoute from './routes/feedbackRoute.js';
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 app.use('/products', productsRoute);
 app.use('/users', usersRoute);
 app.use('/orders', ordersRoute);
+app.use('/feedback', feedbackRoute);
 
 mongoose
   .connect(process.env.MONGO_URI)

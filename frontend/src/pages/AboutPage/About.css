@@ -1,0 +1,188 @@
+.about-page {
+  width: 100%;
+  height: calc(100vh - 140px);
+  position: relative;
+  z-index: 1;
+}
+/* TITLE */
+.about-page h1 {
+  position: absolute;
+  top: -20px;
+  left: 0px;
+  line-height: 1;
+  color: #ed9121;
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  text-align: center;
+  text-shadow: 2px 2px 0 #000, 4px 4px 0 rgb(0, 0, 0), 6px 6px 0 #000000,
+    8px 8px 0 #00000093;
+  z-index: 4;
+}
+.page-content {
+  width: 100%;
+  height: 100%;
+}
+
+.top,
+.bottom {
+  width: 100%;
+  height: 50%;
+  background-image: url(../../Assets/about-page-bg-2.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.top-text,
+.bottom-text {
+  width: 70%;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+  z-index: 3;
+}
+.top-text {
+  margin-left: 150px;
+}
+.bottom-text {
+  margin-right: 150px;
+}
+.top-text h2,
+.bottom-text h2 {
+  text-align: left;
+  color: rgb(255, 255, 255);
+  width: fit-content;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  background-color: rgba(131, 240, 131, 0.4);
+  margin-bottom: 10px;
+  border-radius: 10px 5px 15px 0px;
+}
+.top-text p,
+.bottom-text p {
+  text-align: left;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.3;
+  padding: 15px;
+  letter-spacing: 3px;
+  background-color: rgba(109, 209, 255, 0.4);
+  border-radius: 10px 10px 0px 25px;
+}
+.bottom {
+  background-image: url(../../Assets/about-page-bg.jpg);
+}
+.filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000042;
+  z-index: 1;
+}
+@media only screen and (max-width: 950px) {
+  .about-page h1 {
+    top: -15px;
+    font-size: 30px;
+    transition: all 0.3s ease-in-out;
+  }
+  .top-text,
+  .bottom-text {
+    width: 80%;
+  }
+}
+@media only screen and (max-width: 850px) {
+  .about-page {
+    min-height: 100vh;
+  }
+  .top-text,
+  .bottom-text {
+    width: 85%;
+  }
+  .top-text {
+    margin-left: 60px;
+  }
+  .bottom-text {
+    margin-right: 60px;
+  }
+  .top-text h2,
+  .bottom-text h2 {
+    padding: 5px 10px;
+    font-size: 16px;
+    letter-spacing: 4px;
+    margin-bottom: 0;
+  }
+  .top-text p,
+  .bottom-text p {
+    font-size: 13px;
+    line-height: 1.2;
+    padding: 15px;
+  }
+}
+@media only screen and (max-width: 750px) {
+  .about-page h1 {
+    font-size: 25px;
+  }
+  .top-text,
+  .bottom-text {
+    width: 90%;
+  }
+  .top-text {
+    margin-left: 30px;
+  }
+  .bottom-text {
+    margin-right: 30px;
+  }
+  .top-text h2,
+  .bottom-text h2 {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+  .top-text p,
+  .bottom-text p {
+    font-size: 12px;
+    line-height: 1.3;
+    padding: 10px;
+  }
+}
+@media only screen and (max-width: 650px) {
+  .top-text,
+  .bottom-text {
+    width: 95%;
+  }
+  .top-text {
+    margin-left: 0px;
+  }
+  .bottom-text {
+    margin-right: 0px;
+  }
+}
+@media only screen and (max-width: 550px) {
+  .about-page h1 {
+    font-size: 18px;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .top-text,
+  .bottom-text {
+    width: 98%;
+  }
+  .top-text p,
+  .bottom-text p {
+    font-size: 11px;
+    line-height: 1.1;
+  }
+}

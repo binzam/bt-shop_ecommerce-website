@@ -42,8 +42,7 @@ const ShippingForm = () => {
       );
       if (response.status === 200) {
         setError(null);
-        console.log(response);
-        dispatch({ type: 'UPDATE_SHIPPING_ADDRESS', payload: response.data });
+        dispatch({ type: 'UPDATE_SHIPPING_ADDRESS', payload: response.data.address });
       } else {
         setIsLoading(false);
         setError(response.data.message);

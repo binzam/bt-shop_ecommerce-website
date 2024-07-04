@@ -12,3 +12,34 @@ footer {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
+.footer_content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer p {
+  display: flex;
+  align-items: center;
+}
+
+.footer_links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer_links li:not(:last-child) {
+  margin-right: 16px;
+}
+
+.footer_links a {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.footer_links a:hover {
+  text-decoration: underline;
+  color: cadetblue;
+}
