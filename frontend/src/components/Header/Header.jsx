@@ -8,8 +8,7 @@ import { CartContext } from '../../contexts/CartContext';
 const Header = () => {
   const { user } = useAuthContext();
 
-  const { showUserOptions, showCart } =
-    useContext(CartContext);
+  const { showUserOptions, showCart } = useContext(CartContext);
 
   return (
     <header>

@@ -4,30 +4,45 @@ import ThumbsDownIcon from '../../assets/thumbs_down.svg';
 import ThumbsUpIcon from '../../assets/thumbs_up.svg';
 import './Forms.css';
 import axios from 'axios';
+import { useAuthContext } from '../../hooks/useAuthContext';
 const ProductRatingForm = ({ productId, setShowRatingForm }) => {
+  const { user } = useAuthContext();
   const [rating, setRating] = useState(2.5);
   const [showMessage, setShowMessage] = useState(false);
+  const [error, setError] = useState(null);
   const submitRating = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
-      const response = await axios.post('/api/rate_product', {
-        _id: productId,
-        rating,
-      });
+      const response = await axios.post(
+        'http://localhost:5555/products/rate_product',
+        {
+          productId,
+          rating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       const data = response.data;
 
       if (data.rateSubmited) {
         setShowMessage(true);
+        setError(null);
+
         setTimeout(() => {
           setShowMessage(false);
           setShowRatingForm(false);
         }, 2000);
       } else {
-        throw new Error('Rating insertion failed.');
+        setError(response.data.message);
       }
     } catch (error) {
-      console.error(error);
+      console.error(error.response.data.message);
+      setError(error.response.data.message);
     }
   };
   const handleChange = (e) => {
@@ -58,6 +73,7 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
         <button className="submit_rate_btn" type="submit">
           Submit
         </button>
+        {error && <div className="form_error">{error}</div>}
       </form>
       {showMessage && (
         <div className="after_rating">Thank you for your feedback!</div>

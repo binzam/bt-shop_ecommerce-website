@@ -23,6 +23,12 @@ const userSchema = new Schema(
       city: String,
       country: String,
     },
+    creditCardInfo: {
+      cardNumber: Number,
+      cardName: String,
+      expiryDate: String,
+      cvv: Number,
+    },
     phoneNumber: String,
     orders: [
       {

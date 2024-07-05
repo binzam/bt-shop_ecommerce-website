@@ -8,8 +8,12 @@ const OrderSummary = () => {
     cartItems.forEach((item) => {
       total += item.price * item.quantity;
     });
-    return total.toFixed(2);
+    return parseInt(total.toFixed(2), 10);
   };
+  const calculateTax = () => {
+    return calculateTotal() * (0.15).toFixed(2);
+  };
+  const totalAmount = (calculateTax() + calculateTotal()).toFixed(2);
   return (
     <div className="order_summary">
       <div className="order_summary_header">Order Summary</div>
@@ -30,14 +34,13 @@ const OrderSummary = () => {
         </div>
         <div>
           <p className="left">Estimated TAX to be collected: </p>
-          <p className="right">${(calculateTotal() * 0.15).toFixed(2)}</p>
+          <p className="right">${calculateTax()}</p>
         </div>
         <div>
           <p className="left total">Order Total:</p>
           <p className="right order_total">
-            {' '}
             <span className="dollar_sign">$</span>
-            {calculateTotal()}
+            {totalAmount}
           </p>
         </div>
       </div>

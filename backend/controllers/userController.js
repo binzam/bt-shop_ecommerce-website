@@ -6,7 +6,9 @@ const connectUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.login(email, password);
-
+    if (!user) {
+      return res.status(500).json({ message: 'User Not Found' });
+    }
     const token = generateToken(user._id);
     res.status(200).json({
       token,
@@ -40,7 +42,7 @@ const registerUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({}, 'username role email _id');
     return res.status(200).json({
       userCount: users.length,
       data: users,
@@ -138,18 +140,51 @@ const updateUserInfo = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const updateUserPaymentInfo = async (req, res) => {
+  try {
+    const _id = req.user._id;
+    const shippingAddress = req.body;
+    if (
+      !shippingAddress.street ||
+      !shippingAddress.city ||
+      !shippingAddress.country
+    ) {
+      throw Error('All fields must be filled');
+    }
+    const updatedUser = await User.findOneAndUpdate(
+      {
+        _id,
+      },
+      {
+        address: shippingAddress,
+      },
+      {
+        new: true,
+      }
+    );
+    const token = generateToken(updatedUser._id);
+    return res.status(200).json({
+      token,
+      email: updatedUser.email,
+      address: updatedUser.address,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-
     const result = await User.findByIdAndDelete(id);
 
     if (!result) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    return res.status(200).json({ message: 'User deleted successfully' });
+    return res
+      .status(200)
+      .json({ userRemoveSuccess: true, message: 'User deleted successfully' });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -163,4 +198,5 @@ export {
   deleteUser,
   connectUser,
   updateUserInfo,
+  updateUserPaymentInfo,
 };

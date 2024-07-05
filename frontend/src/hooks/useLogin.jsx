@@ -10,7 +10,7 @@ export const useLogin = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.post('http://localhost:5555/users/login', {
+      const response = await axios.post('http://localhost:5555/api/users/login', {
         email,
         password,
       });

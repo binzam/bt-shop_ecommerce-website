@@ -11,7 +11,7 @@ const UserProfile = () => {
   const { handleCloseModals } = useContext(CartContext);
   const [showUpdatePassForm, setShowUpdatePassForm] = useState(false);
   const handleOpenChangePassword = () => {
-    setShowUpdatePassForm(true);
+    setShowUpdatePassForm(!showUpdatePassForm);
   };
   const handleCloseChangePassword = () => {
     setShowUpdatePassForm(false);
@@ -20,38 +20,40 @@ const UserProfile = () => {
     logout();
   };
   return (
-    <div className="modal">
-      <div className="modal_content">
-        <span onClick={handleCloseModals} className="close_user_profile">
-          close
-        </span>
-        <br />
-        <div className="user_info">
+    <div className="user_profile">
+      <span onClick={handleCloseModals} className="close_user_profile">
+        close
+      </span>
+      <br />
+      <div className="user_info">
+        {user.role === 'admin' ? (
+          <span className="admin_"> ADMIN</span>
+        ) : (
           <h2>User Profile</h2>
-          <div>
-            <strong>Name:</strong> {user.username}
-          </div>
-          <div>
-            <strong>Email:</strong> {user.email}
-          </div>
+        )}
+        <div>
+          <strong>Name:</strong> {user.username}
         </div>
-        <div className="account_settings">
-          <h2>Account Settings</h2>
-          <div>
-            <strong onClick={handleOpenChangePassword}>Change Password</strong>
-            {showUpdatePassForm && (
-              <UpdatePassword handleClose={handleCloseChangePassword} />
-            )}
-          </div>
-          <div>
-            <strong>Update Address</strong>
-          </div>
-          <div>
-            <strong>Payment Methods</strong>
-          </div>
+        <div>
+          <strong>Email:</strong> {user.email}
         </div>
-        <button onClick={handleLogout}>Logout</button>
       </div>
+      <div className="account_settings">
+        <div>
+          <strong
+            className="change_pass_btn"
+            onClick={handleOpenChangePassword}
+          >
+            Change Password
+          </strong>
+          {showUpdatePassForm && (
+            <UpdatePassword handleClose={handleCloseChangePassword} />
+          )}
+        </div>
+      </div>
+      <button className="logout_btn" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 };

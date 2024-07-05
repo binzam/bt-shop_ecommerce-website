@@ -4,7 +4,6 @@ import ProductDescription from './pages/ProductDescription/ProductDescription';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
 import OrdersPage from './pages/OrdersPage';
 import PaymentPage from './pages/PaymentPage';
-import AdminDashboard from './pages/AdminDashboard';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { ProductContextProvider } from './contexts/ProductContext.jsx';
@@ -15,6 +14,7 @@ import PrivacyPolicy from './pages/PrivacyPolicyPage/PrivacyPolicy.jsx';
 import Contact from './pages/ContactPage/Contact.jsx';
 import About from './pages/AboutPage/About.jsx';
 import { useEffect } from 'react';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard.jsx';
 
 function App() {
   const { pathname } = useLocation();

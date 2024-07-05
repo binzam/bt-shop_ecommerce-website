@@ -31,8 +31,13 @@ export const AuthContextProvider = ({ children }) => {
     dispatch({ type: 'UPDATE_SHIPPING_ADDRESS', payload: shippingAddress });
   };
 
+  const isAdmin = () => {
+    return state.user && state.user.role === 'admin';
+  };
   return (
-    <AuthContext.Provider value={{ ...state, updateShippingAddress, dispatch }}>
+    <AuthContext.Provider
+      value={{ ...state, updateShippingAddress, dispatch, isAdmin }}
+    >
       {children}
     </AuthContext.Provider>
   );

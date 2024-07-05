@@ -23,10 +23,10 @@ app.get('/', (req, res) => {
   return res.status(200).json('Welcome to bt-shop');
 });
 
-app.use('/products', productsRoute);
-app.use('/users', usersRoute);
-app.use('/orders', ordersRoute);
-app.use('/feedback', feedbackRoute);
+app.use('/api/products', productsRoute);
+app.use('/api/users', usersRoute);
+app.use('/api/orders', ordersRoute);
+app.use('/api/feedback', feedbackRoute);
 
 mongoose
   .connect(process.env.MONGO_URI)

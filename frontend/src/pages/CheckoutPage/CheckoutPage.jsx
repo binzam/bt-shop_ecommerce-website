@@ -17,6 +17,7 @@ const CheckoutPage = () => {
   const [showShippingForm, setShowShippingForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [shippingAddressData, setShippingAddressData] = useState(null);
+  const [orderCreated, setOrderCreated] = useState(false);
   useEffect(() => {
     if (user && user.shippingAddress) {
       setShippingAddressData(user.shippingAddress);
@@ -35,7 +36,9 @@ const CheckoutPage = () => {
     setShowShippingForm(false);
     setShowPaymentForm(true);
   };
-  console.log(shippingAddressData);
+  const handleCreateOrder = () => {
+    setOrderCreated(true);
+  };
   return (
     <div className="checkout_page">
       <div className="checkout_header">
@@ -64,8 +67,10 @@ const CheckoutPage = () => {
         <div className="checkout_progress_wrapper">
           {showOrderSummary && <OrderSummary />}
           {showShippingForm && !shippingAddressData && <ShippingForm />}
-          {showPaymentForm && <PaymentForm />}
-
+          {shippingAddressData && showPaymentForm && (
+            <PaymentForm handleCreateOrder={handleCreateOrder} />
+          )}
+          {orderCreated && <div>Order suceesfuly added</div>}
           <div className="checkout_option_btns">
             <Link className="shop_link" to="/products">
               <img src={ArrowLeft} alt="Shop link" />
@@ -85,7 +90,7 @@ const CheckoutPage = () => {
                 }
                 className="checkout_shipping_btn"
               >
-                {!shippingAddressData ? 'Shipping' : 'Payment'}
+                {showPaymentForm ? 'Place order' : 'Next'}
                 <img src={ArrowRight} alt="shipping button" />
               </button>
             )}

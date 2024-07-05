@@ -44,7 +44,7 @@ const UpdatePassword = ({ handleClose }) => {
   };
   // abcABC123$
   return (
-    <form onSubmit={handleSubmitPassword}>
+    <form className='update_password_form' onSubmit={handleSubmitPassword}>
       <label>Current Password:</label>
       <br />
       <input
@@ -74,7 +74,7 @@ const UpdatePassword = ({ handleClose }) => {
           required
         />
       </div>
-      <button type="submit">Update Password</button>
+      <button className='update_pass_btn' type="submit">Update Password</button>
       {error && <div className="form_error">{error}</div>}
     </form>
   );

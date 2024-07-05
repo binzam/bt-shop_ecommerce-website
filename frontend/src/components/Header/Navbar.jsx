@@ -4,13 +4,13 @@ import CartIcon from '../../assets/icon-cart.svg';
 import UserIcon from '../../assets/avatar.svg';
 import { useContext } from 'react';
 import { CartContext } from '../../contexts/CartContext.jsx';
-// import { AuthContext } from '../../contexts/AuthContext.jsx';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
+import adminIcon from '../../assets/adminIcon.svg';
 
 const Navbar = () => {
-  // const { user } = useContext(AuthContext);
+  const { isAdmin } = useContext(AuthContext);
   const { cartItems, toggleCart, handleOpenUserOptions } =
     useContext(CartContext);
-
   return (
     <nav className="navigation">
       <ul className="nav_links">
@@ -37,13 +37,23 @@ const Navbar = () => {
       </ul>
       <ul className="nav_icons">
         <li>
-          <div onClick={toggleCart} className="cart_icon_wrapper" title="Cart">
-            <img src={CartIcon} alt="Cart icon" className="cart-icon" />
+          {isAdmin() ? (
+            <Link to="/admin" className="admin_link">
+              <img src={adminIcon} alt="avatar" />
+            </Link>
+          ) : (
+            <div
+              onClick={toggleCart}
+              className="cart_icon_wrapper"
+              title="Cart"
+            >
+              <img src={CartIcon} alt="Cart icon" className="cart-icon" />
 
-            {cartItems && (
-              <span className="cart_counter">{cartItems.length}</span>
-            )}
-          </div>
+              {cartItems && (
+                <span className="cart_counter">{cartItems.length}</span>
+              )}
+            </div>
+          )}
         </li>
         <li>
           <div
