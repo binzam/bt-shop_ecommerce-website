@@ -1,5 +1,4 @@
-import { Schema, model } from 'mongoose';
-
+import { Schema, model, Types } from 'mongoose';
 const orderSchema = new Schema(
   {
     user: {
@@ -27,7 +26,7 @@ const orderSchema = new Schema(
     totalAmount: {
       type: Number,
       required: true,
-      default: 0.0
+      default: 0.0,
     },
     shippingAddress: {
       street: String,
@@ -46,4 +45,3 @@ const orderSchema = new Schema(
 );
 
 export const Order = model('Order', orderSchema);
-

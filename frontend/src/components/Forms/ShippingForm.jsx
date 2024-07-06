@@ -1,30 +1,24 @@
+/* eslint-disable react/prop-types */
 import './Forms.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from 'axios';
 
-const ShippingForm = () => {
-  const { user, dispatch } = useAuthContext();
+const ShippingForm = ({ handlePaymentForm }) => {
+  const { user } = useAuthContext();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [shippingAddress, setShippingAddress] = useState({
-    username: '',
+  const [address, setAddress] = useState({
     street: '',
     city: '',
     country: '',
+    phoneNumber: '',
   });
-  useEffect(() => {
-    if (user) {
-      setShippingAddress((prevShippingAddress) => ({
-        ...prevShippingAddress,
-        username: user.username,
-      }));
-    }
-  }, [user]);
+
   const handleChange = (e) => {
-    setShippingAddress({ ...shippingAddress, [e.target.name]: e.target.value });
+    setAddress({ ...address, [e.target.name]: e.target.value });
   };
-  const { username, street, city, country } = shippingAddress;
+  const { phoneNumber, street, city, country } = address;
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -33,7 +27,7 @@ const ShippingForm = () => {
     try {
       const response = await axios.put(
         'http://localhost:5555/api/users/update_user',
-        shippingAddress,
+        { address },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -41,8 +35,9 @@ const ShippingForm = () => {
         }
       );
       if (response.status === 200) {
+        localStorage.setItem('userInfo', JSON.stringify(response.data));
         setError(null);
-        dispatch({ type: 'UPDATE_SHIPPING_ADDRESS', payload: response.data.address });
+        handlePaymentForm();
       } else {
         setIsLoading(false);
         setError(response.data.message);
@@ -56,19 +51,6 @@ const ShippingForm = () => {
   return (
     <form onSubmit={handleSubmit} className="shipping_form">
       <div className="shipping_header">Shipping Address</div>
-      <div className="shipping_form_group">
-        <label htmlFor="username">Name</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={username}
-          onChange={handleChange}
-          placeholder="Enter your name"
-          autoComplete="true"
-          readOnly
-        />
-      </div>
       <div className="shipping_form_group">
         <label htmlFor="street">Street</label>
         <input
@@ -101,6 +83,18 @@ const ShippingForm = () => {
           name="country"
           value={country}
           placeholder="Enter your country"
+          onChange={handleChange}
+          autoComplete="false"
+        />
+      </div>
+      <div className="shipping_form_group">
+        <label htmlFor="phoneNumber">Phone Number</label>
+        <input
+          type="text"
+          id="phoneNumber"
+          name="phoneNumber"
+          value={phoneNumber}
+          placeholder="Enter your phoneNumber"
           onChange={handleChange}
           autoComplete="false"
         />

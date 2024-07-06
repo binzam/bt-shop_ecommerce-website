@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import './CheckoutPage.css';
 import CartItems from '../../components/Header/Cart/CartItems';
 import ArrowLeft from '../../assets/arrow-left.svg';
 import ArrowRight from '../../assets/arrow-right-solid.svg';
 import ShippingForm from '../../components/Forms/ShippingForm';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PaymentForm from '../../components/Forms/PaymentForm';
 import OrderSummary from '../../components/OrderSummary';
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -16,20 +16,12 @@ const CheckoutPage = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(true);
   const [showShippingForm, setShowShippingForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const [shippingAddressData, setShippingAddressData] = useState(null);
-  const [orderCreated, setOrderCreated] = useState(false);
-  useEffect(() => {
-    if (user && user.shippingAddress) {
-      setShippingAddressData(user.shippingAddress);
-      setShowPaymentForm(true);
-    } else {
-      setShippingAddressData(null);
-      setShowPaymentForm(false);
-    }
-  }, [user]);
+  const navigate = useNavigate();
+
   const handleShippingForm = () => {
     setShowOrderSummary(false);
     setShowShippingForm(true);
+    setShowPaymentForm(false);
   };
   const handlePaymentForm = () => {
     setShowOrderSummary(false);
@@ -37,7 +29,9 @@ const CheckoutPage = () => {
     setShowPaymentForm(true);
   };
   const handleCreateOrder = () => {
-    setOrderCreated(true);
+    setShowPaymentForm(false);
+    setShowOrderSummary(false);
+    navigate('/orders')
   };
   return (
     <div className="checkout_page">
@@ -66,36 +60,35 @@ const CheckoutPage = () => {
         </div>
         <div className="checkout_progress_wrapper">
           {showOrderSummary && <OrderSummary />}
-          {showShippingForm && !shippingAddressData && <ShippingForm />}
-          {shippingAddressData && showPaymentForm && (
+          {showShippingForm && (
+            <ShippingForm handlePaymentForm={handlePaymentForm} />
+          )}
+          {showPaymentForm && (
             <PaymentForm handleCreateOrder={handleCreateOrder} />
           )}
-          {orderCreated && <div>Order suceesfuly added</div>}
           <div className="checkout_option_btns">
-            <Link className="shop_link" to="/products">
-              <img src={ArrowLeft} alt="Shop link" />
-              Back to Shop
-            </Link>
-            {!user && cartItems.length > 0 ? (
+            {!user && cartItems.length > 0 && (
               <button
                 onClick={handleOpenUserOptions}
                 className="checkout_login_btn"
               >
                 Login to Continue
               </button>
-            ) : (
+            )}
+            {showOrderSummary && (
               <button
-                onClick={
-                  shippingAddressData ? handlePaymentForm : handleShippingForm
-                }
-                className="checkout_shipping_btn"
+                onClick={handleShippingForm}
+                className="checkout_next_btn"
               >
-                {showPaymentForm ? 'Place order' : 'Next'}
-                <img src={ArrowRight} alt="shipping button" />
+                Next <img src={ArrowRight} alt="shipping button" />
               </button>
             )}
           </div>
         </div>
+        <Link className="shop_link" to="/products">
+          <img src={ArrowLeft} alt="Shop link" />
+          Back to Shop
+        </Link>
       </div>
     </div>
   );

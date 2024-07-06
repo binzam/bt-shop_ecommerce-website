@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ThumbsDownIcon from '../../assets/thumbs_down.svg';
 import ThumbsUpIcon from '../../assets/thumbs_up.svg';
 import './Forms.css';
 import axios from 'axios';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { CartContext } from '../../contexts/CartContext';
 const ProductRatingForm = ({ productId, setShowRatingForm }) => {
   const { user } = useAuthContext();
+  const { handleOpenUserOptions } = useContext(CartContext);
+
   const [rating, setRating] = useState(2.5);
   const [showMessage, setShowMessage] = useState(false);
   const [error, setError] = useState(null);
@@ -15,7 +18,7 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
     setError(null);
     try {
       const response = await axios.post(
-        'http://localhost:5555/products/rate_product',
+        'http://localhost:5555/api/products/rate_product',
         {
           productId,
           rating,
@@ -26,9 +29,9 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
           },
         }
       );
-
+      console.log(response);
       const data = response.data;
-
+      // console.log(data);
       if (data.rateSubmited) {
         setShowMessage(true);
         setError(null);
@@ -41,14 +44,17 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
         setError(response.data.message);
       }
     } catch (error) {
-      console.error(error.response.data.message);
+      console.error(error.message);
       setError(error.response.data.message);
     }
   };
   const handleChange = (e) => {
     setRating(e.target.value);
   };
-
+  const handleUserNotLoggedIn = () => {
+    setShowRatingForm(false);
+    handleOpenUserOptions();
+  };
   return (
     <>
       <form
@@ -70,9 +76,18 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
           />
           <img className="thumbs_up" src={ThumbsUpIcon} alt="thumbs up" />
         </div>
-        <button className="submit_rate_btn" type="submit">
-          Submit
-        </button>
+        {user ? (
+          <button className="submit_rate_btn" type="submit">
+            Submit
+          </button>
+        ) : (
+          <button
+            onClick={handleUserNotLoggedIn}
+            className="must_login_btn"
+          >
+            Login to Submit rating
+          </button>
+        )}
         {error && <div className="form_error">{error}</div>}
       </form>
       {showMessage && (

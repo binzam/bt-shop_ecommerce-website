@@ -11,7 +11,7 @@ import {
 import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
 
 router.get('/', getAllProducts);
-router.get('/:id', requireAuth, getProductById);
+router.get('/:id', getProductById);
 router.post('/add_product', requireAuth, verifyAdmin, addNewProduct);
 router.post('/rate_product', requireAuth, submitRating);
 router.put('/update_product/:id', requireAuth, verifyAdmin, updateProduct);

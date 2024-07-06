@@ -22,14 +22,14 @@ const userSchema = new Schema(
       street: String,
       city: String,
       country: String,
+      phoneNumber: String,
     },
     creditCardInfo: {
-      cardNumber: Number,
+      cardNumber: String,
       cardName: String,
       expiryDate: String,
-      cvv: Number,
+      cvv: String,
     },
-    phoneNumber: String,
     orders: [
       {
         type: Schema.Types.ObjectId,

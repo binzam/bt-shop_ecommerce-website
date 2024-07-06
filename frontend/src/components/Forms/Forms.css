@@ -211,7 +211,7 @@
   font-weight: 600;
   font-size: 17px;
 }
-.logout_btn:hover{
+.logout_btn:hover {
   background-color: #ffefef;
   color: #e7195a;
 }
@@ -258,7 +258,8 @@
   width: 20px;
   height: 20px;
 }
-.submit_rate_btn {
+.submit_rate_btn,
+.must_login_btn {
   padding: 6px 15px;
   background-color: #ed9121;
   color: #fff;
@@ -282,6 +283,7 @@
   font-size: 1.3rem;
   font-weight: 700;
 }
+
 @media only screen and (max-width: 500px) {
   .product_rating_form {
     min-width: 70%;

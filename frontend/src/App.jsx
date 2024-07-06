@@ -2,8 +2,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage.jsx';
 import ProductDescription from './pages/ProductDescription/ProductDescription';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
-import OrdersPage from './pages/OrdersPage';
-import PaymentPage from './pages/PaymentPage';
+import OrdersPage from './pages/OrdersPage/OrdersPage.jsx';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { ProductContextProvider } from './contexts/ProductContext.jsx';
@@ -37,8 +36,7 @@ function App() {
             <Route path="/products/:id" element={<ProductDescription />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/place_order" element={<OrdersPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
 
             <Route path="/about" element={<About />} />
 

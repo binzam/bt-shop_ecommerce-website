@@ -11,8 +11,6 @@ export const authReducer = (state, action) => {
       return { user: action.payload };
     case 'LOGOUT':
       return { user: null };
-    case 'UPDATE_SHIPPING_ADDRESS':
-      return { user: { ...state.user, shippingAddress: action.payload } };
     default:
       return state;
   }
@@ -27,17 +25,12 @@ export const AuthContextProvider = ({ children }) => {
       dispatch({ type: 'LOGIN', payload: user });
     }
   }, []);
-  const updateShippingAddress = (shippingAddress) => {
-    dispatch({ type: 'UPDATE_SHIPPING_ADDRESS', payload: shippingAddress });
-  };
 
   const isAdmin = () => {
     return state.user && state.user.role === 'admin';
   };
   return (
-    <AuthContext.Provider
-      value={{ ...state, updateShippingAddress, dispatch, isAdmin }}
-    >
+    <AuthContext.Provider value={{ ...state, dispatch, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

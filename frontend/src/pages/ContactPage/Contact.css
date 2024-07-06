@@ -1,6 +1,6 @@
 .contact-page {
   width: 100%;
-  min-height: calc(100vh - 140px);
+  height: calc(100vh - 110px);
   background-image: url(../../Assets/contact-us-bg-1-small.jpg);
   background-position: center;
   background-size: cover;
@@ -13,7 +13,7 @@
 /* HEADER TEXT */
 .contact-page-header-text {
   position: absolute;
-  top: -8px;
+  top: 0px;
   left: 50%;
   transform: translateX(-50%);
   color: rgb(0, 0, 0);

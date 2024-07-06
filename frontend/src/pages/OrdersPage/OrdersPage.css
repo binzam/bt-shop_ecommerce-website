@@ -1,0 +1,16 @@
+.orders_page {
+  width: 100%;
+  min-height: calc(100vh - 130px);
+  position: relative;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: #f7f7f7;
+}
+.orders_header {
+  width: 100%;
+  background-color: #ed9121;
+  padding: 10px;
+  color: #ffffff;
+  text-align: center;
+  border-bottom: 5px solid cadetblue;
+}

@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './Forms.css';
 import axios from 'axios';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
-const PaymentForm = () => {
-  const { user, dispatch } = useAuthContext();
+const PaymentForm = ({ handleCreateOrder }) => {
+  const { user } = useAuthContext();
   const [creditCardInfo, setCreditCardInfo] = useState({
     cardNumber: '',
     cardName: '',
@@ -17,7 +18,6 @@ const PaymentForm = () => {
     setCreditCardInfo({ ...creditCardInfo, [e.target.name]: e.target.value });
   };
   const { cardNumber, cardName, expiryDate, cvv } = creditCardInfo;
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -25,8 +25,8 @@ const PaymentForm = () => {
 
     try {
       const response = await axios.put(
-        'http://localhost:5555/api/users/update_user',
-        creditCardInfo,
+        'http://localhost:5555/api/users/update_payment',
+        { creditCardInfo },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -35,10 +35,8 @@ const PaymentForm = () => {
       );
       if (response.status === 200) {
         setError(null);
-        dispatch({
-          type: 'UPDATE_SHIPPING_ADDRESS',
-          payload: response.data.address,
-        });
+        localStorage.setItem('userInfo', JSON.stringify(response.data));
+        handleCreateOrder();
       } else {
         setIsLoading(false);
         setError(response.data.message);
@@ -61,7 +59,6 @@ const PaymentForm = () => {
           name="cardNumber"
           value={cardNumber}
           onChange={handleChange}
-          required
         />
       </div>
       <div className="payment_form_group">
@@ -72,7 +69,6 @@ const PaymentForm = () => {
           name="cardName"
           value={cardName}
           onChange={handleChange}
-          required
         />
       </div>
       <div className="payment_form_group">
@@ -83,7 +79,6 @@ const PaymentForm = () => {
           id="expiryDate"
           value={expiryDate}
           onChange={handleChange}
-          required
         />
       </div>
       <div className="payment_form_group">
@@ -94,11 +89,10 @@ const PaymentForm = () => {
           name="cvv"
           value={cvv}
           onChange={handleChange}
-          required
         />
       </div>
       <button disabled={isLoading} className="payment_form_btn" type="submit">
-        Pay Now
+        Place Order
       </button>
       {error && <div className="form_error">{error}</div>}
     </form>

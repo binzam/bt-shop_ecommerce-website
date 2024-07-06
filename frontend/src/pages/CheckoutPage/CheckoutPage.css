@@ -49,6 +49,7 @@
   justify-content: space-between;
   height: 100%;
   padding: 10px;
+  position: relative;
 }
 .orders,
 .checkout_progress_wrapper {
@@ -137,8 +138,8 @@
   font-size: 20px;
 }
 .shop_link,
-.checkout_shipping_btn {
-  padding: 15px;
+.checkout_next_btn {
+  padding: 10px 15px;
   border: none;
   background-color: teal;
   color: white;
@@ -150,20 +151,26 @@
   font-size: 16px;
   gap: 10px;
 }
-.checkout_shipping_btn {
+.checkout_next_btn {
   background-color: #028a18;
 }
 .shop_link:hover {
   background-color: #ed9121;
 }
-.checkout_shipping_btn:hover {
+.checkout_next_btn:hover {
   background-color: green;
+}
+.shop_link{
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .checkout_option_btns {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 20px;
 }
 .checkout_login_btn {
