@@ -8,6 +8,7 @@ import {
   updateUserPassword,
   updateUserShippingInfo,
   updateUserPaymentInfo,
+  getUserById,
 } from '../controllers/userController.js';
 import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
 
@@ -15,6 +16,7 @@ const router = express.Router();
 
 // get all users
 router.get('/', getUsers);
+router.get('/:id', getUserById);
 // add/create user
 router.post('/register', registerUser);
 // login user

@@ -11,12 +11,13 @@ footer:done
 trending products:done
 update user info:done
 homepage:done
+backend> place order route: done
+place order function and route: done
+product rating / endpoint: done
+create order!!!: done
+A small popup after succesful login/registration: done
 ...
-place order function and route
-backend> place order route
-product rating / endpoint
-A small popup after succesful login/registration
-admin panel
-create order!!!
+admin panel!!!
+encrypt creditcard number
 responsivencess
 ...

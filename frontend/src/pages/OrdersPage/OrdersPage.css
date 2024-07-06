@@ -14,3 +14,19 @@
   text-align: center;
   border-bottom: 5px solid cadetblue;
 }
+.place_order_btn {
+  padding: 10px 15px;
+  border: none;
+  background-color: teal;
+  color: white;
+  border-radius: 3px;
+  display: block;
+  margin: 0 auto;
+  letter-spacing: 2px;
+  font-size: 16px;
+  gap: 10px;
+}
+.place_order_btn:hover{
+  background-color: green;
+
+}

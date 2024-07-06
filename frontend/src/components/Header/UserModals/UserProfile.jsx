@@ -4,11 +4,14 @@ import UpdatePassword from '../../Forms/UpdatePassword';
 import { useLogout } from '../../../hooks/useLogout';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import { CartContext } from '../../../contexts/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
-  const { handleCloseModals } = useContext(CartContext);
+  const { handleCloseModals, handleClearCart } = useContext(CartContext);
+  const navigate = useNavigate();
+
   const [showUpdatePassForm, setShowUpdatePassForm] = useState(false);
   const handleOpenChangePassword = () => {
     setShowUpdatePassForm(!showUpdatePassForm);
@@ -18,6 +21,8 @@ const UserProfile = () => {
   };
   const handleLogout = () => {
     logout();
+    navigate('/');
+    handleClearCart();
   };
   return (
     <div className="user_profile">

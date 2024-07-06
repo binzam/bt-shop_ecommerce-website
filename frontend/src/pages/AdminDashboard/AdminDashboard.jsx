@@ -5,6 +5,7 @@ import { ProductContext } from '../../contexts/ProductContext';
 import ProductsPage from '../ProductsPage/ProductsPage';
 import UsersList from './adminComponents/UsersList';
 import { useNavigate } from 'react-router-dom';
+import OrdersList from './adminComponents/OrdersList';
 const AdminDashboard = () => {
   const { isAdmin } = useContext(AuthContext);
   const { products } = useContext(ProductContext);
@@ -12,6 +13,7 @@ const AdminDashboard = () => {
   const [showOrders, setShowOrders] = useState(false);
   const [showProducts, setShowProducts] = useState(false);
   const [usersCount, setUsersCount] = useState(0);
+  const [ordersCount, setOrdersCount] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -49,7 +51,7 @@ const AdminDashboard = () => {
               onClick={() => handleOptionClick(false, true, false)}
             >
               Orders
-              <span className="counter">0</span>
+              <span className="counter">{ordersCount}</span>
             </button>
             <button
               className={`products_btn ${showProducts ? 'selected' : ''}`}
@@ -62,6 +64,7 @@ const AdminDashboard = () => {
         </div>
       )}
       {showCustomers && <UsersList setUsersCount={setUsersCount} />}
+      {showOrders && <OrdersList setOrdersCount={setOrdersCount} />}
 
       {showProducts && <ProductsPage />}
       

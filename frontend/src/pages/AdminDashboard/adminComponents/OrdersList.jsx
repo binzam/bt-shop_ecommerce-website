@@ -3,22 +3,22 @@ import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import axios from 'axios';
 
-const UsersList = ({ setUsersCount }) => {
+const OrdersList = ({ setOrdersCount }) => {
   const { user } = useAuthContext();
-  const [users, setUsers] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [removeSuccessMessage, setRemoveSuccessMessage] = useState(null);
-  const handleRemoveUser = async (userId) => {
+  const handleRemoveOrder = async (orderId) => {
     setRemoveSuccessMessage(null);
     try {
       const response = await axios.delete(
-        `http://localhost:5555/api/users/remove/${userId}`,
+        `http://localhost:5555/api/orders/remove/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         }
       );
-      if (response.data.userRemoveSuccess) {
+      if (response.data.orderRemoveSuccess) {
         setRemoveSuccessMessage(response.data.message);
       }
     } catch (error) {
@@ -27,42 +27,37 @@ const UsersList = ({ setUsersCount }) => {
     }
   };
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:5555/api/users', {
+        const response = await axios.get('http://localhost:5555/api/orders', {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         });
         const data = await response.data.data;
-        setUsersCount(response.data.userCount);
-        setUsers(data);
+        setOrdersCount(response.data.orderCount);
+        setOrders(data);
       } catch (error) {
         console.error(error);
       }
     };
     if (user) {
-      fetchUsers();
+      fetchOrders();
     }
-  }, [user, setUsersCount]);
+  }, [user, setOrdersCount]);
   return (
-    <div className="users">
-      <ul className="users_list">
-        {users &&
-          users.map((user) => (
-            <li key={user._id} className="user">
-              <div>Customer ID: [ {user._id} ]</div>
-              <div>Name: [ {user.username} ]</div>
-              <div>Email: [ {user.email} ]</div>
-              <div>Role: [ {user.role} ]</div>
-              {user.role !== 'admin' && (
+    <div className="orders">
+      <ul className="orders_list">
+        {orders &&
+          orders.map((order) => (
+            <li key={order._id} className="order">
+              <div>Order ID: [ {order._id} ]</div>
                 <button
-                  className="remove_user_btn"
-                  onClick={() => handleRemoveUser(user._id)}
+                  className="remove_order_btn"
+                  onClick={() => handleRemoveOrder(order._id)}
                 >
-                  Remove user
+                  Remove Order
                 </button>
-              )}
               {removeSuccessMessage && <div>{removeSuccessMessage}</div>}
             </li>
           ))}
@@ -71,4 +66,4 @@ const UsersList = ({ setUsersCount }) => {
   );
 };
 
-export default UsersList;
+export default OrdersList;

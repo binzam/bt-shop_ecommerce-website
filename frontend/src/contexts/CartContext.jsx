@@ -70,10 +70,15 @@ const CartContextProvider = ({ children }) => {
 
     setCartItems(updatedCart);
   };
+  const handleClearCart = () => {
+
+    setCartItems([]);
+  };
 
   return (
     <CartContext.Provider
       value={{
+        handleClearCart,
         showUserOptions,
         showCart,
         handleOpenUserOptions,

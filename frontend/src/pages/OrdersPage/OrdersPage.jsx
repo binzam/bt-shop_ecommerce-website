@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import axios from 'axios';
 import './OrdersPage.css';
+import OrderSummary from '../../components/OrderSummary';
 const OrdersPage = () => {
   const { user } = useAuthContext();
   const { cartItems } = useContext(CartContext);
@@ -78,7 +79,8 @@ const OrdersPage = () => {
   return (
     <div className="orders_page">
       <h2 className="orders_header">Orders</h2>
-      <button onClick={createOrder}>CREATE ORDER</button>
+      <OrderSummary />
+      <button className='place_order_btn' onClick={createOrder}>CREATE ORDER</button>
       {orderCompleted && 'DOMISHAISFHSU'}
     </div>
   );

@@ -14,7 +14,6 @@ export const useLogin = () => {
         email,
         password,
       });
-      console.log('response',response);
       if (response.status === 200) {
         // console.log("Login successful");
         localStorage.setItem('userInfo', JSON.stringify(response.data));
