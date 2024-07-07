@@ -4,11 +4,11 @@ const createOrder = async (req, res) => {
   try {
     const { newOrder } = req.body;
     const { user, orders, totalAmount, address } = newOrder;
-
+    console.log(newOrder);
     const order = await Order.create({
-      user,
-      orders,
-      totalAmount,
+      user: user,
+      orders: orders,
+      totalAmount: totalAmount,
       shippingAddress: address,
     });
     if (!order) {
@@ -31,7 +31,7 @@ const getOrders = async (req, res) => {
     // const orders = await order.find({}, 'username role email _id');
     return res.status(200).json({
       orderCount: orders.length,
-      data: orders,
+      allOrders: orders,
     });
   } catch (error) {
     console.log(error.message);
@@ -53,5 +53,26 @@ const getOrdersById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const removeOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const result = await Order.findByIdAndDelete(id);
 
-export { createOrder, getOrders, getOrdersById };
+    if (!result) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    return res
+      .status(200)
+      .json({
+        OrderRemoveSuccess: true,
+        message: 'Order deleted successfully',
+      });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { createOrder, getOrders, getOrdersById, removeOrder };

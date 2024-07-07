@@ -2,7 +2,6 @@
 .home_page {
   width: 100%;
   min-height: 100vh;
-  /* background-color: #fff; */
 }
 .home_header {
   background-color: #ed9121;
@@ -120,14 +119,14 @@
 .contact_txt {
   width: 40%;
 }
-.home-category-section {
+.home_category_section {
   padding: 30px;
   width: 100%;
   text-align: center;
   background-color: #333;
 }
 /* CATEGORY SECTION HEADER */
-.category-header {
+.category_header {
   text-transform: uppercase;
   font-size: 30px;
   color: #ed9121;
@@ -135,7 +134,7 @@
   margin: 20px 0;
 }
 /* CATEGORY LIST */
-.home-page-category-list {
+.home_page_category_list {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -143,7 +142,7 @@
 }
 
 /* CATEGORY LIST ITEM */
-.category-link {
+.category_link {
   font-size: 30px;
   font-weight: 700;
   letter-spacing: 3px;
@@ -155,11 +154,78 @@
   transition: all 0.4s ease;
 }
 
-.category-link:hover {
+.category_link:hover {
   background-color: cadetblue;
   color: #fff;
   padding-left: 20px;
   border-radius: 5px;
   letter-spacing: 5px;
   border: 2px solid transparent;
+}
+@media only screen and (max-width: 900px) {
+  .grid-title {
+    width: min-content;
+  }
+  .grid_images_container {
+    display: grid;
+    height: 500px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas: 'men women' 'electr jewelery';
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  /* INDIVIDUAL GRIDS */
+  .grid {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #fff;
+    transition: border 0.2s ease-in;
+  }
+  .grid:hover {
+    border: 2px solid #ed9121;
+  }
+  .grid_title {
+    font-size: 18px;
+  }
+  .contact_txt {
+    width: 50%;
+  }
+  .home_header {
+    height: 60px;
+  }
+  .home_header p {
+    padding-top: 5px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  .category_header {
+    text-transform: uppercase;
+    font-size: 20px;
+    letter-spacing: 10px;
+    margin: 10px 0;
+  }
+  .category_link {
+    font-size: 18px;
+    letter-spacing: 2px;
+    padding: 10px;
+    flex: 1;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .home_page_category_list {
+    gap: 10px;
+  }
+  .category_header {
+    text-align: left;
+    margin: 20px 0;
+  }
+  .home_page_category_list {
+    text-align: left;
+  }
+  .contact_txt {
+    width: 80%;
+  }
 }

@@ -33,94 +33,25 @@ header {
   font-size: 0.7rem;
   font-weight: 800;
 }
-.navigation {
-  width: 70%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-/* NAV LINKS/MEN,WOMEN,ELECTRONICS... */
-.nav_links {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  list-style: none;
-}
 
-.nav_link {
-  color: #333;
-  text-decoration: none;
+@media only screen and (max-width: 700px) {
+  .logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .logo_text {
+    color: cadetblue;
+    font-size: 20px;
+  }
 }
-
-.nav_link:hover {
-  color: #000000;
-  border-bottom: 2px solid #ed9121;
-}
-.nav_icons {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.cart_icon_wrapper {
-  position: relative;
-  width: 22px;
-  height: 20px;
-  cursor: pointer;
-}
-.admin_link {
-  width: 35px;
-  height: 35px;
-  border: 2px solid transparent;
-  overflow: hidden;
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.admin_link img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.admin_link:hover {
-  border: 2px solid #ed9121;
-  border-radius: 30%;
-}
-
-.cart_icon {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.cart_counter {
-  position: absolute;
-  top: -6px;
-  left: 90%;
-  transform: translateX(-50%);
-  color: #ffffff;
-  font-weight: 800;
-  min-width: 20px;
-  padding: 1px 3px 1px;
-  background-color: #ed9121d2;
-  border-radius: 4px;
-  font-size: 12px;
-  text-align: center;
-}
-.user_profile_icon {
-  width: 40px;
-  height: 40px;
-  border: 4px solid transparent;
-  overflow: hidden;
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-.user_profile_icon:hover {
-  border: 2px solid #ed9121;
-  border-radius: 30%;
+@media only screen and (max-width: 500px) {
+  header {
+    padding: 10px;
+    border-radius: 0px;
+  }
+  .logo_text {
+    font-size: 16px;
+  }
 }

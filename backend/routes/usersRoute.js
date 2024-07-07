@@ -27,7 +27,8 @@ router.put('/update_payment', requireAuth, updateUserPaymentInfo);
 // get user by id, update user, delete user
 router.get('/getme', requireAuth, getCurrentUser);
 
-router.delete('/remove/:id', requireAuth, verifyAdmin, deleteUser);
+// router.delete('/remove_user/:id', requireAuth, verifyAdmin, deleteUser);
+router.delete('/remove_user/:id', deleteUser);
 // update user password
 router.route('/update_pass').put(requireAuth, updateUserPassword);
 export default router;

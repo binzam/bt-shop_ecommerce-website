@@ -1,8 +1,8 @@
 .modal {
   position: fixed;
-  z-index: 999;
+  z-index: 999999;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   top: 0;
   left: 0;
@@ -11,7 +11,8 @@
   background-color: rgba(0, 0, 0, 0.616);
 }
 .modal_content {
-  width: 50%;
+  width: 35%;
+  margin-top: 5%;
   background-color: white;
   padding: 2rem;
   border-radius: 3px;
@@ -62,11 +63,21 @@
 .signup_btn:hover {
   border: 2px solid #ed9121;
 }
-.close_user_profile{
+.close_user_profile {
   text-decoration: underline;
 }
-.admin_{
+.admin_ {
   color: #ed9121;
   font-size: 16px;
   font-weight: 800;
+}
+@media only screen and (max-width: 860px) {
+  .modal_content {
+    width: 55%;  
+  }
+}
+@media only screen and (max-width: 560px) {
+  .modal_content {
+    width: 90%;  
+  }
 }

@@ -16,7 +16,9 @@ const Homepage = () => {
           <Link to={`/products/categories/${"men's clothing"}`}>
             <div className="over_lay"></div>
             <img className="men-grid-img" src={MensImg} alt="Mens-clothing" />
-            <p className="grid_title">Men&apos;s Clothing</p>
+            <p className="grid_title">
+              Men&apos;s <br /> Clothing
+            </p>
           </Link>
         </div>
         <div className="grid women-grid">
@@ -27,7 +29,10 @@ const Homepage = () => {
               src={WomensImg}
               alt="Womens-clothing"
             />
-            <p className="grid_title">Women&apos;s Clothing</p>
+            <p className="grid_title">
+              Women&apos;s
+              <br /> Clothing
+            </p>
           </Link>
         </div>
         <div className="grid etrn-grid">
@@ -54,17 +59,17 @@ const Homepage = () => {
         </div>
       </section>
       <TrendingProducts />
-      <div className="home-category-section">
-        <h2 className="category-header">Categories</h2>
-        <ul className="home-page-category-list">
+      <div className="home_category_section">
+        <h2 className="category_header">Categories</h2>
+        <ul className="home_page_category_list">
           <li>
-            <Link className="category-link" to="/products">
+            <Link className="category_link" to="/products">
               All Products
             </Link>
           </li>
           <li>
             <Link
-              className="category-link"
+              className="category_link"
               to={`/products/categories/${"men's clothing"}`}
             >
               Men&apos;s
@@ -72,7 +77,7 @@ const Homepage = () => {
           </li>
           <li>
             <Link
-              className="category-link"
+              className="category_link"
               to={`/products/categories/${"women's clothing"}`}
             >
               Women&apos;s
@@ -80,7 +85,7 @@ const Homepage = () => {
           </li>
           <li>
             <Link
-              className="category-link"
+              className="category_link"
               to={`/products/categories/${'electronics'}`}
             >
               Electronics
@@ -88,7 +93,7 @@ const Homepage = () => {
           </li>
           <li>
             <Link
-              className="category-link"
+              className="category_link"
               to={`/products/categories/${'jewelery'}`}
             >
               Jewelery
@@ -103,9 +108,15 @@ const Homepage = () => {
           to us using the contact information below:
         </p>
         <ul>
-          <li>Phone: 123-456-7890</li>
-          <li>Email: info@example.com</li>
-          <li>Address: 123 Main Street, City, Country</li>
+          <li>
+            <strong>Phone:</strong> 123-456-7890
+          </li>
+          <li>
+            <strong>Email:</strong> info@example.com
+          </li>
+          <li>
+            <strong>Address:</strong> 123 Main Street, City, Country
+          </li>
         </ul>
         <div>
           <ul className="social_links">

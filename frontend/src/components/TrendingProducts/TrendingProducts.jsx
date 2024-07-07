@@ -28,7 +28,7 @@ const TrendingProducts = () => {
   return (
      
     <section className="trending_products">
-      <h2>Trending Products</h2>
+      <h2 className='trending_header'>Trending Products</h2>
       <div className="slide_wrapper">
         {topProducts.map((product, index) => (
           <div

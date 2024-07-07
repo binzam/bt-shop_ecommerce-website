@@ -1,12 +1,12 @@
 .trending_products {
   width: 100%;
-  height: calc(100vh - 130px);
   background-image: url(../../assets/trending-products-bg-small.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
-.trending_products h2 {
+
+.trending_header {
   text-align: center;
   color: #fff;
   font-size: 50px;
@@ -165,4 +165,31 @@
   flex-wrap: wrap;
   /* gap: 5px; */
   padding: 15px 0;
+}
+@media only screen and (max-width: 1060px) {
+  .trending_header {
+    font-size: 30px;
+    letter-spacing: 10px;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .trending_header {
+    font-size: 23px;
+    letter-spacing: 3px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .slide_wrapper {
+    width: 320px;
+    border: 1px solid #ed9121;
+  }
+  .trending_product_title {
+    font-size: 20px;
+  }
+  .rating {
+    font-size: 18px;
+  }
+  .trending_price{
+    width: 70%;
+  }
 }

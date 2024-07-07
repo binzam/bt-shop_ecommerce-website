@@ -3,17 +3,20 @@ import { CartContext } from '../contexts/CartContext';
 
 const OrderSummary = () => {
   const { cartItems } = useContext(CartContext);
+
   const calculateTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
-      total += item.price * item.quantity;
+      total += parseInt(item.price) * parseInt(item.quantity);
     });
     return parseInt(total.toFixed(2), 10);
   };
+
   const calculateTax = () => {
-    return calculateTotal() * (0.15).toFixed(2);
+    return Number(parseInt(calculateTotal() * 0.15, 10).toFixed(2));
   };
-  const totalAmount = (calculateTax() + calculateTotal()).toFixed(2);
+
+  const totalAmount = Number(calculateTax() + calculateTotal()).toFixed(2);
   return (
     <div className="order_summary">
       <div className="order_summary_header">Order Summary</div>

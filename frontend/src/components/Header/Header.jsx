@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import './Header.css';
 import UserOptions from './UserModals/UserOptions';
-import Navbar from './Navbar';
+import Navbar from './Navbar/Navbar';
 import Cart from './Cart/Cart';
 import { CartContext } from '../../contexts/CartContext';
 const Header = () => {

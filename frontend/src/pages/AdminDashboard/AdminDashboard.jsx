@@ -65,7 +65,6 @@ const AdminDashboard = () => {
       )}
       {showCustomers && <UsersList setUsersCount={setUsersCount} />}
       {showOrders && <OrdersList setOrdersCount={setOrdersCount} />}
-
       {showProducts && <ProductsPage />}
       
       {showPopup && (

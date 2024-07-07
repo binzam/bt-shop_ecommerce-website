@@ -11,7 +11,7 @@ const UsersList = ({ setUsersCount }) => {
     setRemoveSuccessMessage(null);
     try {
       const response = await axios.delete(
-        `http://localhost:5555/api/users/remove/${userId}`,
+        `http://localhost:5555/api/users/remove_user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -51,7 +51,7 @@ const UsersList = ({ setUsersCount }) => {
         {users &&
           users.map((user) => (
             <li key={user._id} className="user">
-              <div>Customer ID: [ {user._id} ]</div>
+              <div>ID: [ {user._id} ]</div>
               <div>Name: [ {user.username} ]</div>
               <div>Email: [ {user.email} ]</div>
               <div>Role: [ {user.role} ]</div>

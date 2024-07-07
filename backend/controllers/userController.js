@@ -3,15 +3,17 @@ import { User } from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 
 const getCurrentUser = async (req, res) => {
-  const  user  = req.user;
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    return res.status(200).json({
-      _id: user._id,
-      email: user.email,
-      address: user.address,
-    });
+  const user = req.user;
+  console.log('getcurrentuser', req.user);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+  return res.status(200).json({
+    _id: user._id,
+    email: user.email,
+    address: user.address,
+    creditCardInfo: user.creditCardInfo,
+  });
 };
 
 const connectUser = async (req, res) => {
@@ -58,7 +60,7 @@ const getUsers = async (req, res) => {
     // const users = await User.find({}, 'username role email _id');
     return res.status(200).json({
       userCount: users.length,
-      data: users,
+      allUsers: users,
     });
   } catch (error) {
     console.log(error.message);
