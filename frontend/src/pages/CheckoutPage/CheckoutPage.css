@@ -133,7 +133,7 @@
   align-items: center;
   gap: 2px;
 }
-.dollar_sign{
+.dollar_sign {
   color: rgb(153, 255, 0);
   font-size: 20px;
 }
@@ -160,7 +160,7 @@
 .checkout_next_btn:hover {
   background-color: green;
 }
-.shop_link{
+.shop_link {
   position: absolute;
   top: 5px;
   left: 50%;
@@ -170,11 +170,11 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0 20px;
 }
 .checkout_login_btn {
-  padding: 15px;
+  padding: 10px 15px;
   text-align: center;
   color: white;
   font-size: 16px;
@@ -187,4 +187,19 @@
 .checkout_login_btn:hover {
   background-color: #333;
   border: 1px solid #ed9121;
+}
+
+@media only screen and (max-width: 800px) {
+  .orders_content {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px;
+  }
+  .orders,
+  .checkout_progress_wrapper {
+    width: 100%;
+  }
+  .shop_link{
+    left: 15%;
+  }
 }

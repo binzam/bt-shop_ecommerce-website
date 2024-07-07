@@ -1,13 +1,32 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ProductContext } from '../../contexts/ProductContext.jsx';
 import './ProductsPage.css';
 import ProductBox from '../../components/ProductBox/ProductBox.jsx';
 import { useParams } from 'react-router-dom';
+import AddToCartPopup from '../../components/AddToCartPopup/AddToCartPopup.jsx';
+import { CartContext } from '../../contexts/CartContext.jsx';
 const ProductsPage = () => {
   const { category } = useParams();
   const { products, loading, error } = useContext(ProductContext);
   const [selectedCategory, setSelectedCategory] = useState(category || '');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [showPopup, setShowPopup] = useState(false);
+  const [addedPrd, setAddedPrd] = useState(null);
+  const { addToCart } = useContext(CartContext);
+
+  const handleAddToCart = (product, quantity = 1) => {
+    addToCart(product, quantity);
+    setShowPopup(true);
+    setAddedPrd(product);
+  };
+  useEffect(() => {
+    if (addedPrd) {
+      const timeout = setTimeout(() => {
+        setShowPopup(false);
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [addedPrd]);
   const categories = [
     { name: 'All', value: '' },
     { name: "Men's Clothing", value: "men's clothing" },
@@ -83,9 +102,14 @@ const ProductsPage = () => {
       <div className="products_list">
         {products &&
           filteredProducts.map((product) => (
-            <ProductBox product={product} key={product._id} />
+            <ProductBox
+              addToCart={handleAddToCart}
+              product={product}
+              key={product._id}
+            />
           ))}
       </div>
+      {showPopup && addedPrd && <AddToCartPopup product={addedPrd} />}
     </div>
   );
 };

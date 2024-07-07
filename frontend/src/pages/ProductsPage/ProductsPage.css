@@ -1,3 +1,6 @@
+.products_page{
+  width: 100%;
+}
 .product_filter_bar {
   width: 100%;
   padding: 10px;
@@ -13,7 +16,7 @@
 .category_title,
 .sort_title {
   color: #333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -28,12 +31,12 @@
 }
 .category_btn,
 .sort_by_price_btn {
-  padding: 5px 15px 5px 20px;
+  padding: 5px 15px;
   border: 1px solid #ed9121;
   border-radius: 5px;
   display: block;
   color: #333;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 3px;
   background-color: white;

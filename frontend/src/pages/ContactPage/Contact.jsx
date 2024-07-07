@@ -15,7 +15,7 @@ function Contact() {
     e.preventDefault();
     setError(null);
     try {
-      const response = await axios.post('http://localhost:5555/feedback', { name, email, message });
+      const response = await axios.post('http://localhost:5555/api/feedback', { name, email, message });
 
       if (response.data && response.data.feedbackSubmitted === true) {
         console.log('Feedback successfully submitted');

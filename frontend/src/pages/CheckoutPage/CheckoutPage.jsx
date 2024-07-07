@@ -31,7 +31,7 @@ const CheckoutPage = () => {
   const handleCreateOrder = () => {
     setShowPaymentForm(false);
     setShowOrderSummary(false);
-    navigate('/orders')
+    navigate('/orders');
   };
   return (
     <div className="checkout_page">
@@ -60,7 +60,7 @@ const CheckoutPage = () => {
         </div>
         <div className="checkout_progress_wrapper">
           {showOrderSummary && <OrderSummary />}
-          {showShippingForm && (
+          {showShippingForm && cartItems.length > 0 && (
             <ShippingForm handlePaymentForm={handlePaymentForm} />
           )}
           {showPaymentForm && (

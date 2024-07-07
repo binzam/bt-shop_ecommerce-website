@@ -1,6 +1,6 @@
 .contact-page {
   width: 100%;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 130px);
   background-image: url(../../Assets/contact-us-bg-1-small.jpg);
   background-position: center;
   background-size: cover;
@@ -15,11 +15,12 @@
   position: absolute;
   top: 0px;
   left: 50%;
+  text-align: center;
   transform: translateX(-50%);
   color: rgb(0, 0, 0);
-  font-size: 40px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 15px;
+  letter-spacing: 10px;
   text-shadow: 2px 2px 0 #ffffff, 4px 4px 0 rgba(255, 208, 0, 0),
     6px 6px 0 #000000, 8px 8px 0 #ffffff93;
 }

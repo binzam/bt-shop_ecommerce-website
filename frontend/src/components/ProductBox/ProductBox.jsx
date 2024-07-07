@@ -2,14 +2,8 @@
 import { Link } from 'react-router-dom';
 import CartIcon from '../../assets/icon-cart-btn.svg';
 import './ProductBox.css';
-import { CartContext } from '../../contexts/CartContext';
-import { useContext } from 'react';
 // rendered in products page
-const ProductBox = ({ product }) => {
-  const { addToCart } = useContext(CartContext);
-  const handleAddToCart = (product, quantity = 1) => {
-    addToCart(product, quantity);
-  };
+const ProductBox = ({ product, addToCart }) => {
   return (
     <article className="product_box">
       <h3 className="product_title">{product.title.slice(0, 20)}</h3>
@@ -18,7 +12,7 @@ const ProductBox = ({ product }) => {
       </div>
       <span className="product_price">${product.price}</span>
       <button
-        onClick={() => handleAddToCart(product)}
+        onClick={() => addToCart(product)}
         className="prd_add_to_cart_btn"
       >
         <img src={CartIcon} alt="Cart" /> Add to Cart

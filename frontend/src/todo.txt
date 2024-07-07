@@ -20,4 +20,8 @@ A small popup after succesful login/registration: done
 admin panel!!!
 encrypt creditcard number
 responsivencess
+product description minus icon
+product description paragraph in database
+checkout page responsivencess
+create order!!
 ...
