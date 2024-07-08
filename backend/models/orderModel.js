@@ -18,15 +18,15 @@ const orderSchema = new Schema(
           required: true,
         },
         price: {
-          type: Number,
+          type: String,
           required: true,
         },
       },
     ],
     totalAmount: {
-      type: Number,
+      type: String,
       required: true,
-      default: 0.0,
+      default: 0.00,
     },
     shippingAddress: {
       street: String,

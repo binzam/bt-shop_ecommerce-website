@@ -1,75 +1,58 @@
-// import axios from 'axios';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import axios from 'axios';
 import './OrdersPage.css';
 import OrderSummary from '../../components/OrderSummary';
-import GetCurrentUser from '../../utils/GetCurrentUser';
+import getme from '../../utils/getUserData';
 
 const OrdersPage = () => {
   const { user } = useAuthContext();
-  const { cartItems } = useContext(CartContext);
-  // const [userData, setUserData] = useState([]);
+  const { cartItems, handleClearCart } = useContext(CartContext);
+  const [userData, setUserData] = useState([]);
   const [orderCompleted, setOrderCompleted] = useState(false);
+  const [placedOrder, setPlacedOrder] = useState([]);
+  const [error, setError] = useState(null);
   const calculateTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
-      total += item.price * item.quantity;
+      total += parseInt(item.price) * parseInt(item.quantity);
     });
     return parseInt(total.toFixed(2), 10);
   };
+
   const calculateTax = () => {
-    return calculateTotal() * (0.15).toFixed(2);
+    return Number(parseInt(calculateTotal() * 0.15, 10).toFixed(2));
   };
-  const totalAmount = (calculateTax() + calculateTotal()).toFixed(2);
-  const userData = GetCurrentUser().then((data) => console.log(data));
 
+  const totalAmount = Number(calculateTax() + calculateTotal()).toFixed(2);
+  const handlePlaceOrder = () => {
+    setOrderCompleted(true);
+    handleClearCart();
+  };
   useEffect(() => {
-    // Access the userData here or perform any other actions
-    console.log(userData);
-  }, [userData]);
+    if (user) {
+      getme(user, setUserData, setError);
+    }
+  }, [user]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const getme = async () => {
-  //       try {
-  //         const response = await axios.get(
-  //           'http://localhost:5555/api/users/getme',
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${user.token}`,
-  //             },
-  //           }
-  //         );
-  //         console.log(response);
-  //         if (response.status === 200) {
-  //           setUserData(response.data);
-  //         }
-  //       } catch (error) {
-  //         console.error('Error creating order:', error);
-  //         throw new Error('Failed to create the order. Please try again.');
-  //       }
-  //     };
-  //     getme();
-  //   }
-  // }, [user]);
   const filteredValues = cartItems.map(({ _id, quantity, price }) => ({
     product: _id,
     quantity,
     price,
   }));
+  const order = {
+    user: userData._id,
+    orders: filteredValues,
+    totalAmount: totalAmount,
+    address: userData.address,
+  };
   const createOrder = async () => {
-    const newOrder = {
-      user: userData._id,
-      orders: filteredValues,
-      totalAmount: totalAmount,
-      address: userData.address,
-    };
     try {
+      setError(null);
       const response = await axios.post(
         'http://localhost:5555/api/orders/place_order',
-        { newOrder },
+        { order },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -78,22 +61,37 @@ const OrdersPage = () => {
       );
       console.log(response);
       if (response.data.orderCreated) {
-        setOrderCompleted(true);
+        setError(null);
+        handlePlaceOrder();
+        setPlacedOrder(response.data.order);
       }
     } catch (error) {
-      console.error('Error creating order:', error);
-      throw new Error('Failed to create the order. Please try again.');
+      setError(error.response.data.message);
     }
   };
+  console.log(placedOrder);
 
   return (
     <div className="orders_page">
       <h2 className="orders_header">Orders</h2>
-      <OrderSummary />
-      <button className="place_order_btn" onClick={() => createOrder()}>
-        CREATE ORDER
-      </button>
-      {orderCompleted && 'DOMISHAISFHSU'}
+      {error && <div className="form_error">{error}</div>}
+      {!orderCompleted && <OrderSummary />}
+
+      {!orderCompleted && (
+        <button className="place_order_btn" onClick={() => createOrder()}>
+          CREATE ORDER
+        </button>
+      )}
+
+      {orderCompleted &&  (
+        <div className="order_complete_div">
+          <h2>Order Submitted</h2>
+          <p>
+            Your Order has been Placed and it is Pending, Thank you for shopping
+            with us.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

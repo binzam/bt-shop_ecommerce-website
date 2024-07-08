@@ -2,18 +2,26 @@ import bcrypt from 'bcryptjs';
 import { User } from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 
+const checkUndefined = (obj) => {
+  const values = Object.values(obj);
+  if (values.includes(undefined)) {
+    return null;
+  }
+  return obj;
+};
 const getCurrentUser = async (req, res) => {
   const user = req.user;
-  console.log('getcurrentuser', req.user);
   if (!user) {
     return res.status(404).json({ error: 'User not found' });
   }
-  return res.status(200).json({
+
+  const userData = {
     _id: user._id,
     email: user.email,
-    address: user.address,
-    creditCardInfo: user.creditCardInfo,
-  });
+    address: checkUndefined(user.address),
+    creditCardInfo: checkUndefined(user.creditCardInfo),
+  };
+  return res.status(200).json(userData);
 };
 
 const connectUser = async (req, res) => {

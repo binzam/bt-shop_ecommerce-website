@@ -30,12 +30,6 @@ const userSchema = new Schema(
       expiryDate: String,
       cvv: String,
     },
-    orders: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Order',
-      },
-    ],
     role: {
       type: String,
       enum: ['admin', 'user'],

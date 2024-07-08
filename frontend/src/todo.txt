@@ -16,12 +16,13 @@ place order function and route: done
 product rating / endpoint: done
 create order!!!: done
 A small popup after succesful login/registration: done
+checkout page responsivencess: done
+create order!!: done
+product description minus icon: done
 ...
 admin panel!!!
+add new product 
 encrypt creditcard number
 responsivencess
-product description minus icon
 product description paragraph in database
-checkout page responsivencess
-create order!!
 ...

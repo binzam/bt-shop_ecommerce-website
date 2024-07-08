@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import './CheckoutPage.css';
 import CartItems from '../../components/Header/Cart/CartItems';
@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import PaymentForm from '../../components/Forms/PaymentForm';
 import OrderSummary from '../../components/OrderSummary';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import getme from '../../utils/getUserData';
 
 const CheckoutPage = () => {
   const { user } = useAuthContext();
@@ -16,17 +17,33 @@ const CheckoutPage = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(true);
   const [showShippingForm, setShowShippingForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [userData, setUserData] = useState([]);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if (user) {
+      getme(user, setUserData, setError);
+    }
+  }, [user]);
   const handleShippingForm = () => {
-    setShowOrderSummary(false);
-    setShowShippingForm(true);
-    setShowPaymentForm(false);
+    const address = userData.address || null;
+    if (!address) {
+      setShowShippingForm(true);
+      setShowOrderSummary(false);
+      setShowPaymentForm(false);
+    } else {
+      handlePaymentForm();
+    }
   };
   const handlePaymentForm = () => {
-    setShowOrderSummary(false);
-    setShowShippingForm(false);
-    setShowPaymentForm(true);
+    const cardInfo = userData.creditCardInfo || null;
+    if (!cardInfo) {
+      setShowOrderSummary(false);
+      setShowShippingForm(false);
+      setShowPaymentForm(true);
+    } else {
+      handleCreateOrder();
+    }
   };
   const handleCreateOrder = () => {
     setShowPaymentForm(false);
@@ -37,6 +54,7 @@ const CheckoutPage = () => {
     <div className="checkout_page">
       <div className="checkout_header">
         <div className="checkout">CHECKOUT</div>
+        {error && <div className="form_error">{error}</div>}
         {user ? (
           <p className="customer_info">
             You are Logged in as: <span>{user.username}</span>
@@ -75,7 +93,7 @@ const CheckoutPage = () => {
                 Login to Continue
               </button>
             )}
-            {showOrderSummary && (
+            {user && showOrderSummary && (
               <button
                 onClick={handleShippingForm}
                 className="checkout_next_btn"

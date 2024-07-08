@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { AuthContext } from './AuthContext';
 
 const ProductContext = createContext();
 
@@ -26,28 +27,52 @@ const ProductContextProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  const { user } = useContext(AuthContext);
   const removeProduct = async (productId) => {
     try {
-      const response = await fetch(`/api/remove_product/${productId}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to remove product: ' + response.statusText);
-      }
-      const data = await response.json();
-      if (data.productRemoved) {
+      const response = await axios.delete(
+        `http://localhost:5555/api/products/remove_product/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.data.productRemoved) {
         fetchProducts();
-        console.log('Product removed successfully', data);
-      } else {
-        console.log('Failed to remove product:', data.error);
+        alert('Product removed.');
       }
     } catch (error) {
-      console.log('Error removing product:', error);
+      alert(error.message);
+    }
+  };
+  const addNewProduct = async (newProduct) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5555/api/products/add_product',
+        newProduct,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.data.productRemoved) {
+        fetchProducts();
+        alert('Product added.');
+      }
+    } catch (error) {
+      alert(error.message);
     }
   };
 
   return (
-    <ProductContext.Provider value={{ products, loading, error, removeProduct }}>
+    <ProductContext.Provider
+      value={{ products, loading, error, removeProduct, addNewProduct }}
+    >
       {children}
     </ProductContext.Provider>
   );

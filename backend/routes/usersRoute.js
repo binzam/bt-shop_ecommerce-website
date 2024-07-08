@@ -13,7 +13,8 @@ import {
 import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
-
+// get current user
+router.get('/getme', requireAuth, getCurrentUser);
 // get all users
 router.get('/', getUsers);
 router.get('/:id', getUserById);
@@ -25,7 +26,6 @@ router.put('/update_user', requireAuth, updateUserShippingInfo);
 router.put('/update_payment', requireAuth, updateUserPaymentInfo);
 
 // get user by id, update user, delete user
-router.get('/getme', requireAuth, getCurrentUser);
 
 // router.delete('/remove_user/:id', requireAuth, verifyAdmin, deleteUser);
 router.delete('/remove_user/:id', deleteUser);

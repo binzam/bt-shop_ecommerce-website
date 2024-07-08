@@ -24,11 +24,11 @@ const productSchema = new Schema(
     },
     rating: {
       type: String,
-      required: true,
+      default: 0.0,
     },
     ratingCount: {
       type: String,
-      required: true,
+      default: 0,
     },
   },
   {

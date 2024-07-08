@@ -1,4 +1,4 @@
-.products_page{
+.products_page {
   width: 100%;
 }
 .product_filter_bar {
@@ -57,4 +57,27 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 10px;
+}
+.add_product {
+  width: 100%;
+  min-height: 400px;
+  max-width: 500px;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  background-color: #ffffff;
+}
+.add_product_txt {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 1rem 0;
+  color: #ffffff;
+  padding: 10px;
+  background-color: #01b801;
+}
+.add_product_icon {
+  width: 60%;
+  height: 200px;
+  object-fit: contain;
 }

@@ -10,8 +10,11 @@
   width: 100%;
   height: 75px;
   background-color: #ed9121;
-  padding: 10px;
+  padding:10px 10px;
   color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .checkout {
   font-size: 20px;
@@ -190,16 +193,28 @@
 }
 
 @media only screen and (max-width: 800px) {
+  .customer_info span {
+    padding: 2px 10px 4px;
+    letter-spacing: 1px;
+  }
+  .checkout{
+    text-align: right;
+  }
   .orders_content {
     flex-direction: column;
     justify-content: flex-start;
-    padding: 20px;
+    padding-top: 40px;
   }
   .orders,
   .checkout_progress_wrapper {
     width: 100%;
   }
   .shop_link{
-    left: 15%;
+    padding: 5px 15px;
   }
+}
+@media only screen and (max-width: 500px) {
+ .checkout_page{
+  border-radius: 0;
+ }
 }

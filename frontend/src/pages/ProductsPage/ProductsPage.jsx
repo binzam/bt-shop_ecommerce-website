@@ -5,6 +5,10 @@ import ProductBox from '../../components/ProductBox/ProductBox.jsx';
 import { useParams } from 'react-router-dom';
 import AddToCartPopup from '../../components/AddToCartPopup/AddToCartPopup.jsx';
 import { CartContext } from '../../contexts/CartContext.jsx';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
+import AddProductForm from '../../components/Forms/AddProductForm.jsx';
+import addIcon from '../../assets/add_icon.svg';
+
 const ProductsPage = () => {
   const { category } = useParams();
   const { products, loading, error } = useContext(ProductContext);
@@ -13,6 +17,8 @@ const ProductsPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [addedPrd, setAddedPrd] = useState(null);
   const { addToCart } = useContext(CartContext);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const { isAdmin } = useContext(AuthContext);
 
   const handleAddToCart = (product, quantity = 1) => {
     addToCart(product, quantity);
@@ -56,7 +62,9 @@ const ProductsPage = () => {
       return b.price - a.price;
     }
   });
-
+  const closeForm = () => {
+    setShowAddForm(false);
+  };
   return (
     <div className="products_page">
       {loading && (
@@ -100,14 +108,22 @@ const ProductsPage = () => {
         </div>
       </div>
       <div className="products_list">
-        {products &&
-          filteredProducts.map((product) => (
-            <ProductBox
-              addToCart={handleAddToCart}
-              product={product}
-              key={product._id}
-            />
-          ))}
+        {isAdmin() && !showAddForm && (
+          <article className="add_product" onClick={() => setShowAddForm(true)}>
+            <h3 className="add_product_txt">Add New Product</h3>
+            <img className="add_product_icon" src={addIcon} alt="add product" />
+          </article>
+        )}
+        {isAdmin() && showAddForm && (
+          <AddProductForm closeForm={closeForm} />
+        )}
+        {filteredProducts.map((product) => (
+          <ProductBox
+            addToCart={handleAddToCart}
+            product={product}
+            key={product._id}
+          />
+        ))}
       </div>
       {showPopup && addedPrd && <AddToCartPopup product={addedPrd} />}
     </div>

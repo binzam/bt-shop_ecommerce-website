@@ -2,26 +2,35 @@ import { Order } from '../models/orderModel.js';
 
 const createOrder = async (req, res) => {
   try {
-    const { newOrder } = req.body;
-    const { user, orders, totalAmount, address } = newOrder;
-    console.log(newOrder);
-    const order = await Order.create({
-      user: user,
-      orders: orders,
-      totalAmount: totalAmount,
-      shippingAddress: address,
-    });
-    if (!order) {
-      return res
-        .status(500)
-        .json({ message: 'An error occurred while creating the order' });
+    const { order } = req.body;
+    console.log('order:', order);
+    const { user, orders, totalAmount, address } = order;
+    if (!user || !orders || !orders.length > 0 || !totalAmount || !address) {
+      throw Error('You have no Orders to be Placed');
     }
-    return res.status(200).json({ orderCreated: true, orderId: order._id });
+    const existingOrder = await Order.findOne({ user, orders, totalAmount, address });
+    if (existingOrder) {
+      return res.status(400).json({ message: 'Order already exists' });
+    } else {
+      const newOrder = await Order.create({
+        user,
+        orders,
+        totalAmount,
+        shippingAddress: address,
+      });
+      if (!newOrder) {
+        return res
+          .status(500)
+          .json({ message: 'An error occurred while creating the order' });
+      }
+
+      return res.status(200).json({ orderCreated: true, order: newOrder });
+    }
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     res
       .status(500)
-      .json({ message: 'An error occurred while creating the order' });
+      .json({ message: error.message });
   }
 };
 
@@ -63,12 +72,10 @@ const removeOrder = async (req, res) => {
       return res.status(404).json({ message: 'Order not found' });
     }
 
-    return res
-      .status(200)
-      .json({
-        OrderRemoveSuccess: true,
-        message: 'Order deleted successfully',
-      });
+    return res.status(200).json({
+      OrderRemoveSuccess: true,
+      message: 'Order deleted successfully',
+    });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });

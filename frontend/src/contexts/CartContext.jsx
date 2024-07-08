@@ -71,8 +71,8 @@ const CartContextProvider = ({ children }) => {
     setCartItems(updatedCart);
   };
   const handleClearCart = () => {
-
     setCartItems([]);
+    localStorage.removeItem('cart')
   };
 
   return (

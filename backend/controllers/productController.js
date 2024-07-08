@@ -30,17 +30,8 @@ const getProductById = async (req, res) => {
 };
 const addNewProduct = async (req, res) => {
   try {
-    const { title, category, description, image, price, ratingCount, rating } =
-      req.body;
-    if (
-      !title ||
-      !category ||
-      !description ||
-      !image ||
-      !price ||
-      !ratingCount ||
-      !rating
-    ) {
+    const { title, category, description, image, price } = req.body;
+    if (!title || !category || !description || !image || !price) {
       return res.status(400).json({
         message: 'Send all required fields',
       });
@@ -51,8 +42,6 @@ const addNewProduct = async (req, res) => {
       description,
       image,
       price,
-      ratingCount,
-      rating,
     };
     const product = await Product.create(newProduct);
     return res.status(201).json(product);
@@ -98,14 +87,13 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-
     const result = await Product.findByIdAndDelete(id);
 
     if (!result) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    return res.status(200).json({ message: 'Product deleted successfully' });
+    return res.status(200).json({ productRemoved: true });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });

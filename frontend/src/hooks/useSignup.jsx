@@ -12,7 +12,7 @@ export const useSignup = () => {
     setError(null);
     try {
       const response = await axios.post(
-        'http://localhost:5555/users/register',
+        'http://localhost:5555/api/users/register',
         {
           firstName,
           lastName,

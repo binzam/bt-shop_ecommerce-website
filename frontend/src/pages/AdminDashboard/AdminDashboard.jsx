@@ -56,7 +56,7 @@ const AdminDashboard = () => {
             <button
               className={`products_btn ${showProducts ? 'selected' : ''}`}
               onClick={() => handleOptionClick(false, false, true)}
-            >
+            > 
               Products
               <span className="counter">{products.length}</span>
             </button>
