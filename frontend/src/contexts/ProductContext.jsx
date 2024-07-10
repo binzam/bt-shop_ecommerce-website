@@ -42,7 +42,6 @@ const ProductContextProvider = ({ children }) => {
 
       if (response.data.productRemoved) {
         fetchProducts();
-        alert('Product removed.');
       }
     } catch (error) {
       alert(error.message);
@@ -62,7 +61,6 @@ const ProductContextProvider = ({ children }) => {
 
       if (response.data.productAdded) {
         fetchProducts();
-        alert('Product added.');
       }
     } catch (error) {
       alert(error.message);

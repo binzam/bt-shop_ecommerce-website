@@ -1,5 +1,5 @@
 # bt-shop Ecommerce Website
-
+* [3 minute video demo](https://youtu.be/CMB2ISPjF-o)
 - This is a README file for a MERN (MongoDB, Express.js, React.js, Node.js) stack ecommerce website.
 - It provides an overview of the project, installation instructions, features, and other relevant information.
 
@@ -24,16 +24,15 @@ To run the project locally, follow these steps:
 5. Create a .env file in the backend directory
 6. Add the necessary environment variables (i.e database connection URL, PORT, JWT_SECRET_KEY)
 7. Start the development server on both directories: npm run dev
-8. Open your browser and visit http://localhost:5172 to view the website.
+8. Open your browser and visit http://localhost:5173 to view the website.
 
 ## Features
 
 - User authentication and authorization
-- Product browsing and searching
+- Product browsing
 - Product filtering and sorting
 - Shopping cart functionality
 - Checkout process
-- Order history and tracking
 - Admin panel for managing products, orders, and users
 
 ## Technologies Used

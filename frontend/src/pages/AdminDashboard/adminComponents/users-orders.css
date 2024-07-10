@@ -28,11 +28,13 @@
   font-weight: 600;
   font-size: 0.9rem;
 }
-.order {
-  min-width: 45%;
+/* .order {
+  min-width: 50%;
+
+  width: 400px;
   max-width: 50%;
   height: 250px;
-}
+} */
 .order_information {
   width: 100%;
   max-height: 100px;
