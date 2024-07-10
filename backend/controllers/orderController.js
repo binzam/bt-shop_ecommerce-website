@@ -8,7 +8,12 @@ const createOrder = async (req, res) => {
     if (!user || !orders || !orders.length > 0 || !totalAmount || !address) {
       throw Error('You have no Orders to be Placed');
     }
-    const existingOrder = await Order.findOne({ user, orders, totalAmount, address });
+    const existingOrder = await Order.findOne({
+      user,
+      orders,
+      totalAmount,
+      address,
+    });
     if (existingOrder) {
       return res.status(400).json({ message: 'Order already exists' });
     } else {
@@ -28,9 +33,7 @@ const createOrder = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res
-      .status(500)
-      .json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -65,7 +68,6 @@ const getOrdersById = async (req, res) => {
 const removeOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const result = await Order.findByIdAndDelete(id);
 
     if (!result) {

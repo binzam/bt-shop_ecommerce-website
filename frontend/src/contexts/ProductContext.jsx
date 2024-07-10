@@ -60,7 +60,7 @@ const ProductContextProvider = ({ children }) => {
         }
       );
 
-      if (response.data.productRemoved) {
+      if (response.data.productAdded) {
         fetchProducts();
         alert('Product added.');
       }

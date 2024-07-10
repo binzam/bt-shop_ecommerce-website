@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <header>
-      <a href="/" className="logo">
+      <a href="/home" className="logo">
         <span className="logo_text">bt-shop</span>
         {user && <span className="username">{user.username}</span>}
       </a>

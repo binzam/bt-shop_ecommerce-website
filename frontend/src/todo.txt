@@ -20,9 +20,5 @@ checkout page responsivencess: done
 create order!!: done
 product description minus icon: done
 ...
-admin panel!!!
 add new product 
-encrypt creditcard number
-responsivencess
-product description paragraph in database
 ...

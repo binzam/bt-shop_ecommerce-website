@@ -53,44 +53,7 @@
 .selected {
   background-color: cadetblue;
 }
-.users {
-  width: 100%;
-}
-.users_list {
-  width: 100%;
-  color: #333;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-.user {
-  /* width: 31.33%; */
-  min-width: 30%;
-  max-width: 100%;
-  width: 100%;
-  border: 1px solid #ddd;
-  padding: 10px;
-  display: flex;
-  align-items: stretch;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 5px;
-  color: #333;
-  font-weight: 600;
-  font-size: 0.7rem;
-}
-.remove_user_btn {
-  background-color: red;
-  color: white;
-  padding: 7px;
-  border: 1px solid red;
-  font-size: 0.7rem;
-}
-.remove_user_btn:hover {
-  background-color: #ffffff;
-  color: red;
-  border: 1px solid black;
-}
+
 .not_admin {
   position: absolute;
   top: 50%;

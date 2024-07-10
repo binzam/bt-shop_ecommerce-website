@@ -4,8 +4,10 @@ import UserIcon from '../../assets/user-name-icon.svg';
 import EmailIcon from '../../assets/email-icon.svg';
 import MsgIcon from '../../assets/message-icon.svg';
 import axios from 'axios';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 function Contact() {
+  const { user } = useAuthContext();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -15,7 +17,15 @@ function Contact() {
     e.preventDefault();
     setError(null);
     try {
-      const response = await axios.post('http://localhost:5555/api/feedback', { name, email, message });
+      const response = await axios.post(
+        'http://localhost:5555/api/feedback',
+        { name, email, message },
+        {
+          headers: {
+            authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       if (response.data && response.data.feedbackSubmitted === true) {
         console.log('Feedback successfully submitted');
@@ -90,7 +100,7 @@ function Contact() {
             <button className="submit-btn" type="submit">
               Submit
             </button>
-            {error && <div className='form_error'>{error}</div>}
+            {error && <div className="form_error">{error}</div>}
           </form>
         </div>
       )}

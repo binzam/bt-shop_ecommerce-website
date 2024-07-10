@@ -11,7 +11,6 @@ const OrdersPage = () => {
   const { cartItems, handleClearCart } = useContext(CartContext);
   const [userData, setUserData] = useState([]);
   const [orderCompleted, setOrderCompleted] = useState(false);
-  const [placedOrder, setPlacedOrder] = useState([]);
   const [error, setError] = useState(null);
   const calculateTotal = () => {
     let total = 0;
@@ -63,13 +62,11 @@ const OrdersPage = () => {
       if (response.data.orderCreated) {
         setError(null);
         handlePlaceOrder();
-        setPlacedOrder(response.data.order);
       }
     } catch (error) {
       setError(error.response.data.message);
     }
   };
-  console.log(placedOrder);
 
   return (
     <div className="orders_page">
@@ -83,7 +80,7 @@ const OrdersPage = () => {
         </button>
       )}
 
-      {orderCompleted &&  (
+      {orderCompleted && (
         <div className="order_complete_div">
           <h2>Order Submitted</h2>
           <p>

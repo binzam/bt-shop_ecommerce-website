@@ -5,7 +5,7 @@ import {
   getOrdersById,
   removeOrder,
 } from '../controllers/orderController.js';
-import { requireAuth } from '../middleware/authMiddleware.js';
+import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -13,6 +13,6 @@ const router = express.Router();
 router.post('/place_order', requireAuth, createOrder);
 router.get('/', getOrders);
 router.get('/:id', getOrdersById);
-router.delete('/remove_order/:id', removeOrder);
+router.delete('/remove_order/:id', requireAuth, verifyAdmin, removeOrder);
 
 export default router;

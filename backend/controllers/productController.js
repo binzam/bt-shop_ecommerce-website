@@ -44,7 +44,7 @@ const addNewProduct = async (req, res) => {
       price,
     };
     const product = await Product.create(newProduct);
-    return res.status(201).json(product);
+    return res.status(201).json({ productAdded: true });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });

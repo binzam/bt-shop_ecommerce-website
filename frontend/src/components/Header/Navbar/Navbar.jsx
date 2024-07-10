@@ -29,18 +29,18 @@ const Navbar = () => {
 
   return (
     <nav className="navigation">
-      {!isDropdownOpen ? (
-        <button onClick={toggleDropdown} className="open_dropdown_btn">
-          <img src={MenuIcon} alt="menu" />
-        </button>
-      ) : (
+      {isDropdownOpen ? (
         <button onClick={closeDropdown} className="close_dropdown_btn">
           <img src={CloseMenuIcon} alt="close menu" />
+        </button>
+      ) : (
+        <button onClick={toggleDropdown} className="open_dropdown_btn">
+          <img src={MenuIcon} alt="menu" />
         </button>
       )}
       <ul className={`nav_links ${isDropdownOpen ? "show" : "hide"}`}>
         <li>
-          <Link onClick={() => handleClick()} to="/" className="nav_link">
+          <Link onClick={() => handleClick()} to="/home" className="nav_link">
             Home
           </Link>
         </li>

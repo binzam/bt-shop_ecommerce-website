@@ -3,6 +3,7 @@ import './Forms.css';
 import { useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from 'axios';
+import Loading from '../Loading';
 
 const ShippingForm = ({ handlePaymentForm }) => {
   const { user } = useAuthContext();
@@ -50,6 +51,8 @@ const ShippingForm = ({ handlePaymentForm }) => {
   };
   return (
     <form onSubmit={handleSubmit} className="shipping_form">
+      {isLoading && <Loading />}
+
       <div className="shipping_header">Shipping Address</div>
       <div className="shipping_form_group">
         <label htmlFor="street">Street</label>

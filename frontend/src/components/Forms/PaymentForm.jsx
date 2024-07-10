@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './Forms.css';
 import axios from 'axios';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import Loading from '../Loading';
 
 const PaymentForm = ({ handleCreateOrder }) => {
   const { user } = useAuthContext();
@@ -50,6 +51,7 @@ const PaymentForm = ({ handleCreateOrder }) => {
 
   return (
     <form className="payment_form" onSubmit={handleSubmit}>
+      {isLoading && <Loading />}
       <h2 className="payment_header">Credit card Information</h2>
       <div className="payment_form_group">
         <label htmlFor="cardNumber">Card Number:</label>

@@ -6,8 +6,10 @@ import ProductsPage from '../ProductsPage/ProductsPage';
 import UsersList from './adminComponents/UsersList';
 import { useNavigate } from 'react-router-dom';
 import OrdersList from './adminComponents/OrdersList';
+import fetchOrders from '../../utils/fetchOrders';
+import fetchUsers from '../../utils/fetchUsers';
 const AdminDashboard = () => {
-  const { isAdmin } = useContext(AuthContext);
+  const { isAdmin, user } = useContext(AuthContext);
   const { products } = useContext(ProductContext);
   const [showCustomers, setShowCustomers] = useState(true);
   const [showOrders, setShowOrders] = useState(false);
@@ -16,6 +18,13 @@ const AdminDashboard = () => {
   const [ordersCount, setOrdersCount] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      fetchOrders(user, setOrdersCount);
+      fetchUsers(user, setUsersCount);
+    }
+  }, [user]);
+
   useEffect(() => {
     if (isAdmin()) {
       setShowPopup(false);
@@ -56,7 +65,7 @@ const AdminDashboard = () => {
             <button
               className={`products_btn ${showProducts ? 'selected' : ''}`}
               onClick={() => handleOptionClick(false, false, true)}
-            > 
+            >
               Products
               <span className="counter">{products.length}</span>
             </button>
@@ -66,7 +75,7 @@ const AdminDashboard = () => {
       {showCustomers && <UsersList setUsersCount={setUsersCount} />}
       {showOrders && <OrdersList setOrdersCount={setOrdersCount} />}
       {showProducts && <ProductsPage />}
-      
+
       {showPopup && (
         <div className="not_admin">
           YOU ARE NOT AUTHORIZED! <br />

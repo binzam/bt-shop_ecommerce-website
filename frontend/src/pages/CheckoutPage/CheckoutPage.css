@@ -54,13 +54,13 @@
   padding: 10px;
   position: relative;
 }
-.orders,
+.checkout_orders,
 .checkout_progress_wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.orders {
+.checkout_orders {
   width: 48%;
 }
 .checkout_progress_wrapper {
@@ -205,7 +205,7 @@
     justify-content: flex-start;
     padding-top: 40px;
   }
-  .orders,
+  .checkout_orders,
   .checkout_progress_wrapper {
     width: 100%;
   }

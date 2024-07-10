@@ -3,20 +3,32 @@ import { Link } from 'react-router-dom';
 import CartIcon from '../../assets/icon-cart-btn.svg';
 import './ProductBox.css';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import removeIcon from '../../assets/close_btn.svg';
 import { ProductContext } from '../../contexts/ProductContext.jsx';
+import ConfirmationPopup from '../../pages/AdminDashboard/adminComponents/ConfirmationPopup.jsx';
 
 const ProductBox = ({ product, addToCart }) => {
   const { isAdmin } = useContext(AuthContext);
   const { removeProduct } = useContext(ProductContext);
+  const [productId, setProductId] = useState(null);
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 
   const handleRemoveProduct = (productId) => {
-    removeProduct(productId);
+    setShowConfirmationPopup(true);
+    setProductId(productId);
   };
 
   return (
     <article className="product_box">
+      {isAdmin() && showConfirmationPopup && (
+        <ConfirmationPopup
+          type="Product"
+          id={productId}
+          remove={removeProduct}
+          close={setShowConfirmationPopup}
+        />
+      )}
       <h3 className="product_title">{product.title.slice(0, 20)}</h3>
       <div className="product_image">
         <img src={product.image} alt={product.title} />

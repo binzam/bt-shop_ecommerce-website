@@ -30,7 +30,6 @@ function AddProductForm({ closeForm }) {
       title: "",
     });
     closeForm();
-    alert("Product added Succefully");
   };
   return (
     <form onSubmit={handleSubmit} className="add_product_form">

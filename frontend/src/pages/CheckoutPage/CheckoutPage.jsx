@@ -64,7 +64,7 @@ const CheckoutPage = () => {
         )}
       </div>
       <div className="orders_content">
-        <div className="orders">
+        <div className="checkout_orders">
           <span className="pending_orders_count">
             Pending Orders [<span>{cartItems.length}</span>]
           </span>

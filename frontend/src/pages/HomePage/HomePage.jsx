@@ -5,6 +5,9 @@ import MensImg from '../../assets/mens-clothing-1.jpg';
 import WomensImg from '../../assets/womes-clothing.jpg';
 import ElectronicsImg from '../../assets/electronics-1.jpg';
 import JeweleryImg from '../../assets/jewelery-1.jpg';
+import FreeShippping from '../../assets/truck-fast-solid.svg';
+import CustomerSupport from '../../assets/headset-solid.svg';
+import MoneyBack from '../../assets/money-bill-transfer-solid.svg';
 const Homepage = () => {
   return (
     <div className="home_page">
@@ -59,6 +62,29 @@ const Homepage = () => {
         </div>
       </section>
       <TrendingProducts />
+      <section className="services">
+        <div className="service">
+          <div className="service_icon">
+            <img src={FreeShippping} alt="free shipping" />
+          </div>
+          <strong>Free Shipping</strong>
+          <p>Enjoy free shipping on all orders.</p>
+        </div>
+        <div className="service">
+          <div className="service_icon">
+            <img src={MoneyBack} alt="Money back Guarantee" />
+          </div>
+          <strong>Money back Guarantee</strong>
+          <p>Return your order within 30 days.</p>
+        </div>
+        <div className="service">
+          <div className="service_icon">
+            <img src={CustomerSupport} alt="Customer support" />
+          </div>
+          <strong>Customer Support</strong>
+          <p>Get assistance any time, day or night.</p>
+        </div>
+      </section>
       <div className="home_category_section">
         <h2 className="category_header">Categories</h2>
         <ul className="home_page_category_list">
@@ -102,23 +128,25 @@ const Homepage = () => {
         </ul>
       </div>
       <div className="contact_info">
-        <h2>Contact Information</h2>
-        <p className="contact_txt">
-          If you have any questions or need assistance, feel free to reach out
-          to us using the contact information below:
-        </p>
-        <ul>
-          <li>
-            <strong>Phone:</strong> 123-456-7890
-          </li>
-          <li>
-            <strong>Email:</strong> info@example.com
-          </li>
-          <li>
-            <strong>Address:</strong> 123 Main Street, City, Country
-          </li>
-        </ul>
         <div>
+          <h2>Contact Information</h2>
+          <p className="contact_txt">
+            If you have any questions or need assistance, feel free to reach out
+            to us using the contact information below:
+          </p>
+        </div>
+        <div>
+          <ul>
+            <li>
+              <strong>Phone:</strong> 123-456-7890
+            </li>
+            <li>
+              <strong>Email:</strong> info@example.com
+            </li>
+            <li>
+              <strong>Address:</strong> 123 Main Street, City, Country
+            </li>
+          </ul>
           <ul className="social_links">
             <li>
               <i className="fa-brands fa-facebook"></i>
