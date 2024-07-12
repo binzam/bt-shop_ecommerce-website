@@ -26,12 +26,17 @@ const orderSchema = new Schema(
     totalAmount: {
       type: String,
       required: true,
-      default: 0.00,
+      default: 0.0,
     },
     shippingAddress: {
       street: String,
       city: String,
       country: String,
+    },
+    paymentMethod: {
+      type: String,
+      enum: ['Credit card', 'other'],
+      default: 'Credit card',
     },
     status: {
       type: String,

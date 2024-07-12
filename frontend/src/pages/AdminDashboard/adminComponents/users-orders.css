@@ -1,6 +1,7 @@
 .users,
 .orders {
   width: 100%;
+  min-height: calc(100vh - 240px);
   position: relative;
 }
 .users_list,

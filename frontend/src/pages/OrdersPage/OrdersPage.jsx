@@ -58,7 +58,6 @@ const OrdersPage = () => {
           },
         }
       );
-      console.log(response);
       if (response.data.orderCreated) {
         setError(null);
         handlePlaceOrder();

@@ -39,11 +39,37 @@ const createOrder = async (req, res) => {
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({});
-    // const orders = await order.find({}, 'username role email _id');
+    const orders = await Order.find({})
+      .populate('orders.product')
+      .populate('user', '-password');
+
+    const formattedOrders = orders.map((order) => ({
+      _id: order._id,
+      user: {
+        _id: order.user._id,
+        username: order.user.username,
+        email: order.user.email,
+        phoneNumber: order.user.address['phoneNumber'],
+      },
+      orders: order.orders.map((item) => ({
+        _id: item._id,
+        product: {
+          _id: item.product._id,
+          title: item.product.title,
+          image: item.product.image,
+        },
+        price: item.price,
+        quantity: item.quantity,
+      })),
+      totalAmount: order.totalAmount,
+      shippingAddress: order.shippingAddress,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+    }));
+
     return res.status(200).json({
       orderCount: orders.length,
-      allOrders: orders,
+      allOrders: formattedOrders,
     });
   } catch (error) {
     console.log(error.message);
@@ -75,7 +101,7 @@ const removeOrder = async (req, res) => {
     }
 
     return res.status(200).json({
-      OrderRemoveSuccess: true,
+      orderRemoved: true,
       message: 'Order deleted successfully',
     });
   } catch (error) {

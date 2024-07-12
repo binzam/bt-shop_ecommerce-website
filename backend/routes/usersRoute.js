@@ -16,7 +16,7 @@ const router = express.Router();
 // get current user
 router.get('/getme', requireAuth, getCurrentUser);
 // get all users
-router.get('/', requireAuth, verifyAdmin, getUsers);
+router.get('/', getUsers);
 router.get('/:id', getUserById);
 // add/create user
 router.post('/register', registerUser);

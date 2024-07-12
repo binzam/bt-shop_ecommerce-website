@@ -66,12 +66,14 @@ const getUsers = async (req, res) => {
   try {
     const users = await User.find({});
     // const users = await User.find({}, 'username role email _id');
+    if (!users) {
+     return res.status(400).json({ error: 'Users Not found' });
+    }
     return res.status(200).json({
       userCount: users.length,
       allUsers: users,
     });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -202,15 +204,10 @@ const updateUserPaymentInfo = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await User.findByIdAndDelete(id);
-
-    if (!result) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
+    await User.findByIdAndDelete(id);
     return res
       .status(200)
-      .json({ userRemoveSuccess: true, message: 'User deleted successfully' });
+      .json({ userRemoved: true, message: 'User deleted successfully' });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });

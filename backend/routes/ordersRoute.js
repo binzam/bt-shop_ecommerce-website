@@ -10,8 +10,8 @@ import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 // place order
-router.post('/place_order', requireAuth, createOrder);
-router.get('/', getOrders);
+router.post('/place_order', createOrder);
+router.get('/', requireAuth, verifyAdmin, getOrders);
 router.get('/:id', getOrdersById);
 router.delete('/remove_order/:id', requireAuth, verifyAdmin, removeOrder);
 

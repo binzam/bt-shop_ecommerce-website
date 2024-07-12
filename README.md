@@ -1,5 +1,5 @@
-# bt-shop Ecommerce Website
 * [3 minute video demo](https://youtu.be/CMB2ISPjF-o)
+# bt-shop Ecommerce Website
 - This is a README file for a MERN (MongoDB, Express.js, React.js, Node.js) stack ecommerce website.
 - It provides an overview of the project, installation instructions, features, and other relevant information.
 

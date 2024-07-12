@@ -33,12 +33,12 @@ function App() {
             />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDescription />} />
-            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/orders" element={<OrdersPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </ProductContextProvider>
       </main>

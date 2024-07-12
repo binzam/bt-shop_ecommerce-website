@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useSignup } from '../../hooks/useSignup';
 import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
+import Loading from '../Loading';
 
 const RegisterForm = ({ handleClose }) => {
   const [registerForm, setRegisterForm] = useState({
@@ -44,6 +45,7 @@ const RegisterForm = ({ handleClose }) => {
       <div onClick={handleClose} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
       </div>
+      {isLoading && <Loading />}
       <form className="register_form" onSubmit={handleSubmit}>
         <h2>Create an account</h2>
         <div className="signup_form_group">

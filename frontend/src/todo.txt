@@ -19,6 +19,6 @@ A small popup after succesful login/registration: done
 checkout page responsivencess: done
 create order!!: done
 product description minus icon: done
+add new product :done
 ...
-add new product 
 ...

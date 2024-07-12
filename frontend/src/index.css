@@ -43,6 +43,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 99999999;
 }
 .loading_animation {
   width: 150px;

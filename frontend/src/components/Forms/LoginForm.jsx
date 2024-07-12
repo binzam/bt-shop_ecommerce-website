@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useLogin } from '../../hooks/useLogin';
 import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
+import Loading from '../Loading';
 const LoginForm = ({ handleClose }) => {
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -29,6 +30,7 @@ const LoginForm = ({ handleClose }) => {
       <div onClick={handleClose} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
       </div>
+      {isLoading && <Loading />}
 
       <form className="login_form" onSubmit={handleSubmit}>
         <h2 className="login_txt">Login in to your account</h2>

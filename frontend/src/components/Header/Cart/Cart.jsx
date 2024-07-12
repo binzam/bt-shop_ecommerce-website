@@ -23,7 +23,7 @@ const Cart = () => {
         {cartItems && cartItems.length > 0 && <CartItems />}
       </div>
       {cartItems && cartItems.length > 0 && (
-        <Link className="cart_checkout_link" to="/checkout">
+        <Link onClick={handleCloseCart} className="cart_checkout_link" to="/checkout">
           CHECKOUT
         </Link>
       )}
