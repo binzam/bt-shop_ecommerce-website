@@ -33,11 +33,11 @@ function Contact() {
         setError(null);
       } else {
         setIsSubmitted(false);
-        setError(response.data.message);
+        setError("ERROR: NETWORK ERROR");
       }
     } catch (error) {
       console.error(error);
-      setError(error.response.data.message);
+      setError(error.response.data.message || "ERROR: NETWORK ERROR");
     }
   };
 

@@ -1,4 +1,4 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
 const orderSchema = new Schema(
   {
     user: {
@@ -18,15 +18,15 @@ const orderSchema = new Schema(
           required: true,
         },
         price: {
-          type: String,
+          type: Number,
           required: true,
         },
       },
     ],
     totalAmount: {
-      type: String,
+      type: Number,
       required: true,
-      default: 0.0,
+      default: 0.00,
     },
     shippingAddress: {
       street: String,
@@ -50,3 +50,8 @@ const orderSchema = new Schema(
 );
 
 export const Order = model('Order', orderSchema);
+// Order.updateMany(
+//     {},
+//     { $set: { 'orders.$[].price': { $toNumber: '$orders.price' } } },
+//     { multi: true }
+//   )

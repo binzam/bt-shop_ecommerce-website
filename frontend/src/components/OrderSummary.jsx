@@ -2,28 +2,36 @@ import { useContext } from 'react';
 import { CartContext } from '../contexts/CartContext';
 
 const OrderSummary = () => {
+  const TAX_RATE = 0.15;
   const { cartItems } = useContext(CartContext);
-
   const calculateTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
-      total += parseInt(item.price) * parseInt(item.quantity);
+      total += item.price * item.quantity;
     });
-    return parseInt(total.toFixed(2), 10);
+    return total;
   };
-
+  
   const calculateTax = () => {
-    return Number(parseInt(calculateTotal() * 0.15, 10).toFixed(2));
+    const amount = calculateTotal();
+    const tax = amount * TAX_RATE;
+    return tax.toFixed(2);
   };
-
-  const totalAmount = Number(calculateTax() + calculateTotal()).toFixed(2);
+  
+  const calculateOrderTotal = () => {
+    const totalAmount = calculateTotal();
+    const tax = calculateTax();
+    return (totalAmount + parseFloat(tax)).toFixed(2);
+  };
+  
+  const orderTotal = calculateOrderTotal();
   return (
     <div className="order_summary">
       <div className="order_summary_header">Order Summary</div>
       <div className="pricing_summary">
         <div>
           <p className="left">
-            Items ( <span>{cartItems.length}</span> ) :
+            Ordered Product ( <span>{cartItems.length}</span> ) :
           </p>
           <p className="right">${calculateTotal()}</p>
         </div>
@@ -43,7 +51,7 @@ const OrderSummary = () => {
           <p className="left total">Order Total:</p>
           <p className="right order_total">
             <span className="dollar_sign">$</span>
-            {totalAmount}
+            {orderTotal}
           </p>
         </div>
       </div>

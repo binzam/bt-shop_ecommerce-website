@@ -5,26 +5,37 @@ import axios from 'axios';
 import './OrdersPage.css';
 import OrderSummary from '../../components/OrderSummary';
 import getme from '../../utils/getUserData';
+import Loading from '../../components/Loading';
 
 const OrdersPage = () => {
+  const TAX_RATE = 0.15;
   const { user } = useAuthContext();
   const { cartItems, handleClearCart } = useContext(CartContext);
   const [userData, setUserData] = useState([]);
   const [orderCompleted, setOrderCompleted] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(null);
   const calculateTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
-      total += parseInt(item.price) * parseInt(item.quantity);
+      total += item.price * item.quantity;
     });
-    return parseInt(total.toFixed(2), 10);
+    return total;
   };
 
   const calculateTax = () => {
-    return Number(parseInt(calculateTotal() * 0.15, 10).toFixed(2));
+    const amount = calculateTotal();
+    const tax = amount * TAX_RATE;
+    return tax.toFixed(2);
   };
 
-  const totalAmount = Number(calculateTax() + calculateTotal()).toFixed(2);
+  const calculateOrderTotal = () => {
+    const totalAmount = calculateTotal();
+    const tax = calculateTax();
+    return (totalAmount + parseFloat(tax)).toFixed(2);
+  };
+  const orderTotal = calculateOrderTotal();
+
   const handlePlaceOrder = () => {
     setOrderCompleted(true);
     handleClearCart();
@@ -43,12 +54,13 @@ const OrdersPage = () => {
   const order = {
     user: userData._id,
     orders: filteredValues,
-    totalAmount: totalAmount,
+    totalAmount: orderTotal,
     address: userData.address,
   };
   const createOrder = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      setError(null);
       const response = await axios.post(
         'http://localhost:5555/api/orders/place_order',
         { order },
@@ -60,10 +72,13 @@ const OrdersPage = () => {
       );
       if (response.data.orderCreated) {
         setError(null);
+        setLoading(false);
         handlePlaceOrder();
       }
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,6 +86,7 @@ const OrdersPage = () => {
     <div className="orders_page">
       <h2 className="orders_header">Orders</h2>
       {error && <div className="form_error">{error}</div>}
+      {loading && <Loading />}
       {!orderCompleted && <OrderSummary />}
 
       {!orderCompleted && (

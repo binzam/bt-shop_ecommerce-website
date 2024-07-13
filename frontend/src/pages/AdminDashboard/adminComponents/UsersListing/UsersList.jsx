@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import './users-orders.css';
-import ConfirmationPopup from './ConfirmationPopup';
-import Loading from '../../../components/Loading';
-import useUsers from '../../../hooks/useUsers.jsx';
+import './UsersList.css';
+import ConfirmationPopup from '../ConfirmationPopup.jsx';
+import Loading from '../../../../components/Loading.jsx';
+import useUsers from '../../../../hooks/useUsers.jsx';
 
 const UsersList = ({ user, updateUsers }) => {
   const { users, error, loading, removeUser } = useUsers(user);
@@ -26,16 +26,16 @@ const UsersList = ({ user, updateUsers }) => {
           {users &&
             users.map((user) => (
               <li key={user._id} className="user">
-                <div>
+                <div className='user_detail'>
                   ID: <span className="highlight">{user._id}</span>
                 </div>
-                <div>
+                <div className='user_detail'>
                   Name: <span>{user.username}</span>
                 </div>
-                <div>
+                <div className='user_detail'>
                   Email: <span className="highlight">{user.email}</span>
                 </div>
-                <div>
+                <div className='user_detail'>
                   Role: <span>{user.role}</span>
                 </div>
                 {user.role !== 'admin' && (

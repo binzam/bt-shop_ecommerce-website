@@ -19,7 +19,7 @@ const productSchema = new Schema(
       required: true,
     },
     price: {
-      type: String,
+      type: Number,
       required: true,
     },
     rating: {
@@ -29,6 +29,13 @@ const productSchema = new Schema(
     ratingCount: {
       type: String,
       default: 0,
+    },
+    taxRate: {
+      type: Number,
+      required: true,
+      default: 0.15,
+      min: 0,
+      max: 1,
     },
   },
   {

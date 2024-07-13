@@ -3,9 +3,9 @@ import { AuthContext } from '../../contexts/AuthContext';
 import './AdminDashboard.css';
 import { ProductContext } from '../../contexts/ProductContext';
 import ProductsPage from '../ProductsPage/ProductsPage';
-import UsersList from './adminComponents/UsersList';
+import UsersList from './adminComponents/UsersListing/UsersList';
 import { useNavigate } from 'react-router-dom';
-import OrdersList from './adminComponents/OrdersList';
+import OrdersList from './adminComponents/OrderListing/OrdersList';
 import useUsers from '../../hooks/useUsers';
 import useOrders from '../../hooks/useOrders';
 

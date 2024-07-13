@@ -3,7 +3,6 @@ import { Order } from '../models/orderModel.js';
 const createOrder = async (req, res) => {
   try {
     const { order } = req.body;
-    console.log('order:', order);
     const { user, orders, totalAmount, address } = order;
     if (!user || !orders || !orders.length > 0 || !totalAmount || !address) {
       throw Error('You have no Orders to be Placed');
@@ -43,29 +42,42 @@ const getOrders = async (req, res) => {
       .populate('orders.product')
       .populate('user', '-password');
 
-    const formattedOrders = orders.map((order) => ({
-      _id: order._id,
-      user: {
-        _id: order.user._id,
-        username: order.user.username,
-        email: order.user.email,
-        phoneNumber: order.user.address['phoneNumber'],
-      },
-      orders: order.orders.map((item) => ({
-        _id: item._id,
-        product: {
-          _id: item.product._id,
-          title: item.product.title,
-          image: item.product.image,
+    const formattedOrders = orders.map((order) => {
+      const totalOrderAmount = order.orders.reduce((acc, item) => {
+        const itemTotalPrice = item.product.price * item.quantity;
+        const itemTax =
+          item.product.price * item.product.taxRate * item.quantity;
+        return acc + itemTotalPrice + itemTax;
+      }, 0);
+
+      return {
+        _id: order._id,
+        user: {
+          _id: order.user._id,
+          username: order.user.username,
+          email: order.user.email,
+          phoneNumber: order.user.address['phoneNumber'],
         },
-        price: item.price,
-        quantity: item.quantity,
-      })),
-      totalAmount: order.totalAmount,
-      shippingAddress: order.shippingAddress,
-      createdAt: order.createdAt,
-      updatedAt: order.updatedAt,
-    }));
+        orders: order.orders.map((item) => ({
+          _id: item._id,
+          product: {
+            _id: item.product._id,
+            title: item.product.title,
+            image: item.product.image,
+            price: item.product.price,
+            taxRate: item.product.taxRate,
+          },
+          totalAmount: totalOrderAmount,
+          quantity: item.quantity,
+          tax: item.product.price * item.product.taxRate * item.quantity,
+          itemPrice: item.product.price * item.quantity,
+          totalItemPrice: item.product.price * item.quantity + item.product.price * item.product.taxRate * item.quantity,
+        })),
+        shippingAddress: order.shippingAddress,
+        createdAt: order.createdAt,
+        updatedAt: order.updatedAt,
+      };
+    });
 
     return res.status(200).json({
       orderCount: orders.length,

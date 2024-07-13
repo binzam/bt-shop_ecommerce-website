@@ -1,5 +1,6 @@
 .products_page {
   width: 100%;
+  min-height: calc(100vh - 130px);
   position: relative;
 }
 .product_filter_bar {
