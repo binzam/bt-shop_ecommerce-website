@@ -20,9 +20,7 @@ const AdminDashboard = () => {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    if (user && isAdmin()) {
-      setShowPopup(false);
-    } else {
+    if (!isAdmin) {
       setShowPopup(true);
       const timeout = setTimeout(() => {
         setShowPopup(false);
@@ -30,7 +28,7 @@ const AdminDashboard = () => {
       }, 2000);
       return () => clearTimeout(timeout);
     }
-  }, [isAdmin, navigate, user]);
+  }, [isAdmin, navigate]);
 
   const handleOptionClick = (showCust, showOrd, showProd) => {
     setShowCustomers(showCust);
@@ -68,7 +66,7 @@ const AdminDashboard = () => {
     <div className="admin_page">
       {isAdmin() && (
         <div>
-          <h1>ADMIN PANEL</h1>
+          <h1>Admin Dashboard</h1>
           {renderAdminPanel()}
         </div>
       )}

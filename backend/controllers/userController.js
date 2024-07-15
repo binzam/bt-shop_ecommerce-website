@@ -1,6 +1,9 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
+// import crypto from 'crypto';
+// import sendEmail from '../utils/sendEmail.js';
+import nodemailer from 'nodemailer';
 
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
@@ -64,10 +67,12 @@ const registerUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find({});
+    // const users = await User.find({});
     // const users = await User.find({}, 'username role email _id');
+    // In your user controller or route
+    const users = await User.find({}).populate('orders');
     if (!users) {
-     return res.status(400).json({ error: 'Users Not found' });
+      return res.status(400).json({ error: 'Users Not found' });
     }
     return res.status(200).json({
       userCount: users.length,
@@ -122,10 +127,11 @@ const updateUserPassword = async (req, res) => {
 
     const token = generateToken(updatedUser._id);
     return res.status(200).json({
-      message: 'Password updated successfully',
+      passwordChangeSuccess: true,
       data: {
         token,
         email: updatedUser.email,
+        username: updatedUser.username,
       },
     });
   } catch (error) {
@@ -201,6 +207,71 @@ const updateUserPaymentInfo = async (req, res) => {
   }
 };
 
+const resetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const token = generateToken(user._id);
+    user.resetToken = token;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'binyam.techan1@gmail.com',
+        pass: 'season10episode24',
+      },
+    });
+    const resetUrl = `http://localhost:5173/reset_password/${token}`;
+
+    const mailOptions = {
+      from: 'binyam.techan1@gmail.com',
+      to: 'btechan@gmail.com',
+      subject: 'Reset password for bt-shop',
+      text: `
+      Hello,
+
+      You are receiving this email because you (or someone else) has requested the reset of your password.
+      Please click on the following link to complete the process:
+
+      ${resetUrl}
+
+      If you did not request this, please ignore this email and your password will remain unchanged.
+
+      Best regards,
+      bt-shop
+    `,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        res.status(500).send('Error sending email');
+      } else {
+        console.log(`Email sent: ${info.response}`);
+        res
+          .status(200)
+          .send('Check your email for instructions on resetting your password');
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+const handleResetToken = (req, res) => {
+  const { token, password } = req.body;
+  // Find the user with the given token and update their password
+  const user = User.findOne({ token });
+  if (user) {
+    user.password = password;
+    delete user.resetToken; // Remove the reset token after the password is updated
+    res.status(200).json({ message: 'Password updated successfully' });
+  } else {
+    res.status(404).json({ message: 'Invalid or expired token' });
+  }
+};
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -223,4 +294,6 @@ export {
   updateUserShippingInfo,
   updateUserPaymentInfo,
   getCurrentUser,
+  resetPassword,
+  handleResetToken,
 };

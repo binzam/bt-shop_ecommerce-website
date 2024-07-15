@@ -7,7 +7,6 @@ const ConfirmationPopup = ({
   updateOrders,
   updateUsers,
 }) => {
-  
   const handleRemove = (id) => {
     remove(id);
     close(false);
@@ -20,7 +19,9 @@ const ConfirmationPopup = ({
   return (
     <div className="confirmation_popup">
       <h2>Confirm Removal</h2>
-      <p>Are you sure you want to remove this {`${type}`}?</p>
+      <p>
+        Are you sure you want to remove this {`${type}:`} <small>{id}</small>?
+      </p>
       <div className="confirmation_buttons">
         <button className="yes_btn" onClick={() => handleRemove(id)}>
           Yes

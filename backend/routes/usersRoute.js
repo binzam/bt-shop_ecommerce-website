@@ -9,10 +9,12 @@ import {
   updateUserShippingInfo,
   updateUserPaymentInfo,
   getUserById,
+  resetPassword,
+  handleResetToken,
 } from '../controllers/userController.js';
 import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
-
 const router = express.Router();
+
 // get current user
 router.get('/getme', requireAuth, getCurrentUser);
 // get all users
@@ -20,6 +22,8 @@ router.get('/', getUsers);
 router.get('/:id', getUserById);
 // add/create user
 router.post('/register', registerUser);
+router.post('/reset_password', resetPassword);
+router.get('/reset_password/:token', handleResetToken);
 // login user
 router.post('/login', connectUser);
 router.put('/update_user', requireAuth, updateUserShippingInfo);

@@ -21,27 +21,49 @@ const orderSchema = new Schema(
           type: Number,
           required: true,
         },
+        itemPrice: {
+          type: Number,
+          min: 0,
+        },
+        tax: {
+          type: Number,
+          min: 0,
+        },
+        totalItemPrice: {
+          type: Number,
+          min: 0,
+        },
       },
     ],
     totalAmount: {
       type: Number,
       required: true,
-      default: 0.00,
+      default: 0.0,
     },
     shippingAddress: {
       street: String,
       city: String,
       country: String,
     },
+    shippingCompany: {
+      type: String,
+      enum: ['Fedex', 'DHL'],
+      default: 'DHL',
+    },
     paymentMethod: {
       type: String,
-      enum: ['Credit card', 'other'],
-      default: 'Credit card',
+      enum: ['Credit Card', 'PayPal', 'Apple Pay', 'Google Pay'],
+      default: 'Credit Card',
     },
-    status: {
+    paymentStatus: {
       type: String,
-      enum: ['Pending', 'Processing', 'Shipped', 'Delivered'],
+      enum: ['Pending', 'Paid', 'Failed'],
       default: 'Pending',
+    },
+    orderStatus: {
+      type: String,
+      enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'],
+      default: 'Processing',
     },
   },
   {
@@ -50,8 +72,4 @@ const orderSchema = new Schema(
 );
 
 export const Order = model('Order', orderSchema);
-// Order.updateMany(
-//     {},
-//     { $set: { 'orders.$[].price': { $toNumber: '$orders.price' } } },
-//     { multi: true }
-//   )
+

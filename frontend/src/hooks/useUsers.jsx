@@ -6,9 +6,10 @@ const useUsers = () => {
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(null);
 
   const fetchUsers = useCallback(async () => {
+    setLoading(true);
     try {
       if (user) {
         const { data } = await axios.get('http://localhost:5555/api/users', {
@@ -25,8 +26,6 @@ const useUsers = () => {
         }
       }
     } catch (error) {
-      console.log(error.message);
-
       setError(error.message);
     } finally {
       setLoading(false);
@@ -35,10 +34,11 @@ const useUsers = () => {
   useEffect(() => {
     fetchUsers();
   }, [user, fetchUsers]);
+  
   const removeUser = useCallback(
     async (userId) => {
+      setLoading(true);
       try {
-        setLoading(true);
         const response = await axios.delete(
           `http://localhost:5555/api/users/remove_user/${userId}`,
           {

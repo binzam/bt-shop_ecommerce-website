@@ -6,9 +6,10 @@ const useOrders = () => {
   const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(null);
 
   const fetchOrders = useCallback(async () => {
+    setLoading(true);
     try {
       if (user) {
         const { data } = await axios.get('http://localhost:5555/api/orders', {
@@ -35,8 +36,8 @@ const useOrders = () => {
 
   const removeOrder = useCallback(
     async (orderId) => {
+      setLoading(true);
       try {
-        setLoading(true);
         const response = await axios.delete(
           `http://localhost:5555/api/orders/remove_order/${orderId}`,
           {
@@ -47,6 +48,7 @@ const useOrders = () => {
         );
         if (response.data.orderRemoved) {
           fetchOrders();
+          setError(null)
         }
       } catch (error) {
         setError(error.message);

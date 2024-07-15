@@ -18,6 +18,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    orders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Order',
+      },
+    ],
     address: {
       street: String,
       city: String,

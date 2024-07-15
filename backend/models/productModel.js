@@ -23,11 +23,11 @@ const productSchema = new Schema(
       required: true,
     },
     rating: {
-      type: String,
+      type: Number,
       default: 0.0,
     },
     ratingCount: {
-      type: String,
+      type: Number,
       default: 0,
     },
     taxRate: {
@@ -44,3 +44,14 @@ const productSchema = new Schema(
 );
 
 export const Product = model('Product', productSchema);
+
+// Product.updateMany(
+//   {},
+//   {
+//     $set: {
+//       rating: { $toNumber: '$rating' },
+//       ratingCount: { $toNumber: '$ratingCount' },
+//     },
+//   },
+//   { multi: true }
+// );

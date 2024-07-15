@@ -9,10 +9,12 @@ import { CartContext } from '../../contexts/CartContext';
 const ProductRatingForm = ({ productId, setShowRatingForm }) => {
   const { user } = useAuthContext();
   const { handleOpenUserOptions } = useContext(CartContext);
-
   const [rating, setRating] = useState(2.5);
   const [showMessage, setShowMessage] = useState(false);
   const [error, setError] = useState(null);
+  const handleChange = (e) => {
+    setRating(e.target.value);
+  };
   const submitRating = async (e) => {
     e.preventDefault();
     setError(null);
@@ -48,9 +50,7 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
       setError(error.response.data.message);
     }
   };
-  const handleChange = (e) => {
-    setRating(e.target.value);
-  };
+  
   const handleUserNotLoggedIn = () => {
     setShowRatingForm(false);
     handleOpenUserOptions();
