@@ -5,10 +5,10 @@ import ThumbsUpIcon from '../../assets/thumbs_up.svg';
 import './Forms.css';
 import axios from 'axios';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { CartContext } from '../../contexts/CartContext';
+import { NavContext } from '../../contexts/NavContext';
 const ProductRatingForm = ({ productId, setShowRatingForm }) => {
   const { user } = useAuthContext();
-  const { handleOpenUserOptions } = useContext(CartContext);
+  const { handleOpenUserOptions } = useContext(NavContext);
   const [rating, setRating] = useState(2.5);
   const [showMessage, setShowMessage] = useState(false);
   const [error, setError] = useState(null);

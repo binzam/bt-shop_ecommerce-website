@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import { CartContext } from '../contexts/CartContext';
+import { NavContext } from '../contexts/NavContext';
 
 const OrderSummary = () => {
   const TAX_RATE = 0.15;
-  const { cartItems } = useContext(CartContext);
+  const { cartItems } = useContext(NavContext);
   const calculateTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {

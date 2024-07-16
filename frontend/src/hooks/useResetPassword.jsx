@@ -1,32 +1,32 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { NavContext } from '../contexts/NavContext';
 
 export const useResetPassword = () => {
+  const { handleOpenResetPasswordForm } = useContext(NavContext);
+
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const [isResetEmailSent, setIsResetEmailSent] = useState(false);
   const resetPassword = async (email) => {
     try {
+      setIsResetEmailSent(false);
       setIsLoading(true);
+      setError(null);
       const response = await axios.post(
-        'http://localhost:5555/api/users/reset_password',
+        'http://localhost:5555/api/users/forgot_password',
         { email }
       );
-      if(response){
-          setIsLoading(false);
-          console.log(response);
-
+      if (response && response.data.emailSent) {
+        setIsLoading(false);
+        handleOpenResetPasswordForm();
       }
-      if(response.data.user.role === "admin"){
-        navigate('/admin')
-      }
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      setError(error.response.data.error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { resetPassword, error, isLoading };
+  return { resetPassword, error, isLoading, isResetEmailSent };
 };

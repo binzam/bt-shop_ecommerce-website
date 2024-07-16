@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import RemoveIcon from '../../../assets/icon-remove.svg';
 import { useContext } from 'react';
-import { CartContext } from '../../../contexts/CartContext.jsx';
+import { NavContext } from '../../../contexts/NavContext.jsx';
 
 const CartItems = () => {
-  const { cartItems, removeFromCart } = useContext(CartContext);
+  const { cartItems, removeFromCart } = useContext(NavContext);
   const handleRemoveFromCart = (id) => {
     removeFromCart(id);
   };

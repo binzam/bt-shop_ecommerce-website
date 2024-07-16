@@ -1,15 +1,17 @@
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from 'react';
 
-const CartContext = createContext();
+const NavContext = createContext();
 
-const CartContextProvider = ({ children }) => {
+const NavContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   const [showUserOptions, setShowUserOptions] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
+  const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
 
   const handleOpenRegisterModal = () => {
     setShowRegisterModal(true);
@@ -23,6 +25,8 @@ const CartContextProvider = ({ children }) => {
   const handleCloseForms = () => {
     setShowRegisterModal(false);
     setShowLoginModal(false);
+    setShowPasswordResetModal(false);
+    setShowResetPasswordForm(false);
   };
   function handleOpenUserOptions() {
     setShowUserOptions(true);
@@ -37,7 +41,17 @@ const CartContextProvider = ({ children }) => {
   const handleCloseModals = () => {
     setShowUserOptions(false);
   };
-
+  const handleOpenPassResetModal = () => {
+    setShowLoginModal(false);
+    setShowRegisterModal(false);
+    setShowPasswordResetModal(true);
+  };
+  const handleOpenResetPasswordForm = () => {
+    setShowLoginModal(false);
+    setShowPasswordResetModal(false);
+    setShowRegisterModal(false);
+    setShowResetPasswordForm(true);
+  };
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -72,11 +86,11 @@ const CartContextProvider = ({ children }) => {
   };
   const handleClearCart = () => {
     setCartItems([]);
-    localStorage.removeItem('cart')
+    localStorage.removeItem('cart');
   };
 
   return (
-    <CartContext.Provider
+    <NavContext.Provider
       value={{
         handleClearCart,
         showUserOptions,
@@ -93,11 +107,15 @@ const CartContextProvider = ({ children }) => {
         handleOpenRegisterModal,
         handleOpenLoginModal,
         handleCloseForms,
+        showPasswordResetModal,
+        handleOpenPassResetModal,
+        showResetPasswordForm,
+        handleOpenResetPasswordForm,
       }}
     >
       {children}
-    </CartContext.Provider>
+    </NavContext.Provider>
   );
 };
 
-export { CartContextProvider, CartContext };
+export { NavContextProvider, NavContext };

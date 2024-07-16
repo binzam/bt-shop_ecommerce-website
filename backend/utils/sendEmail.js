@@ -1,27 +1,42 @@
 import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
+import handlebars from 'handlebars';
 
-// Create a transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    password: process.env.EMAIL_PASSWORD,
-  },
-});
+const sendResetPasswordEmail = async (email, token) => {
+  try {
+    const templatePath = path.join(
+      process.cwd(),
+      'templates',
+      'resetPassword.hbs'
+    );
+    const template = handlebars.compile(fs.readFileSync(templatePath, 'utf8'));
 
-// Email options
-const mailOptions = {
-  from: process.env.EMAIL_USER,
-  to: 'btechan@gmail.com',
-  subject: '👋 Hello from Node.js 🚀',
-  text: 'This is a test email sent from Node.js using nodemailer. 📧💻',
+    const resetUrl = `http://localhost:5173/reset_password/${token}`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      // to: email,
+      to: 'btechan@gmail.com',
+      subject: 'Reset password for bt-shop',
+      html: template({ resetUrl }),
+    };
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+    await transporter.sendMail(mailOptions);
+    return { success: true, message: 'Email sent successfully' };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Error sending email',
+      error: error.message,
+    };
+  }
 };
 
-// Send the email
-transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    console.error('❌ Error:', error.message);
-  } else {
-    console.log('✅ Email sent:', info.response);
-  }
-});
+export default sendResetPasswordEmail;

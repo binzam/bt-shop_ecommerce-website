@@ -44,7 +44,8 @@
 
 .login_form_btn,
 .signup_form_btn,
-.reset_pass_form_btn {
+.reset_pass_form_btn,
+.new_pass_form_btn {
   padding: 0.5rem;
   background-color: #000000;
   color: white;
@@ -57,6 +58,10 @@
 .signup_form_btn:hover,
 .reset_pass_form_btn:hover {
   background-color: #ed9121;
+  border: 1px solid #333;
+}
+.new_pass_form_btn:hover{
+  background-color: #24d62d;
   border: 1px solid #333;
 }
 .close_popup_icon {

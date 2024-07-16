@@ -9,8 +9,8 @@ import {
   updateUserShippingInfo,
   updateUserPaymentInfo,
   getUserById,
+  forgotPassword,
   resetPassword,
-  handleResetToken,
 } from '../controllers/userController.js';
 import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
 const router = express.Router();
@@ -22,8 +22,8 @@ router.get('/', getUsers);
 router.get('/:id', getUserById);
 // add/create user
 router.post('/register', registerUser);
-router.post('/reset_password', resetPassword);
-router.get('/reset_password/:token', handleResetToken);
+router.post('/forgot_password', forgotPassword);
+router.get('/reset_password/:token', resetPassword);
 // login user
 router.post('/login', connectUser);
 router.put('/update_user', requireAuth, updateUserShippingInfo);

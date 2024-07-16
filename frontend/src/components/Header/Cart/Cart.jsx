@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useContext } from 'react';
 import closeIcon from '../../../assets/close_btn.svg';
-import { CartContext } from '../../../contexts/CartContext.jsx';
+import { NavContext } from '../../../contexts/NavContext.jsx';
 import { Link } from 'react-router-dom';
 import './Cart.css';
 import CartItems from './CartItems.jsx';
 
 const Cart = () => {
-  const { cartItems, handleCloseCart } = useContext(CartContext);
+  const { cartItems, handleCloseCart } = useContext(NavContext);
 
   return (
     <div className="cart">

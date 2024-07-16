@@ -4,7 +4,7 @@ import './ProductsPage.css';
 import ProductBox from '../../components/ProductBox/ProductBox.jsx';
 import { useParams } from 'react-router-dom';
 import AddToCartPopup from '../../components/AddToCartPopup/AddToCartPopup.jsx';
-import { CartContext } from '../../contexts/CartContext.jsx';
+import { NavContext } from '../../contexts/NavContext.jsx';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import AddProductForm from '../../components/Forms/AddProductForm.jsx';
 import addIcon from '../../assets/add_icon.svg';
@@ -16,7 +16,7 @@ const ProductsPage = () => {
   const [sortOrder, setSortOrder] = useState('asc');
   const [showPopup, setShowPopup] = useState(false);
   const [addedPrd, setAddedPrd] = useState(null);
-  const { addToCart } = useContext(CartContext);
+  const { addToCart } = useContext(NavContext);
   const [showAddForm, setShowAddForm] = useState(false);
   const { isAdmin } = useContext(AuthContext);
 

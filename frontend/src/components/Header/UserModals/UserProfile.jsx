@@ -3,13 +3,13 @@ import { useContext, useState } from 'react';
 import UpdatePassword from '../../Forms/UpdatePassword';
 import { useLogout } from '../../../hooks/useLogout';
 import { useAuthContext } from '../../../hooks/useAuthContext';
-import { CartContext } from '../../../contexts/CartContext';
+import { NavContext } from '../../../contexts/NavContext';
 import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
-  const { handleCloseModals, handleClearCart } = useContext(CartContext);
+  const { handleCloseModals, handleClearCart } = useContext(NavContext);
   const navigate = useNavigate();
 
   const [showUpdatePassForm, setShowUpdatePassForm] = useState(false);

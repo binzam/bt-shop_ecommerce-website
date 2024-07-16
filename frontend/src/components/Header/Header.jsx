@@ -4,11 +4,11 @@ import './Header.css';
 import UserOptions from './UserModals/UserOptions';
 import Navbar from './Navbar/Navbar';
 import Cart from './Cart/Cart';
-import { CartContext } from '../../contexts/CartContext';
+import { NavContext } from '../../contexts/NavContext';
 const Header = () => {
   const { user } = useAuthContext();
 
-  const { showUserOptions, showCart } = useContext(CartContext);
+  const { showUserOptions, showCart } = useContext(NavContext);
 
   return (
     <header>

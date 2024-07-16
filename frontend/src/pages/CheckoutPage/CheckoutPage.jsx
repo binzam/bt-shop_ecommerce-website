@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../../contexts/CartContext';
+import { NavContext } from '../../contexts/NavContext';
 import './CheckoutPage.css';
 import CartItems from '../../components/Header/Cart/CartItems';
 import ArrowLeft from '../../assets/arrow-left.svg';
@@ -13,7 +13,7 @@ import getme from '../../utils/getUserData';
 
 const CheckoutPage = () => {
   const { user } = useAuthContext();
-  const { cartItems, handleOpenUserOptions } = useContext(CartContext);
+  const { cartItems, handleOpenUserOptions } = useContext(NavContext);
   const [showOrderSummary, setShowOrderSummary] = useState(true);
   const [showShippingForm, setShowShippingForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);

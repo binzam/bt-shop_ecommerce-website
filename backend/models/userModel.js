@@ -41,6 +41,9 @@ const userSchema = new Schema(
       enum: ['admin', 'user'],
       default: 'user',
     },
+    resetToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,

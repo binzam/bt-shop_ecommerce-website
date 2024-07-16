@@ -1,9 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
-// import crypto from 'crypto';
-// import sendEmail from '../utils/sendEmail.js';
-import nodemailer from 'nodemailer';
+import sendResetPasswordEmail from '../utils/sendEmail.js';
 
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
@@ -207,71 +205,41 @@ const updateUserPaymentInfo = async (req, res) => {
   }
 };
 
-const resetPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
-
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(500).json({ error: 'Invalid email' });
     }
     const token = generateToken(user._id);
     user.resetToken = token;
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'binyam.techan1@gmail.com',
-        pass: 'season10episode24',
-      },
-    });
-    const resetUrl = `http://localhost:5173/reset_password/${token}`;
-
-    const mailOptions = {
-      from: 'binyam.techan1@gmail.com',
-      to: 'btechan@gmail.com',
-      subject: 'Reset password for bt-shop',
-      text: `
-      Hello,
-
-      You are receiving this email because you (or someone else) has requested the reset of your password.
-      Please click on the following link to complete the process:
-
-      ${resetUrl}
-
-      If you did not request this, please ignore this email and your password will remain unchanged.
-
-      Best regards,
-      bt-shop
-    `,
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-        res.status(500).send('Error sending email');
-      } else {
-        console.log(`Email sent: ${info.response}`);
-        res
-          .status(200)
-          .send('Check your email for instructions on resetting your password');
-      }
-    });
+    await user.save();
+    const { success, message, error } = await sendResetPasswordEmail(
+      user.email,
+      token
+    );
+    if (success) {
+      return res.status(200).json({ emailSent: true, message });
+    } else {
+      return res.status(500).json({ message });
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
-const handleResetToken = (req, res) => {
-  const { token, password } = req.body;
-  // Find the user with the given token and update their password
-  const user = User.findOne({ token });
+const resetPassword = (req, res) => {
+  const { resetToken } = req.body;
+  const user = User.findOne({ resetToken });
   if (user) {
     user.password = password;
-    delete user.resetToken; // Remove the reset token after the password is updated
+    delete user.resetToken;
     res.status(200).json({ message: 'Password updated successfully' });
   } else {
     res.status(404).json({ message: 'Invalid or expired token' });
   }
 };
+
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -294,6 +262,6 @@ export {
   updateUserShippingInfo,
   updateUserPaymentInfo,
   getCurrentUser,
+  forgotPassword,
   resetPassword,
-  handleResetToken,
 };

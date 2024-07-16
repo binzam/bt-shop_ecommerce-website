@@ -2,10 +2,11 @@
 import { useState } from 'react';
 import { useResetPassword } from '../../hooks/useResetPassword';
 import Loading from '../Loading';
+import closeIcon from '../../assets/close_btn.svg';
 
-const ResetPassword = () => {
+const ResetPassword = ({ handleClose }) => {
   const [email, setEmail] = useState('');
-  const { resetPassword, error, isLoading } = useResetPassword();
+  const { error, isLoading, resetPassword } = useResetPassword();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,8 +19,10 @@ const ResetPassword = () => {
 
   return (
     <>
+      <div onClick={handleClose} className="close_popup_icon">
+        <img src={closeIcon} alt="close login form" />
+      </div>
       {isLoading && <Loading />}
-
       <form className="reset_password_form" onSubmit={handleSubmit}>
         <h2 className="login_txt">Reset Password</h2>
         <div className="login_form_group">
@@ -36,7 +39,7 @@ const ResetPassword = () => {
           />
         </div>
         <button type="submit" className="reset_pass_form_btn">
-          Reset Password
+          Send Password Reset Email
         </button>
         {error && <div className="form_error">{error}</div>}
       </form>

@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { ProductContextProvider } from './contexts/ProductContext.jsx';
-import { CartContextProvider } from './contexts/CartContext.jsx';
+import { NavContextProvider } from './contexts/NavContext.jsx';
 import { useEffect } from 'react';
 import HomePage from './pages/HomePage/HomePage.jsx';
 import ProductDescription from './pages/ProductDescription/ProductDescription';
@@ -20,7 +20,7 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pathname]);
   return (
-    <CartContextProvider>
+    <NavContextProvider>
       <Header />
       <main className="main_content">
         <ProductContextProvider>
@@ -43,7 +43,7 @@ function App() {
         </ProductContextProvider>
       </main>
       <Footer />
-    </CartContextProvider>
+    </NavContextProvider>
   );
 }
 

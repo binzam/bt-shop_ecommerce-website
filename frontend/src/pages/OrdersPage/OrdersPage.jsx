@@ -1,6 +1,6 @@
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../../contexts/CartContext';
+import { NavContext } from '../../contexts/NavContext';
 import axios from 'axios';
 import './OrdersPage.css';
 import OrderSummary from '../../components/OrderSummary';
@@ -10,7 +10,7 @@ import Loading from '../../components/Loading';
 const OrdersPage = () => {
   const TAX_RATE = 0.15;
   const { user } = useAuthContext();
-  const { cartItems, handleClearCart } = useContext(CartContext);
+  const { cartItems, handleClearCart } = useContext(NavContext);
   const [userData, setUserData] = useState([]);
   const [orderCompleted, setOrderCompleted] = useState(false);
   const [error, setError] = useState(null);
