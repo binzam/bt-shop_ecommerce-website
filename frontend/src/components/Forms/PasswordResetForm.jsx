@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Loading from '../Loading';
 import closeIcon from '../../assets/close_btn.svg';
+import { NavContext } from '../../contexts/NavContext';
+import axios from 'axios';
 
-const PasswordResetForm = ({ handleClose }) => {
+const PasswordResetForm = ({ token }) => {
+  const { handleCloseForms } = useContext(NavContext);
   const [resetPasswordForm, setResetPasswordForm] = useState({
     newPassword: '',
     confirmNewPassword: '',
@@ -31,7 +34,6 @@ const PasswordResetForm = ({ handleClose }) => {
     try {
       // Call an API to reset the password
       await createNewPassword(newPassword);
-      // Show a success message or redirect the user
       console.log('Password reset successfully!');
     } catch (err) {
       setError('Failed to reset password. Please try again.');
@@ -40,11 +42,19 @@ const PasswordResetForm = ({ handleClose }) => {
     }
   };
   const createNewPassword = async (newPassword) => {
-    console.log('Resetting password to:', newPassword);
+    try {
+      await axios.post('http://localhost:5555/api/users/reset_password', {
+        token,
+        newPassword,
+      });
+      // Redirect the user to a success page or log them in
+    } catch (error) {
+      // Display the error message to the user
+    }
   };
   return (
     <>
-      <div onClick={handleClose} className="close_popup_icon">
+      <div onClick={handleCloseForms} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
       </div>
 

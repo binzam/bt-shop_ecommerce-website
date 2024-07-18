@@ -17,8 +17,8 @@
 }
 
 .order {
-  width: 100%;
-  border: 1px solid #ddd;
+  width: 60%;
+  border: 3px solid #ddd;
   padding: 10px;
   display: flex;
   align-items: stretch;
@@ -28,75 +28,10 @@
   color: #000000;
   font-weight: 600;
   font-size: 0.9rem;
-}
-.sort_orders_div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
   margin-bottom: 10px;
+  border-radius: 3px
 }
-.sort_by_product_btn,
-.sort_by_name_btn,
-.sort_by_product_btn {
-  padding: 6px;
-  color: #000000;
-  background-color: hsl(0, 0%, 100%);
-  font-size: 0.8rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  border: 1px solid black;
-  box-shadow: 1px 1px 1px #000000;
-  transition: all 0.3s ease-in-out;
-}
-.selected_sort {
-  box-shadow: 1px 1px 1px #ed9121;
-  background-color: cadetblue;
-  color: #ffff;
-  border: 1px solid transparent;
-}
-.orders_by_user,
-.orders_by_product {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 5px;
-  margin: 1rem 0;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #ed9121;
-}
-.orders_by_user h4,
-.orders_by_product h4 {
-  font-size: 1rem;
-  color: #333;
-}
-.order_makers,
-.ordered_products {
-  width: 100%;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.order_maker,
-.order_product {
-  max-width: 30%;
-  padding: 5px 10px;
-  background-color: #ffffff;
-  color: #ed9121;
-  font-weight: 500;
-  font-size: 0.8rem;
-  border: 1px solid #333;
-  line-height: 1;
-}
-.order_maker:focus,
-.order_product:focus {
-  background-color: #ed9121;
-  color: #ffffff;
-}
+
 .order_title {
   display: flex;
   align-items: flex-start;
@@ -108,8 +43,8 @@
   display: flex;
   align-items: flex-start;
   gap: 2rem;
-  /* justify-content: space-between; */
-  padding: 10px 0 20px;
+  justify-content: space-between;
+  padding: 10px 10px;
 }
 .order_customer,
 .order_address,
@@ -123,7 +58,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: rgb(167, 242, 255);
+  background-color: #a7f2ff;
   border: 1px solid cadetblue;
   display: flex;
   align-items: center;
@@ -149,16 +84,103 @@
   font-size: 14px;
   font-weight: 500;
 }
+.order_table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+.order_table thead tr {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #777777;
+  font-size: 14px;
+  font-weight: 400;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
 
+.ordered_product {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+}
+.ordered_product:last-of-type{
+  border-bottom: none;
+}
+.wider {
+  width: 30%;
+  text-align: left;
+}
+.narrow {
+  width: 10%;
+  text-align: center;
+}
+.wide {
+  width: 15%;
+  text-align: center;
+}
+.mid {
+  width: 20%;
+  text-align: center;
+}
+.order_table_prd_data {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: cadetblue;
+  font-weight: 700;
+}
+.order_table_prd_title{
+  font-size: 12px;
+}
+.order_prd_img {
+  min-width: 80px;
+  width: 80px;
+  max-width: 80px;
+  height: 55px;
+  padding: 5px;
+}
+.order_prd_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.order_table_total{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 16px;
+}
+.total_amount{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  font-weight: 700;
+  background-color: #ed9121;
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px black;
+}
 .remove_order_btn {
-  background-color: red;
-  color: white;
-  padding: 7px;
-  border: 1px solid red;
-  font-size: 0.7rem;
+ align-self: flex-start;
+ padding: 7px;
+ background-color: #ffffff;
+ font-size: 0.7rem;
+ color: red;
+ border: 1px solid black;
 }
 .remove_order_btn:hover {
-  background-color: #ffffff;
-  color: red;
-  border: 1px solid black;
+  border: 1px solid red;
+  background-color: red;
+  color: white;
 }

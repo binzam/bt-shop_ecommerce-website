@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const UserProfile = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
-  const { handleCloseModals, handleClearCart } = useContext(NavContext);
+  const { handleCloseModal, handleClearCart } = useContext(NavContext);
   const navigate = useNavigate();
 
   const [showUpdatePassForm, setShowUpdatePassForm] = useState(false);
@@ -26,7 +26,7 @@ const UserProfile = () => {
   };
   return (
     <div className="user_profile">
-      <span onClick={handleCloseModals} className="close_user_profile">
+      <span onClick={handleCloseModal} className="close_user_profile">
         close
       </span>
       <br />

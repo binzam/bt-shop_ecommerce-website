@@ -3,6 +3,14 @@
   min-height: calc(100vh - 240px);
   position: relative;
 }
+.counter {
+  padding: 10px;
+  font-size: 13px;
+  color:   #ffffff;
+  font-weight: 600;
+  background-color: #ed9121;
+  margin-bottom: 5px;
+}
 .users_list {
   width: 100%;
   color: #333;

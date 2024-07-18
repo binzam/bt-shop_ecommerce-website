@@ -210,7 +210,7 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(500).json({ error: 'Invalid email' });
+      return res.status(404).json({ error: 'User NOT found' });
     }
     const token = generateToken(user._id);
     user.resetToken = token;
@@ -219,24 +219,34 @@ const forgotPassword = async (req, res) => {
       user.email,
       token
     );
+    console.log('1', error);
+
     if (success) {
       return res.status(200).json({ emailSent: true, message });
     } else {
-      return res.status(500).json({ message });
+      return res.status(500).json({ error });
     }
   } catch (error) {
+    console.log('2', error);
     res.status(500).json({ error: error.message });
   }
 };
-const resetPassword = (req, res) => {
-  const { resetToken } = req.body;
-  const user = User.findOne({ resetToken });
-  if (user) {
-    user.password = password;
-    delete user.resetToken;
+const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    const user = User.findOne({ resetToken: token });
+    if (!user) {
+      return res.status(404).json({ error: 'Invalid reset token' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    user.resetToken = null;
+    await user.save();
     res.status(200).json({ message: 'Password updated successfully' });
-  } else {
-    res.status(404).json({ message: 'Invalid or expired token' });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 };
 

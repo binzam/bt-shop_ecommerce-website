@@ -1,9 +1,11 @@
-import { useContext, useState } from 'react';
+import { 
+  // useContext, 
+  useState } from 'react';
 import axios from 'axios';
-import { NavContext } from '../contexts/NavContext';
+// import { NavContext } from '../contexts/NavContext';
 
 export const useResetPassword = () => {
-  const { handleOpenResetPasswordForm } = useContext(NavContext);
+  // const { handleOpenResetPasswordForm } = useContext(NavContext);
 
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -13,16 +15,19 @@ export const useResetPassword = () => {
       setIsResetEmailSent(false);
       setIsLoading(true);
       setError(null);
+
       const response = await axios.post(
         'http://localhost:5555/api/users/forgot_password',
         { email }
       );
-      if (response && response.data.emailSent) {
+      if (response.data.message) {
         setIsLoading(false);
-        handleOpenResetPasswordForm();
+        setIsResetEmailSent(true);
+        // handleOpenResetPasswordForm();
       }
     } catch (error) {
-      setError(error.response.data.error);
+      console.log(error);
+      setError(error.data.error);
     } finally {
       setIsLoading(false);
     }
@@ -30,3 +35,4 @@ export const useResetPassword = () => {
 
   return { resetPassword, error, isLoading, isResetEmailSent };
 };
+export default useResetPassword;

@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './OrdersList.css';
 import ConfirmationPopup from '../ConfirmationPopup';
@@ -9,8 +8,8 @@ import CalendarIcon from '../../../../assets/calendar-regular.svg';
 import LocationIcon from '../../../../assets/location-dot-solid.svg';
 import TruckIcon from '../../../../assets/truck-solid.svg';
 
-const OrdersList = ({ user, updateOrders }) => {
-  const { orders, error, loading, removeOrder } = useOrders(user);
+const OrdersList = () => {
+  const { orders, ordersError, loading, removeOrder } = useOrders();
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [orderId, setOrderId] = useState(null);
 
@@ -22,11 +21,13 @@ const OrdersList = ({ user, updateOrders }) => {
   return (
     <div className="orders">
       {loading && <Loading />}
-      {error && <div className="form_error">{error}</div>}
+      {ordersError && <div className="form_error">{ordersError}</div>}
       {orders.length < 1 ? (
         <div className="no_orders">You have No orders.</div>
       ) : (
         <div className="orders_list">
+          <div className="counter">Pending Orders : {orders.length}</div>
+
           {orders.map((order) => (
             <div className="order" key={order._id}>
               <div className="order_title">
@@ -35,7 +36,9 @@ const OrdersList = ({ user, updateOrders }) => {
                 </div>
                 <div>
                   <p>{new Date(order.createdAt).toUTCString()}</p>
-                  <small>#ID {order._id}</small>
+                  <small>
+                    #ID <span className="highlight"> {order._id}</span>
+                  </small>
                 </div>
               </div>
               <div className="order_header">
@@ -45,9 +48,9 @@ const OrdersList = ({ user, updateOrders }) => {
                   </div>
                   <div className="order_customer_info">
                     <p className="bold">Customer</p>
-                    <p>{order.user.username}</p>
-                    <p>{order.user.email}</p>
-                    <p>{order.user.address.phoneNumber}</p>
+                    <p>{order.user?.username || 'User Not Active'}</p>
+                    <p>{order.user?.email || '---'}</p>
+                    <p>{order.user?.address.phoneNumber || '---'}</p>
                   </div>
                 </div>
                 <div className="order_address">
@@ -76,51 +79,71 @@ const OrdersList = ({ user, updateOrders }) => {
                   </div>
                 </div>
               </div>
-              {order.orders.map((item) => (
-                <table key={item._id} className="order_table">
-                  <thead>
-                    <tr>
-                      <th>Product</th>
-                      <th>Quantity</th>
-                      <th>
-                        Price<small>(per)</small>
-                      </th>
-                      <th>
-                        Price<small>(before TAX)</small>
-                      </th>
-                      <th>
-                        <small>(Item)</small>TAX
-                      </th>
-                      <th>
-                        <small>(Item)</small>TOTAL
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div>
-                          {item.product.title}{' '}
-                          <div>
+              <table className="order_table">
+                <thead>
+                  <tr>
+                    <th className="wider">Product</th>
+                    <th className="narrow">Quantity</th>
+                    <th className="mid">
+                      Price
+                      <small>
+                        <i>(per)</i>
+                      </small>
+                    </th>
+                    <th className="mid">
+                      Price
+                      <small>
+                        <i>(before TAX)</i>
+                      </small>
+                    </th>
+                    <th className="mid">
+                      <small>
+                        <i>(Item)</i>
+                      </small>
+                      TAX
+                    </th>
+                    <th className="wide">
+                      <small>
+                        <i>(Item)</i>
+                      </small>
+                      TOTAL
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {order.orders.map((item) => (
+                    <tr className="ordered_product" key={item._id}>
+                      <td className="wider">
+                        <div className="order_table_prd_data">
+                          <div className="order_prd_img">
                             <img
-                              width="100"
-                              height={50}
                               src={item.product.image}
-                              alt=""
+                              alt={item.product.title}
                             />
                           </div>
+                          <span className="order_table_prd_title">
+                            {item.product.title}
+                          </span>{' '}
                         </div>
                       </td>
-                      <td>{item.quantity}</td>
-                      <td>${item.product.price}</td>
-                      <td>${item.itemPrice}</td>
-                      <td>${item.tax.toFixed(2)}</td>
-                      <td>${item.totalItemPrice.toFixed(2)}</td>
+                      <td className="narrow">{item.quantity}</td>
+                      <td className="mid">${item.product.price}</td>
+                      <td className="mid">${item.itemPrice}</td>
+                      <td className="mid">${item.tax.toFixed(2)}</td>
+                      <td className="wide">
+                        ${item.totalItemPrice.toFixed(2)}
+                      </td>
                     </tr>
-                  </tbody>
-                </table>
-              ))}
-              <div>ORDER TOTAL: ${order.totalAmount}</div>
+                  ))}
+                </tbody>
+              </table>
+              <div className="order_table_total">
+                {' '}
+                <span className="total_amount">
+                  Total:<span className="dollar_sign">$</span>
+                  {order.totalAmount}
+                </span>{' '}
+              </div>
               <button
                 className="remove_order_btn"
                 onClick={() => handleRemoveOrder(order._id)}
@@ -138,7 +161,6 @@ const OrdersList = ({ user, updateOrders }) => {
           id={orderId}
           remove={removeOrder}
           close={setShowConfirmationPopup}
-          updateOrders={updateOrders}
         />
       )}
     </div>

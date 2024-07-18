@@ -5,7 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 const useOrders = () => {
   const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
-  const [error, setError] = useState(null);
+  const [ordersError, setOrdersError] = useState(null);
   const [loading, setLoading] = useState(null);
 
   const fetchOrders = useCallback(async () => {
@@ -19,13 +19,14 @@ const useOrders = () => {
         });
         if (data) {
           setOrders(data.allOrders);
-          setError(null);
+          setOrdersError(null);
         } else {
           setOrders([]);
         }
       }
     } catch (error) {
-      setError(error.message);
+      console.log(error);
+      setOrdersError(error.message);
     } finally {
       setLoading(false);
     }
@@ -48,10 +49,10 @@ const useOrders = () => {
         );
         if (response.data.orderRemoved) {
           fetchOrders();
-          setError(null)
+          setOrdersError(null)
         }
       } catch (error) {
-        setError(error.message);
+        setOrdersError(error.message);
       } finally {
         setLoading(false);
       }
@@ -62,7 +63,7 @@ const useOrders = () => {
   const updateOrders = (updatedOrders) => {
     setOrders(updatedOrders);
   };
-  return { orders, error, loading, fetchOrders, removeOrder, updateOrders };
+  return { orders, ordersError, loading, fetchOrders, removeOrder, updateOrders };
 };
 
 export default useOrders;

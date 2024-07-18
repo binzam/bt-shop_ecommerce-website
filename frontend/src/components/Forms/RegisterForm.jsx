@@ -1,11 +1,12 @@
-/* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useSignup } from '../../hooks/useSignup';
 import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
 import Loading from '../Loading';
+import { NavContext } from '../../contexts/NavContext';
 
-const RegisterForm = ({ handleClose }) => {
+const RegisterForm = () => {
+  const { handleCloseForms } = useContext(NavContext);
   const [registerForm, setRegisterForm] = useState({
     firstName: '',
     lastName: '',
@@ -42,7 +43,7 @@ const RegisterForm = ({ handleClose }) => {
   };
   return (
     <>
-      <div onClick={handleClose} className="close_popup_icon">
+      <div onClick={handleCloseForms} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
       </div>
       {isLoading && <Loading />}

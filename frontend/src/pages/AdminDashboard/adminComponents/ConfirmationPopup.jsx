@@ -1,12 +1,10 @@
+import useOrders from '../../../hooks/useOrders';
+import useUsers from '../../../hooks/useUsers';
+
 /* eslint-disable react/prop-types */
-const ConfirmationPopup = ({
-  remove,
-  id,
-  close,
-  type,
-  updateOrders,
-  updateUsers,
-}) => {
+const ConfirmationPopup = ({ remove, id, close, type }) => {
+  const { updateUsers } = useUsers();
+  const { updateOrders } = useOrders();
   const handleRemove = (id) => {
     remove(id);
     close(false);

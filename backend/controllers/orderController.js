@@ -41,7 +41,6 @@ const getOrders = async (req, res) => {
     const orders = await Order.find({})
       .populate('orders.product')
       .populate('user', '-password');
-
     const formattedOrders = orders.map((order) => {
       const totalOrderAmount = order.orders.reduce((acc, item) => {
         const itemTotalPrice = item.product.price * item.quantity;
@@ -52,12 +51,12 @@ const getOrders = async (req, res) => {
 
       return {
         _id: order._id,
-        user: {
+        user: order.user ? {
           _id: order.user._id,
           username: order.user.username,
           email: order.user.email,
           address: order.user.address,
-        },
+        } : null,
         orders: order.orders.map((item) => ({
           _id: item._id,
           product: {
@@ -89,7 +88,7 @@ const getOrders = async (req, res) => {
       allOrders: formattedOrders,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -119,7 +118,6 @@ const removeOrder = async (req, res) => {
 
     return res.status(200).json({
       orderRemoved: true,
-      message: 'Order deleted successfully',
     });
   } catch (error) {
     console.log(error.message);

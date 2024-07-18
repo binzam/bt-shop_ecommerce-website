@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin: 6px 0;
+  margin: 5px 0;
 }
 .customer_btn,
 .orders_btn,
@@ -24,7 +24,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  position: relative;
   background-color: #333;
   color: #ffffff;
   font-size: 12px;
@@ -37,40 +36,10 @@
 .admin_panel button:hover {
   background-color: cadetblue;
 }
-.counter {
-  position: absolute;
-  padding: 4px;
-  min-width: 25px;
-  min-height: 20px;
-  right: -5px;
-  top: -9px;
-  background-color: #ed9121;
-  color: #ffffff;
-  border-radius: 3px;
-  font-size: 10px;
-  z-index: 999;
-  font-weight: 700;
-}
 .selected {
   background-color: cadetblue;
 }
 
-.not_admin {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  transform: translateY(-50%);
-  background-color: red;
-  color: #fff;
-  text-align: center;
-  font-size: 1.3rem;
-  font-weight: 900;
-  z-index: 999;
-  border: 3px solid black;
-}
 .success_popup,
 .confirmation_popup {
   position: fixed;
@@ -132,13 +101,5 @@
     padding: 7px;
     gap: 10px;
     font-size: 0.8rem;
-  }
-  .counter {
-    padding: 3px;
-    min-width: 20px;
-    right: -6px;
-    top: -11px;
-    border-radius: 2px;
-    font-size: 12px;
   }
 }

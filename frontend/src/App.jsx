@@ -13,19 +13,21 @@ import PrivacyPolicy from './pages/PrivacyPolicyPage/PrivacyPolicy.jsx';
 import Contact from './pages/ContactPage/Contact.jsx';
 import About from './pages/AboutPage/About.jsx';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard.jsx';
+import UserOptions from './components/Header/UserModals/UserOptions.jsx';
 
 function App() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pathname]);
+
   return (
     <NavContextProvider>
       <Header />
       <main className="main_content">
         <ProductContextProvider>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route index element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
             <Route
               path="/products/categories/:category"
@@ -39,6 +41,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/modal/:token" element={<UserOptions />} />
           </Routes>
         </ProductContextProvider>
       </main>

@@ -5,7 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 const useUsers = () => {
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState(null);
+  const [usersError, setUsersError] = useState(null);
   const [loading, setLoading] = useState(null);
 
   const fetchUsers = useCallback(async () => {
@@ -20,13 +20,13 @@ const useUsers = () => {
 
         if (data) {
           setUsers(data.allUsers);
-          setError(null);
+          setUsersError(null);
         } else {
           setUsers([]);
         }
       }
     } catch (error) {
-      setError(error.message);
+      setUsersError(error.message);
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ const useUsers = () => {
           fetchUsers();
         }
       } catch (error) {
-        setError(error.message);
+        setUsersError(error.message);
       } finally {
         setLoading(false);
       }
@@ -62,7 +62,7 @@ const useUsers = () => {
   const updateUsers = (updatedUsers) => {
     setUsers(updatedUsers);
   };
-  return { users, error, loading, fetchUsers, removeUser, updateUsers };
+  return { users, usersError, loading, fetchUsers, removeUser, updateUsers };
 };
 
 export default useUsers;

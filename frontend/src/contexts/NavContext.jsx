@@ -5,32 +5,32 @@ const NavContext = createContext();
 
 const NavContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-
   const [showUserOptions, setShowUserOptions] = useState(false);
   const [showCart, setShowCart] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
   const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
 
-  const handleOpenRegisterModal = () => {
-    setShowRegisterModal(true);
-    setShowLoginModal(false);
+  const handleOpenRegisterForm = () => {
+    setShowRegisterForm(true);
+    setShowLoginForm(false);
   };
-  const handleOpenLoginModal = () => {
-    setShowLoginModal(true);
-    setShowRegisterModal(false);
+  const handleOpenLoginForm = () => {
+    setShowLoginForm(true);
+    setShowRegisterForm(false);
   };
 
   const handleCloseForms = () => {
-    setShowRegisterModal(false);
-    setShowLoginModal(false);
+    setShowRegisterForm(false);
+    setShowLoginForm(false);
     setShowPasswordResetModal(false);
     setShowResetPasswordForm(false);
   };
   function handleOpenUserOptions() {
     setShowUserOptions(true);
     setShowCart(false);
+    handleCloseForms();
   }
   function toggleCart() {
     setShowCart(!showCart);
@@ -38,19 +38,19 @@ const NavContextProvider = ({ children }) => {
   function handleCloseCart() {
     setShowCart(false);
   }
-  const handleCloseModals = () => {
+  const handleCloseModal = () => {
     setShowUserOptions(false);
   };
   const handleOpenPassResetModal = () => {
-    setShowLoginModal(false);
-    setShowRegisterModal(false);
+    setShowLoginForm(false);
+    setShowRegisterForm(false);
     setShowPasswordResetModal(true);
   };
   const handleOpenResetPasswordForm = () => {
-    setShowLoginModal(false);
+    setShowLoginForm(false);
     setShowPasswordResetModal(false);
-    setShowRegisterModal(false);
-    setShowResetPasswordForm(true);
+    setShowRegisterForm(false);
+    setShowResetPasswordForm(false);
   };
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
@@ -98,19 +98,20 @@ const NavContextProvider = ({ children }) => {
         handleOpenUserOptions,
         toggleCart,
         handleCloseCart,
-        handleCloseModals,
+        handleCloseModal,
         cartItems,
         addToCart,
         removeFromCart,
-        showLoginModal,
-        showRegisterModal,
-        handleOpenRegisterModal,
-        handleOpenLoginModal,
+        showLoginForm,
+        showRegisterForm,
+        handleOpenRegisterForm,
+        handleOpenLoginForm,
         handleCloseForms,
         showPasswordResetModal,
         handleOpenPassResetModal,
         showResetPasswordForm,
         handleOpenResetPasswordForm,
+        setShowResetPasswordForm,
       }}
     >
       {children}

@@ -12,7 +12,6 @@ import Error from '../../components/Error.jsx';
 import StarIcon from '../../assets/star_icon.svg';
 import ProductRatingForm from '../../components/Forms/ProductRatingForm.jsx';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
-
 const ProductDescription = () => {
   const { isAdmin } = useContext(AuthContext);
 
@@ -39,7 +38,7 @@ const ProductDescription = () => {
       setQuantity(quantity - 1);
     }
   };
-
+  
   const { image, title, price, description } = displayedProduct;
 
   const handleAddToCart = () => {

@@ -9,6 +9,7 @@ import FreeShippping from '../../assets/truck-fast-solid.svg';
 import CustomerSupport from '../../assets/headset-solid.svg';
 import MoneyBack from '../../assets/money-bill-transfer-solid.svg';
 const Homepage = () => {
+
   return (
     <div className="home_page">
       <section id="heading" className="home_header">

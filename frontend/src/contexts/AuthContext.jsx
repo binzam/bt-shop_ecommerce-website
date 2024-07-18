@@ -27,10 +27,15 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   const isAdmin = () => {
-    return state.user && state.user.role === 'admin';
+    if(state.user){
+      return state.user.role === 'admin' ? true : false;
+    }
+  };
+  const isLoggedIn = () => {
+    return state.user !== null;
   };
   return (
-    <AuthContext.Provider value={{ ...state, dispatch, isAdmin }}>
+    <AuthContext.Provider value={{ ...state, dispatch, isAdmin, isLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );

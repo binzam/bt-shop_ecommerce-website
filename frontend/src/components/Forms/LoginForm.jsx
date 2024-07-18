@@ -1,16 +1,16 @@
-/* eslint-disable react/prop-types */
 import { useContext, useState } from 'react';
 import { useLogin } from '../../hooks/useLogin';
 import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
 import Loading from '../Loading';
 import { NavContext } from '../../contexts/NavContext';
-const LoginForm = ({ handleClose }) => {
+
+const LoginForm = () => {
+  const { handleOpenPassResetModal, handleCloseForms } = useContext(NavContext);
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
   });
-  const { handleOpenPassResetModal } = useContext(NavContext);
   const { email, password } = loginForm;
   const { login, error, isLoading } = useLogin();
   //   console.log(loginForm);
@@ -29,7 +29,7 @@ const LoginForm = ({ handleClose }) => {
 
   return (
     <>
-      <div onClick={handleClose} className="close_popup_icon">
+      <div onClick={handleCloseForms} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
       </div>
       {isLoading && <Loading />}

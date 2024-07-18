@@ -330,6 +330,12 @@
   background-color: transparent;
   border: none;
 }
+.reset_email_sent{
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-align: justify;
+}
 @media only screen and (max-width: 500px) {
   .product_rating_form {
     min-width: 70%;
