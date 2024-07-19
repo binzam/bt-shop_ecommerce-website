@@ -1,38 +1,35 @@
-import { 
-  // useContext, 
-  useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-// import { NavContext } from '../contexts/NavContext';
 
 export const useResetPassword = () => {
-  // const { handleOpenResetPasswordForm } = useContext(NavContext);
+  const [resetError, setResetError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
+  const [isResetSuccessful, setIsResetSuccessful] = useState(false);
 
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isResetEmailSent, setIsResetEmailSent] = useState(false);
-  const resetPassword = async (email) => {
+  const resetPassword = async (token, newPassword) => {
+    setIsLoading(true);
+    setResetError(null);
+    setIsResetSuccessful(false);
     try {
-      setIsResetEmailSent(false);
-      setIsLoading(true);
-      setError(null);
-
       const response = await axios.post(
-        'http://localhost:5555/api/users/forgot_password',
-        { email }
+        'http://localhost:5555/api/users/reset_password',
+        {
+          token,
+          newPassword,
+        }
       );
-      if (response.data.message) {
-        setIsLoading(false);
-        setIsResetEmailSent(true);
-        // handleOpenResetPasswordForm();
+      console.log(response);
+      if (response.data.resetPasswordSuccess) {
+        setResetError(null);
+        setIsResetSuccessful(true);
       }
     } catch (error) {
-      console.log(error);
-      setError(error.data.error);
+        console.log(error);
+      setResetError('Reset email has expired');
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { resetPassword, error, isLoading, isResetEmailSent };
+  return { resetPassword, isLoading, resetError, isResetSuccessful };
 };
-export default useResetPassword;

@@ -23,7 +23,8 @@ router.get('/:id', getUserById);
 // add/create user
 router.post('/register', registerUser);
 router.post('/forgot_password', forgotPassword);
-router.get('/reset_password/:token', resetPassword);
+router.post('/reset_password', resetPassword);
+
 // login user
 router.post('/login', connectUser);
 router.put('/update_user', requireAuth, updateUserShippingInfo);

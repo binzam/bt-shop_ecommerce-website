@@ -14,6 +14,11 @@ import Contact from './pages/ContactPage/Contact.jsx';
 import About from './pages/AboutPage/About.jsx';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard.jsx';
 import UserOptions from './components/Header/UserModals/UserOptions.jsx';
+import LoginSignupButtons from './components/Header/LoginSignupButtons.jsx';
+import LoginForm from './components/Forms/LoginForm.jsx';
+import RegisterForm from './components/Forms/RegisterForm.jsx';
+import ForgotPasswordForm from './components/Forms/ForgotPasswordForm.jsx';
+import PasswordResetForm from './components/Forms/PasswordResetForm.jsx';
 
 function App() {
   const { pathname } = useLocation();
@@ -41,7 +46,13 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/modal/:token" element={<UserOptions />} />
+            <Route path="/auth" element={<UserOptions />}>
+              <Route index element={<LoginSignupButtons />} />
+              <Route path="register" element={<RegisterForm />} />
+              <Route path="login" element={<LoginForm />} />
+              <Route path="forgot_password" element={<ForgotPasswordForm />} />
+              <Route path="password_reset/:token" element={<PasswordResetForm />} />
+            </Route>
           </Routes>
         </ProductContextProvider>
       </main>

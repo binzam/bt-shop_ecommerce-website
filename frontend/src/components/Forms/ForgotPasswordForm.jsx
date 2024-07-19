@@ -1,14 +1,16 @@
 import { useContext, useState } from 'react';
-import { useResetPassword } from '../../hooks/useResetPassword';
+import { useForgotPassword } from '../../hooks/useForgotPassword';
 import Loading from '../Loading';
 import closeIcon from '../../assets/close_btn.svg';
 import { NavContext } from '../../contexts/NavContext';
 import CheckMarkIcon from '../../assets/check-solid.svg';
-const ResetPassword = () => {
+import { Link } from 'react-router-dom';
+
+const ForgotPasswordForm = () => {
   const { handleCloseModal } = useContext(NavContext);
   const [email, setEmail] = useState('');
-  const { error, isLoading, resetPassword, isResetEmailSent } =
-    useResetPassword();
+  const { error, isLoading, forgotPassword, isResetEmailSent } =
+    useForgotPassword();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,18 +18,18 @@ const ResetPassword = () => {
       console.log('Please enter your email');
       return;
     }
-    await resetPassword(email);
+    await forgotPassword(email);
   };
 
   return (
     <>
-      <div onClick={handleCloseModal} className="close_popup_icon">
+      <Link to="/home" onClick={handleCloseModal} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
-      </div>
+      </Link>
       {isLoading && <Loading />}
       {!isResetEmailSent ? (
         <form className="reset_password_form" onSubmit={handleSubmit}>
-          <h2 className="login_txt">Reset Password</h2>
+          <h2 className="login_txt">Forgot Password</h2>
           <div className="login_form_group">
             <label htmlFor="email">Email</label>
             <input
@@ -42,20 +44,23 @@ const ResetPassword = () => {
             />
           </div>
           <button type="submit" className="reset_pass_form_btn">
-            Send Password Reset Email
+            Send Reset Instructions
           </button>
+
           {error && <div className="form_error">{error}</div>}
         </form>
       ) : (
         <div className="reset_email_sent">
+          <div className="check_mark_img">
           <img src={CheckMarkIcon} alt="check mark" />
+
+          </div>
           <h2>Email sent </h2>
 
           <p>
-            An email containing a link to{' '}
-            <strong className="highlight"> Reset your Password </strong>
-            has been sent to your email. <br /> Please check your email and
-            follow the instructions
+            A<strong className="highlight"> Password Reset Email </strong>
+            A has been sent to your registered email address. <br /> Please
+            check your email and follow the instructions.
           </p>
         </div>
       )}
@@ -63,4 +68,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ForgotPasswordForm;

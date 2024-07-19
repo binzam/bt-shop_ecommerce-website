@@ -4,6 +4,7 @@ import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
 import Loading from '../Loading';
 import { NavContext } from '../../contexts/NavContext';
+import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   const { handleOpenPassResetModal, handleCloseForms } = useContext(NavContext);
@@ -29,9 +30,13 @@ const LoginForm = () => {
 
   return (
     <>
-      <div onClick={handleCloseForms} className="close_popup_icon">
+      <Link
+        to="/auth"
+        onClick={handleCloseForms}
+        className="close_popup_icon"
+      >
         <img src={closeIcon} alt="close login form" />
-      </div>
+      </Link>
       {isLoading && <Loading />}
 
       <form className="login_form" onSubmit={handleSubmit}>
@@ -67,13 +72,14 @@ const LoginForm = () => {
           Sign In
         </button>
         {error && <div className="form_error">{error}</div>}
-        <button
+        <Link
+          onClick={handleOpenPassResetModal}
+          to="/auth/forgot_password"
           type="button"
           className="forgot_password_btn"
-          onClick={handleOpenPassResetModal}
         >
           Forgot Password?
-        </button>
+        </Link>
       </form>
     </>
   );

@@ -234,22 +234,35 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
-    const user = User.findOne({ resetToken: token });
+    if (!token || !newPassword) {
+      return res.status(400).json({
+        error: 'Both token and newPassword are required',
+      });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const user = await User.findOneAndUpdate(
+      { resetToken: token },
+      {
+        $set: {
+          password: hashedPassword,
+          resetToken: null,
+        },
+      },
+      { new: true }
+    );
+
     if (!user) {
       return res.status(404).json({ error: 'Invalid reset token' });
     }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
-    user.password = hashedPassword;
-    user.resetToken = null;
-    await user.save();
-    res.status(200).json({ message: 'Password updated successfully' });
+    return res.status(200).json({
+      message: "password changed successfully",
+      resetPasswordSuccess: true,
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };
-
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;

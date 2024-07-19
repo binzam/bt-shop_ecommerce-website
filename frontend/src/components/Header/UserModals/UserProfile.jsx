@@ -4,7 +4,7 @@ import UpdatePassword from '../../Forms/UpdatePassword';
 import { useLogout } from '../../../hooks/useLogout';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import { NavContext } from '../../../contexts/NavContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const { user } = useAuthContext();
@@ -26,9 +26,13 @@ const UserProfile = () => {
   };
   return (
     <div className="user_profile">
-      <span onClick={handleCloseModal} className="close_user_profile">
+      <Link
+        to="/home"
+        onClick={handleCloseModal}
+        className="close_user_profile"
+      >
         close
-      </span>
+      </Link>
       <br />
       <div className="user_info">
         {user.role === 'admin' ? (

@@ -23,4 +23,6 @@ add new product :done
 ...
 https://blog.logrocket.com/building-react-modal-module-with-react-router/
 ...
-restructor modal
+restructor modal?
+reset password with email
+modal?

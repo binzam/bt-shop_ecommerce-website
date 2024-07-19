@@ -16,9 +16,11 @@ const Header = () => {
         <span className="logo_text">bt-shop</span>
         {user && <span className="username">{user.username}</span>}
       </a>
-      <Navbar />
 
+      <Navbar />
+      
       {showUserOptions && <UserOptions />}
+
       {showCart && <Cart />}
     </header>
   );

@@ -93,13 +93,21 @@ const Navbar = () => {
           )}
         </li>
         <li>
-          <div
+          {/* <div
             onClick={handleOpenUserOptions}
             className="user_profile_icon"
             title="User"
           >
             <img src={UserIcon} alt="avatar" />
-          </div>
+          </div> */}
+          <Link
+            onClick={handleOpenUserOptions}
+            to='/auth'
+            className="user_profile_icon"
+            title="User"
+          >
+            <img src={UserIcon} alt="avatar" />
+          </Link>
         </li>
       </ul>
     </nav>

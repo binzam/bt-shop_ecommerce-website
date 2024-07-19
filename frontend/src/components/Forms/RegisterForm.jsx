@@ -4,6 +4,7 @@ import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
 import Loading from '../Loading';
 import { NavContext } from '../../contexts/NavContext';
+import { Link } from 'react-router-dom';
 
 const RegisterForm = () => {
   const { handleCloseForms } = useContext(NavContext);
@@ -43,9 +44,9 @@ const RegisterForm = () => {
   };
   return (
     <>
-      <div onClick={handleCloseForms} className="close_popup_icon">
+      <Link to='/user_options' onClick={handleCloseForms} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
-      </div>
+      </Link>
       {isLoading && <Loading />}
       <form className="register_form" onSubmit={handleSubmit}>
         <h2>Create an account</h2>
