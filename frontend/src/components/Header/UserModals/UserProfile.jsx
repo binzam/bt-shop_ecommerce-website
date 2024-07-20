@@ -23,6 +23,7 @@ const UserProfile = () => {
     logout();
     navigate('/');
     handleClearCart();
+    handleCloseModal();
   };
   return (
     <div className="user_profile">

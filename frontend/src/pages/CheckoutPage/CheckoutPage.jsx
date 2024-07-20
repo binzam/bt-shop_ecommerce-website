@@ -86,12 +86,12 @@ const CheckoutPage = () => {
           )}
           <div className="checkout_option_btns">
             {!user && cartItems.length > 0 && (
-              <button
+              <Link to='/auth'
                 onClick={handleOpenUserOptions}
                 className="checkout_login_btn"
               >
                 Login to Continue
-              </button>
+              </Link>
             )}
             {user && showOrderSummary && (
               <button

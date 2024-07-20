@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import './Header.css';
-import UserOptions from './UserModals/UserOptions';
+import UserModal from './UserModals/UserModal';
 import Navbar from './Navbar/Navbar';
 import Cart from './Cart/Cart';
 import { NavContext } from '../../contexts/NavContext';
@@ -19,7 +19,7 @@ const Header = () => {
 
       <Navbar />
       
-      {showUserOptions && <UserOptions />}
+      {showUserOptions && <UserModal />}
 
       {showCart && <Cart />}
     </header>

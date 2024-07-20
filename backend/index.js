@@ -7,7 +7,8 @@ import productsRoute from './routes/productsRoute.js';
 import usersRoute from './routes/usersRoute.js';
 import ordersRoute from './routes/ordersRoute.js';
 import feedbackRoute from './routes/feedbackRoute.js';
-
+import resetUserOrders from './utils/resetUserOrders.js';
+import updateUserOrders from './utils/UpdateUserOrders.js';
 const app = express();
 app.use(express.json());
 app.use(cors())
@@ -18,7 +19,8 @@ app.use(cors())
 //     allowedHeaders: ['Content-Type'],
 //   })
 // );
-
+// resetUserOrders()
+// updateUserOrders()
 app.get('/', (req, res) => {
   return res.status(200).json('Welcome to bt-shop');
 });

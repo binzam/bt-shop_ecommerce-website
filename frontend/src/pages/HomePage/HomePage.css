@@ -2,6 +2,8 @@
 .home_page {
   width: 100%;
   min-height: 100vh;
+  background-color: cadetblue;
+
 }
 .home_header {
   background-color: #ed9121;

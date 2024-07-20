@@ -1,9 +1,9 @@
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import UserProfile from './UserProfile';
-import './UserOptions.css';
+import './UserModal.css';
 import { Outlet } from 'react-router-dom';
 
-const UserOptions = () => {
+const UserModal = () => {
   const { user } = useAuthContext();
 
   return (
@@ -13,4 +13,4 @@ const UserOptions = () => {
   );
 };
 
-export default UserOptions;
+export default UserModal;

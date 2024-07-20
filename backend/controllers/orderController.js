@@ -1,35 +1,48 @@
-import { Order } from '../models/orderModel.js';
+import { Order, OrderItem } from '../models/orderModel.js';
+import { User } from '../models/userModel.js';
 
 const createOrder = async (req, res) => {
   try {
-    const { order } = req.body;
-    const { user, orders, totalAmount, address } = order;
-    if (!user || !orders || !orders.length > 0 || !totalAmount || !address) {
-      throw Error('You have no Orders to be Placed');
-    }
-    const existingOrder = await Order.findOne({
-      user,
-      orders,
-      totalAmount,
-      address,
-    });
-    if (existingOrder) {
-      return res.status(400).json({ message: 'Order already exists' });
-    } else {
-      const newOrder = await Order.create({
-        user,
-        orders,
-        totalAmount,
-        shippingAddress: address,
-      });
-      if (!newOrder) {
-        return res
-          .status(500)
-          .json({ message: 'An error occurred while creating the order' });
-      }
+    const { orderObj } = req.body;
+    const { user, orderItems, shippingAddress } = orderObj;
 
-      return res.status(200).json({ orderCreated: true, order: newOrder });
+    if (!user || !orderItems || orderItems.length === 0 || !shippingAddress) {
+      return res.status(400).json({ message: 'Missing required fields' });
     }
+
+    // Create the order items
+    const orderItemsToCreate = await Promise.all(
+      orderItems.map(async (item) => {
+        const { product, quantity, price, taxRate } = item;
+        const itemPrice = parseFloat((quantity * price).toFixed(2));
+        const tax = parseFloat((itemPrice * taxRate).toFixed(2));
+        const totalItemPrice = itemPrice + tax;
+
+        return new OrderItem({
+          product,
+          quantity,
+          price,
+          itemPrice,
+          tax,
+          totalItemPrice,
+        });
+      })
+    );
+
+    const totalAmount = orderItemsToCreate.reduce(
+      (acc, item) => acc + item.totalItemPrice,
+      0
+    );
+    const order = await Order.create({
+      user,
+      orderItems: orderItemsToCreate,
+      totalAmount,
+      shippingAddress,
+    });
+
+    await User.findByIdAndUpdate(user, { $push: { orders: order._id } });
+
+    return res.status(201).json({ orderCreated: true, order });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: error.message });
@@ -38,60 +51,17 @@ const createOrder = async (req, res) => {
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({})
-      .populate('orders.product')
-      .populate('user', '-password');
-    const formattedOrders = orders.map((order) => {
-      const totalOrderAmount = order.orders.reduce((acc, item) => {
-        const itemTotalPrice = item.product.price * item.quantity;
-        const itemTax =
-          item.product.price * item.product.taxRate * item.quantity;
-        return acc + itemTotalPrice + itemTax;
-      }, 0);
-
-      return {
-        _id: order._id,
-        user: order.user ? {
-          _id: order.user._id,
-          username: order.user.username,
-          email: order.user.email,
-          address: order.user.address,
-        } : null,
-        orders: order.orders.map((item) => ({
-          _id: item._id,
-          product: {
-            _id: item.product._id,
-            title: item.product.title,
-            image: item.product.image,
-            price: item.product.price,
-            taxRate: item.product.taxRate,
-          },
-          quantity: item.quantity,
-          tax: item.product.price * item.product.taxRate * item.quantity,
-          itemPrice: item.product.price * item.quantity,
-          totalItemPrice: item.product.price * item.quantity + item.product.price * item.product.taxRate * item.quantity,
-        })),
-        totalAmount: totalOrderAmount.toFixed(2),
-        shippingAddress: order.shippingAddress,
-        status: order.status,
-        shippingCompany: order.shippingCompany,
-        paymentMethod: order.paymentMethod,
-        paymentStatus: order.paymentStatus,
-        orderStatus: order.orderStatus,
-        createdAt: order.createdAt,
-        updatedAt: order.updatedAt,
-      };
-    });
-
+    const orders = await Order.find({});
     return res.status(200).json({
       orderCount: orders.length,
-      allOrders: formattedOrders,
+      allOrders: orders,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
+
 const getOrdersById = async (req, res) => {
   try {
     const { id } = req.params;

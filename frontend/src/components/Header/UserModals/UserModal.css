@@ -26,6 +26,8 @@
 }
 .stay_out_btn {
   border: none;
+  text-align: center;
+  font-size: 12px;
   background-color: transparent;
   outline: none;
   color: rgb(212, 0, 0);

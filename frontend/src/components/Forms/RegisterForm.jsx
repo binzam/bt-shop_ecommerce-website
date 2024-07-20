@@ -44,7 +44,7 @@ const RegisterForm = () => {
   };
   return (
     <>
-      <Link to='/user_options' onClick={handleCloseForms} className="close_popup_icon">
+      <Link to='/auth' onClick={handleCloseForms} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
       </Link>
       {isLoading && <Loading />}

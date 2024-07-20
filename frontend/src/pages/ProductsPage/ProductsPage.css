@@ -2,6 +2,7 @@
   width: 100%;
   min-height: calc(100vh - 130px);
   position: relative;
+  background-color: cadetblue;
 }
 .product_filter_bar {
   width: 100%;

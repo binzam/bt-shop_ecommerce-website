@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { User } from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
+import validator from 'validator';
 
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
@@ -21,6 +22,7 @@ const getCurrentUser = async (req, res) => {
     email: user.email,
     address: checkUndefined(user.address),
     creditCardInfo: checkUndefined(user.creditCardInfo),
+    orders: checkUndefined(user.orders),
   };
   return res.status(200).json(userData);
 };
@@ -234,9 +236,13 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
-    if (!token || !newPassword) {
+    if (!token) {
+      return res.status(400).json({ error: 'Reset token is required' });
+    }
+
+    if (!newPassword || !validator.isStrongPassword(newPassword)) {
       return res.status(400).json({
-        error: 'Both token and newPassword are required',
+        error: 'Password not strong enough',
       });
     }
     const salt = await bcrypt.genSalt(10);

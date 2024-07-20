@@ -24,8 +24,8 @@ export const useResetPassword = () => {
         setIsResetSuccessful(true);
       }
     } catch (error) {
-        console.log(error);
-      setResetError('Reset email has expired');
+      console.log(error);
+      setResetError(error.response.data.error || 'Reset email has expired');
     } finally {
       setIsLoading(false);
     }

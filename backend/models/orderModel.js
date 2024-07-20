@@ -1,4 +1,35 @@
 import { Schema, model } from 'mongoose';
+
+const orderItemSchema = new Schema({
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  itemPrice: {
+    type: Number,
+    min: 0,
+  },
+  tax: {
+    type: Number,
+    min: 0,
+  },
+  totalItemPrice: {
+    type: Number,
+    min: 0,
+  },
+});
+
+export const OrderItem = model('OrderItem', orderItemSchema);
+
 const orderSchema = new Schema(
   {
     user: {
@@ -6,34 +37,11 @@ const orderSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    orders: [
+    orderItems: [
       {
-        product: {
-          type: Schema.Types.ObjectId,
-          ref: 'Product',
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-        price: {
-          type: Number,
-          required: true,
-        },
-        itemPrice: {
-          type: Number,
-          min: 0,
-        },
-        tax: {
-          type: Number,
-          min: 0,
-        },
-        totalItemPrice: {
-          type: Number,
-          min: 0,
-        },
-      },
+        type: Schema.Types.ObjectId,
+        ref: 'OrderItem',
+      }
     ],
     totalAmount: {
       type: Number,

@@ -25,7 +25,11 @@ body {
   height: 100%;
 }
 .main_content {
-  /* background-color: #ffffff; */
+  background-color: #ffffff;
+  background-image: url(./assets/icon-cart.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   min-height: calc(100vh - 130px);
   width: 100%;
   margin: 10px auto;

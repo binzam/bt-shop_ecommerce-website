@@ -1,7 +1,8 @@
 .contact-page {
   width: 100%;
   height: calc(100vh - 130px);
-  background-image: url(../../Assets/contact-us-bg-1-small.jpg);
+  background-color: cadetblue;
+  background-image: url(../../assets/contact-us-bg-1-small.jpg);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

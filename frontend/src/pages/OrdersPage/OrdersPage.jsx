@@ -8,33 +8,13 @@ import getme from '../../utils/getUserData';
 import Loading from '../../components/Loading';
 
 const OrdersPage = () => {
-  const TAX_RATE = 0.15;
   const { user } = useAuthContext();
   const { cartItems, handleClearCart } = useContext(NavContext);
   const [userData, setUserData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
   const [orderCompleted, setOrderCompleted] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
-  const calculateTotal = () => {
-    let total = 0;
-    cartItems.forEach((item) => {
-      total += item.price * item.quantity;
-    });
-    return total;
-  };
-
-  const calculateTax = () => {
-    const amount = calculateTotal();
-    const tax = amount * TAX_RATE;
-    return tax.toFixed(2);
-  };
-
-  const calculateOrderTotal = () => {
-    const totalAmount = calculateTotal();
-    const tax = calculateTax();
-    return (totalAmount + parseFloat(tax)).toFixed(2);
-  };
-  const orderTotal = calculateOrderTotal();
 
   const handlePlaceOrder = () => {
     setOrderCompleted(true);
@@ -45,17 +25,19 @@ const OrdersPage = () => {
       getme(user, setUserData, setError);
     }
   }, [user]);
+  console.log(userData);
+  console.log(orderData);
 
-  const filteredValues = cartItems.map(({ _id, quantity, price }) => ({
+  const filteredValues = cartItems.map(({ _id, quantity, price, taxRate }) => ({
     product: _id,
     quantity,
     price,
+    taxRate,
   }));
-  const order = {
+  const orderObj = {
     user: userData._id,
-    orders: filteredValues,
-    totalAmount: orderTotal,
-    address: userData.address,
+    orderItems: filteredValues,
+    shippingAddress: userData.address,
   };
   const createOrder = async () => {
     setLoading(true);
@@ -63,7 +45,7 @@ const OrdersPage = () => {
     try {
       const response = await axios.post(
         'http://localhost:5555/api/orders/place_order',
-        { order },
+        { orderObj },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -72,10 +54,11 @@ const OrdersPage = () => {
       );
       if (response.data.orderCreated) {
         setError(null);
-        setLoading(false);
+        setOrderData([...orderData, response.data.order]);
         handlePlaceOrder();
       }
     } catch (error) {
+      console.log(error);
       setError(error.response.data.message);
     } finally {
       setLoading(false);
@@ -102,6 +85,26 @@ const OrdersPage = () => {
             Your Order has been Placed and it is Pending, Thank you for shopping
             with us.
           </p>
+          <ul>
+            {orderData && orderData.map((order) => (
+              <li key={order._id}>
+                <div>
+                  <div>{order.user}</div>
+                  <div>Total: {order.totalAmount}</div>
+                </div>
+                {order.orderItems.map((item) => (
+                  <div key={item._id}>
+                    <div>{item.title}</div>
+                    <div>{item.quantity}</div>
+                    <div>{item.price}</div>
+                    <div>{item.itemPrice}</div>
+                    <div>{item.tax}</div>
+                    <div>{item.totalItemPrice}</div>
+                  </div>
+                ))}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
