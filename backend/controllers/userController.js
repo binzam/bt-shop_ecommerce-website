@@ -3,6 +3,7 @@ import { User } from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
 import validator from 'validator';
+import { Order } from '../models/orderModel.js';
 
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
@@ -39,6 +40,7 @@ const connectUser = async (req, res) => {
       token,
       username: user.username,
       email,
+      userId: user._id,
       role: user.role,
     });
   } catch (error) {
@@ -70,7 +72,8 @@ const getUsers = async (req, res) => {
     // const users = await User.find({});
     // const users = await User.find({}, 'username role email _id');
     // In your user controller or route
-    const users = await User.find({}).populate('orders');
+    // const users = await User.find({}).populate('orders');
+    const users = await User.find({});
     if (!users) {
       return res.status(400).json({ error: 'Users Not found' });
     }
@@ -207,6 +210,24 @@ const updateUserPaymentInfo = async (req, res) => {
   }
 };
 
+const getUserOrders = async (req, res) => {
+  try {
+    const { user } = req;
+    console.log(user);
+    // const orders = await Order.find({ user: user._id });
+    const orders = await Order.find({ user: user._id }).populate('orderItems');
+    console.log(orders);
+    if (!orders) {
+      return res.status(400).json({
+        message: 'Order not found',
+      });
+    }
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -262,7 +283,7 @@ const resetPassword = async (req, res) => {
       return res.status(404).json({ error: 'Invalid reset token' });
     }
     return res.status(200).json({
-      message: "password changed successfully",
+      message: 'password changed successfully',
       resetPasswordSuccess: true,
     });
   } catch (error) {
@@ -293,4 +314,5 @@ export {
   getCurrentUser,
   forgotPassword,
   resetPassword,
+  getUserOrders,
 };

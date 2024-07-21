@@ -5,11 +5,16 @@ import CartItems from '../../components/Header/Cart/CartItems';
 import ArrowLeft from '../../assets/arrow-left.svg';
 import ArrowRight from '../../assets/arrow-right-solid.svg';
 import ShippingForm from '../../components/Forms/ShippingForm';
-import { Link, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  // useNavigate
+} from 'react-router-dom';
 import PaymentForm from '../../components/Forms/PaymentForm';
 import OrderSummary from '../../components/OrderSummary';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import getme from '../../utils/getUserData';
+import Loading from '../../components/Loading';
+import { getMe } from '../../utils/userUtils';
+import { createOrder } from '../../utils/orderUtils';
 
 const CheckoutPage = () => {
   const { user } = useAuthContext();
@@ -17,17 +22,35 @@ const CheckoutPage = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(true);
   const [showShippingForm, setShowShippingForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({
+    _id: null,
+    address: null,
+    creditCardInfo: null,
+  });
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(null);
+  const [isReadyToPlaceOrder, setIsReadyToPlaceOrder] = useState(false);
+  const [orderData, setOrderData] = useState([]);
+  const [isOrderPlaced, setIsOrderPlaced] = useState(false);
+
   useEffect(() => {
     if (user) {
-      getme(user, setUserData, setError);
+      getMe(user, setUserData, setError, setIsLoading);
     }
   }, [user]);
+  const filteredValues = cartItems.map(({ _id, quantity, price, taxRate }) => ({
+    product: _id,
+    quantity,
+    price,
+    taxRate,
+  }));
+  const newOrder = {
+    user: userData._id,
+    orderItems: filteredValues,
+    shippingAddress: userData.address,
+  };
   const handleShippingForm = () => {
-    const address = userData.address || null;
-    if (!address) {
+    if (!userData.address) {
       setShowShippingForm(true);
       setShowOrderSummary(false);
       setShowPaymentForm(false);
@@ -36,81 +59,109 @@ const CheckoutPage = () => {
     }
   };
   const handlePaymentForm = () => {
-    const cardInfo = userData.creditCardInfo || null;
-    if (!cardInfo) {
+    if (!userData.creditCardInfo) {
+      setShowPaymentForm(true);
       setShowOrderSummary(false);
       setShowShippingForm(false);
-      setShowPaymentForm(true);
     } else {
       handleCreateOrder();
     }
   };
   const handleCreateOrder = () => {
+    setShowShippingForm(false);
     setShowPaymentForm(false);
-    setShowOrderSummary(false);
-    navigate('/orders');
+    setShowOrderSummary(true);
+    setIsReadyToPlaceOrder(true);
+    // navigate('/orders');
+  };
+  const handlePlaceOrder = () => {
+    createOrder(
+      setError,
+      setIsLoading,
+      user,
+      setOrderData,
+      newOrder,
+      setIsOrderPlaced
+    );
   };
   return (
     <div className="checkout_page">
+      {isLoading && <Loading />}
       <div className="checkout_header">
         <div className="checkout">CHECKOUT</div>
         {error && <div className="form_error">{error}</div>}
         {user ? (
           <p className="customer_info">
-            You are Logged in as: <span>{user.username}</span>
+            Logged in as: <span>{user.username}</span>
           </p>
         ) : (
-          <span className="not_logged_in">You are Not Logged In.</span>
+          <span className="not_logged_in">Please Log In or Register</span>
         )}
-      </div>
-      <div className="orders_content">
-        <div className="checkout_orders">
-          <span className="pending_orders_count">
-            Pending Orders [<span>{cartItems.length}</span>]
-          </span>
-          {cartItems.length > 0 ? (
-            <div className="pending_orders">
-              <CartItems />
-            </div>
-          ) : (
-            <p className="no_orders">You have no Pending orders</p>
-          )}
-        </div>
-        <div className="checkout_progress_wrapper">
-          {showOrderSummary && <OrderSummary />}
-          {showShippingForm && cartItems.length > 0 && (
-            <ShippingForm handlePaymentForm={handlePaymentForm} />
-          )}
-          {showPaymentForm && (
-            <PaymentForm handleCreateOrder={handleCreateOrder} />
-          )}
-          <div className="checkout_option_btns">
-            {!user && cartItems.length > 0 && (
-              <Link to='/auth'
-                onClick={handleOpenUserOptions}
-                className="checkout_login_btn"
-              >
-                Login to Continue
-              </Link>
-            )}
-            {user && showOrderSummary && (
-              <button
-                onClick={handleShippingForm}
-                className="checkout_next_btn"
-              >
-                Next <img src={ArrowRight} alt="shipping button" />
-              </button>
-            )}
-          </div>
-        </div>
         <Link className="shop_link" to="/products">
           <img src={ArrowLeft} alt="Shop link" />
           Back to Shop
         </Link>
       </div>
+      {!isOrderPlaced ? (
+        <div className="orders_content">
+          <div className="checkout_orders">
+            <span className="pending_orders_count">
+              Pending Orders [<span>{cartItems.length}</span>]
+            </span>
+            {cartItems.length > 0 ? (
+              <div className="pending_orders">
+                <CartItems />
+              </div>
+            ) : (
+              <p className="no_orders">You have no Pending orders</p>
+            )}
+          </div>
+          <div className="checkout_progress_wrapper">
+            {showOrderSummary && <OrderSummary />}
+            {showShippingForm && cartItems.length > 0 && (
+              <ShippingForm handlePaymentForm={handlePaymentForm} />
+            )}
+            {showPaymentForm && (
+              <PaymentForm handleCreateOrder={handleCreateOrder} />
+            )}
+            <div className="checkout_option_btns">
+              {!user && cartItems.length > 0 && (
+                <Link
+                  to="/auth"
+                  onClick={handleOpenUserOptions}
+                  className="checkout_login_btn"
+                >
+                  Login to Continue
+                </Link>
+              )}
+              {user && showOrderSummary && (
+                <button
+                  onClick={handleShippingForm}
+                  className="checkout_next_btn"
+                >
+                  Next <img src={ArrowRight} alt="shipping button" />
+                </button>
+              )}
+            </div>
+            {isReadyToPlaceOrder && (
+              <button className="place_order_btn" onClick={handlePlaceOrder}>
+                CREATE ORDER
+              </button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="order_complete_div">
+          <h2>Order Submitted</h2>
+          <div>OEDER ID{orderData._id}</div>
+          <p>
+            Your Order has been Placed and it is Pending, Thank you for shopping
+            with us.
+          </p>
+          <Link to='/orders'>View Order</Link>
+        </div>
+      )}
     </div>
   );
 };
-// jo9@gmail.com
-// flkj9JSH0(|)
 export default CheckoutPage;

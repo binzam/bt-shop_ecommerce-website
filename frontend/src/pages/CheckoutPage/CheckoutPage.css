@@ -4,7 +4,7 @@
   position: relative;
   border-top-left-radius: 15px;
   border-bottom-right-radius: 15px;
-  background-color: #f7f7f7;
+  background-color: #ffffff;
 }
 .checkout_header {
   width: 100%;
@@ -15,12 +15,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 }
 .checkout {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 700;
   letter-spacing: 3px;
-  text-align: center;
+  text-align: left;
 }
 .customer_info {
   display: flex;
@@ -30,7 +31,7 @@
 }
 .customer_info span {
   color: #000000;
-  padding: 5px 10px;
+  padding: 2px 10px;
   font-weight: 700;
   letter-spacing: 2px;
   background-color: #ffffff;
@@ -70,6 +71,7 @@
 }
 .checkout_progress_wrapper {
   width: 48%;
+  position: relative;
 }
 .order_summary {
   width: 100%;
@@ -170,9 +172,10 @@
 }
 .shop_link {
   position: absolute;
-  top: 5px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
+  transition: all 0.3s ease;
 }
 .checkout_option_btns {
   width: 100%;
@@ -196,7 +199,18 @@
   background-color: #333;
   border: 1px solid #ed9121;
 }
-
+.order_complete_div{
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.order_complete_div p{
+  color: black;
+  width: 50%;
+  text-align: center;
+}
 @media only screen and (max-width: 800px) {
   .customer_info span {
     padding: 2px 10px 4px;
@@ -215,7 +229,7 @@
     width: 100%;
   }
   .shop_link {
-    padding: 5px 15px;
+    top: 80px;
   }
 }
 @media only screen and (max-width: 500px) {

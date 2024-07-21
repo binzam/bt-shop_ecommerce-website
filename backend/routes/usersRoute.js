@@ -11,6 +11,7 @@ import {
   getUserById,
   forgotPassword,
   resetPassword,
+  getUserOrders,
 } from '../controllers/userController.js';
 import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
 const router = express.Router();
@@ -20,6 +21,7 @@ router.get('/getme', requireAuth, getCurrentUser);
 // get all users
 router.get('/', getUsers);
 router.get('/:id', getUserById);
+router.get('/:id/orders', requireAuth, getUserOrders);
 // add/create user
 router.post('/register', registerUser);
 router.post('/forgot_password', forgotPassword);

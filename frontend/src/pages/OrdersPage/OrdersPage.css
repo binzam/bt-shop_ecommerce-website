@@ -30,15 +30,3 @@
   background-color: green;
 
 }
-.order_complete_div{
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.order_complete_div p{
-  color: black;
-  width: 50%;
-  text-align: center;
-}

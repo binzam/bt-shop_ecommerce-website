@@ -33,7 +33,7 @@ const OrderSummary = () => {
           <p className="left">
             Ordered Product ( <span>{cartItems.length}</span> ) :
           </p>
-          <p className="right">${calculateTotal()}</p>
+          <p className="right">${calculateTotal().toFixed(2)}</p>
         </div>
         <div>
           <p className="left">Shipping & Handling:</p>
@@ -41,7 +41,7 @@ const OrderSummary = () => {
         </div>
         <div>
           <p className="left">Total Before TAX: </p>
-          <p className="right">${calculateTotal()}</p>
+          <p className="right">${calculateTotal().toFixed(2)}</p>
         </div>
         <div>
           <p className="left">Estimated TAX to be collected: </p>

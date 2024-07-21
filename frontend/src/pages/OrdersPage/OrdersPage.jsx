@@ -1,112 +1,46 @@
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { useContext, useEffect, useState } from 'react';
-import { NavContext } from '../../contexts/NavContext';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
 import './OrdersPage.css';
-import OrderSummary from '../../components/OrderSummary';
-import getme from '../../utils/getUserData';
 import Loading from '../../components/Loading';
+import { fetchUserOrders } from '../../utils/orderUtils';
 
 const OrdersPage = () => {
   const { user } = useAuthContext();
-  const { cartItems, handleClearCart } = useContext(NavContext);
-  const [userData, setUserData] = useState([]);
-  const [orderData, setOrderData] = useState([]);
-  const [orderCompleted, setOrderCompleted] = useState(false);
+  const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
 
-  const handlePlaceOrder = () => {
-    setOrderCompleted(true);
-    handleClearCart();
-  };
   useEffect(() => {
     if (user) {
-      getme(user, setUserData, setError);
+      fetchUserOrders(user, setOrders, setError, setIsLoading);
     }
   }, [user]);
-  console.log(userData);
-  console.log(orderData);
-
-  const filteredValues = cartItems.map(({ _id, quantity, price, taxRate }) => ({
-    product: _id,
-    quantity,
-    price,
-    taxRate,
-  }));
-  const orderObj = {
-    user: userData._id,
-    orderItems: filteredValues,
-    shippingAddress: userData.address,
-  };
-  const createOrder = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.post(
-        'http://localhost:5555/api/orders/place_order',
-        { orderObj },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-      if (response.data.orderCreated) {
-        setError(null);
-        setOrderData([...orderData, response.data.order]);
-        handlePlaceOrder();
-      }
-    } catch (error) {
-      console.log(error);
-      setError(error.response.data.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  console.log(orders);
   return (
     <div className="orders_page">
-      <h2 className="orders_header">Orders</h2>
       {error && <div className="form_error">{error}</div>}
-      {loading && <Loading />}
-      {!orderCompleted && <OrderSummary />}
+      {isLoading && <Loading />}
 
-      {!orderCompleted && (
-        <button className="place_order_btn" onClick={() => createOrder()}>
-          CREATE ORDER
-        </button>
-      )}
-
-      {orderCompleted && (
-        <div className="order_complete_div">
-          <h2>Order Submitted</h2>
-          <p>
-            Your Order has been Placed and it is Pending, Thank you for shopping
-            with us.
-          </p>
+      <div className="orders_view">
+        <h1>Your Orders</h1>
+        {orders.length === 0 ? (
+          <p>You haven&apos;t placed any orders yet.</p>
+        ) : (
           <ul>
-            {orderData && orderData.map((order) => (
+            {orders.map((order) => (
               <li key={order._id}>
-                <div>
-                  <div>{order.user}</div>
-                  <div>Total: {order.totalAmount}</div>
-                </div>
-                {order.orderItems.map((item) => (
-                  <div key={item._id}>
-                    <div>{item.title}</div>
-                    <div>{item.quantity}</div>
-                    <div>{item.price}</div>
-                    <div>{item.itemPrice}</div>
-                    <div>{item.tax}</div>
-                    <div>{item.totalItemPrice}</div>
-                  </div>
+                <p>Order ID: {order._id}</p>
+                {order.orderItems.map((item)=>(
+                  <div key={item._id}>item{item._id}</div>
                 ))}
+                <p>Total Amount: {order.totalAmount}</p>
+                <p>Payment Status: {order.paymentStatus}</p>
+                <p>Order Status: {order.orderStatus}</p>
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

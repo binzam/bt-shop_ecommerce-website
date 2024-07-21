@@ -39,9 +39,6 @@ const ShippingForm = ({ handlePaymentForm }) => {
         localStorage.setItem('userInfo', JSON.stringify(response.data));
         setError(null);
         handlePaymentForm();
-      } else {
-        setIsLoading(false);
-        setError(response.data.message);
       }
     } catch (error) {
       setError(error.response.data.message);
@@ -97,7 +94,7 @@ const ShippingForm = ({ handlePaymentForm }) => {
           id="phoneNumber"
           name="phoneNumber"
           value={phoneNumber}
-          placeholder="Enter your phoneNumber"
+          placeholder="Enter your Phone Number"
           onChange={handleChange}
           autoComplete="false"
         />

@@ -1,38 +1,24 @@
 import { Order, OrderItem } from '../models/orderModel.js';
-import { User } from '../models/userModel.js';
+import { Types } from 'mongoose';
+import { createOrderItems, updateUserOrders } from '../utils/orderUtils.js';
 
 const createOrder = async (req, res) => {
   try {
-    const { orderObj } = req.body;
-    const { user, orderItems, shippingAddress } = orderObj;
+    const { newOrder } = req.body;
+    const { user, orderItems, shippingAddress } = newOrder;
 
     if (!user || !orderItems || orderItems.length === 0 || !shippingAddress) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
+    if (!Types.ObjectId.isValid(user)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const orderItemsToCreate = await createOrderItems(orderItems);
+    await OrderItem.create(orderItemsToCreate);
+    const totalAmount = orderItemsToCreate
+      .reduce((acc, item) => acc + item.totalItemPrice, 0)
+      .toFixed(2);
 
-    // Create the order items
-    const orderItemsToCreate = await Promise.all(
-      orderItems.map(async (item) => {
-        const { product, quantity, price, taxRate } = item;
-        const itemPrice = parseFloat((quantity * price).toFixed(2));
-        const tax = parseFloat((itemPrice * taxRate).toFixed(2));
-        const totalItemPrice = itemPrice + tax;
-
-        return new OrderItem({
-          product,
-          quantity,
-          price,
-          itemPrice,
-          tax,
-          totalItemPrice,
-        });
-      })
-    );
-
-    const totalAmount = orderItemsToCreate.reduce(
-      (acc, item) => acc + item.totalItemPrice,
-      0
-    );
     const order = await Order.create({
       user,
       orderItems: orderItemsToCreate,
@@ -40,12 +26,15 @@ const createOrder = async (req, res) => {
       shippingAddress,
     });
 
-    await User.findByIdAndUpdate(user, { $push: { orders: order._id } });
+    await updateUserOrders(user, order._id);
 
     return res.status(201).json({ orderCreated: true, order });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: error.message });
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message });
+    }
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -62,21 +51,6 @@ const getOrders = async (req, res) => {
   }
 };
 
-const getOrdersById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const order = await Order.findById(id);
-    if (!order) {
-      return res.status(400).json({
-        message: 'Order not found',
-      });
-    }
-    return res.status(200).json(order);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
-  }
-};
 const removeOrder = async (req, res) => {
   try {
     const { id } = req.params;
@@ -95,4 +69,4 @@ const removeOrder = async (req, res) => {
   }
 };
 
-export { createOrder, getOrders, getOrdersById, removeOrder };
+export { createOrder, getOrders, removeOrder };
