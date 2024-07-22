@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-async function getMe(user, setUserData, setError, setIsLoading) {
+async function getMe(
+  user,
+  setUserData,
+  setError,
+  setIsLoading,
+) {
   setError(null);
   setIsLoading(true);
 
@@ -10,12 +15,14 @@ async function getMe(user, setUserData, setError, setIsLoading) {
         Authorization: `Bearer ${user.token}`,
       },
     });
+    // console.log(response);
     if (response.status === 200) {
-      setUserData(response.data.orders);
+      setUserData(response.data);
       setError(null);
     }
   } catch (error) {
-    setError(error.response.data.message);
+    console.log(error.message);
+    setError(error.message);
   } finally {
     setIsLoading(false);
   }

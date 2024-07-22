@@ -27,3 +27,7 @@ restructor modal?
 reset password with email
 modal?
 orders page
+checkout page isorderPlaced
+a context to check if a user has placed orders
+a way to store cartitems in database when the user logs out without creating order
+product review

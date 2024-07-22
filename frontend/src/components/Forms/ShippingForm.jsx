@@ -5,7 +5,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from 'axios';
 import Loading from '../Loading';
 
-const ShippingForm = ({ handlePaymentForm }) => {
+const ShippingForm = ({ handleDisplayPaymentForm }) => {
   const { user } = useAuthContext();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,10 +35,11 @@ const ShippingForm = ({ handlePaymentForm }) => {
           },
         }
       );
+      console.log(response);
       if (response.status === 200) {
         localStorage.setItem('userInfo', JSON.stringify(response.data));
         setError(null);
-        handlePaymentForm();
+        handleDisplayPaymentForm();
       }
     } catch (error) {
       setError(error.response.data.message);
@@ -100,7 +101,7 @@ const ShippingForm = ({ handlePaymentForm }) => {
         />
       </div>
       <button disabled={isLoading} type="submit" className="shipping_form_btn">
-        Submit
+        SUBMIT
       </button>
       {error && <div className="form_error">{error}</div>}
     </form>

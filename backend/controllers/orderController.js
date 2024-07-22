@@ -1,4 +1,4 @@
-import { Order, OrderItem } from '../models/orderModel.js';
+import { Order } from '../models/orderModel.js';
 import { Types } from 'mongoose';
 import { createOrderItems, updateUserOrders } from '../utils/orderUtils.js';
 
@@ -6,7 +6,7 @@ const createOrder = async (req, res) => {
   try {
     const { newOrder } = req.body;
     const { user, orderItems, shippingAddress } = newOrder;
-
+    // console.log('neworrder>>', newOrder);
     if (!user || !orderItems || orderItems.length === 0 || !shippingAddress) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
@@ -14,7 +14,6 @@ const createOrder = async (req, res) => {
       return res.status(400).json({ message: 'Invalid user ID' });
     }
     const orderItemsToCreate = await createOrderItems(orderItems);
-    await OrderItem.create(orderItemsToCreate);
     const totalAmount = orderItemsToCreate
       .reduce((acc, item) => acc + item.totalItemPrice, 0)
       .toFixed(2);
@@ -40,7 +39,7 @@ const createOrder = async (req, res) => {
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({});
+    const orders = await Order.find({}).populate('user');
     return res.status(200).json({
       orderCount: orders.length,
       allOrders: orders,

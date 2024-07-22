@@ -4,7 +4,7 @@ async function createOrder(
   setError,
   setLoading,
   user,
-  setOrderData,
+  // setOrderData,
   newOrder,
   setIsOrderPlaced
 ) {
@@ -26,7 +26,6 @@ async function createOrder(
     if (response.data.orderCreated) {
       setError(null);
       setIsOrderPlaced(true);
-      setOrderData(response.data.order);
     }
   } catch (error) {
     console.log(error);
@@ -47,13 +46,13 @@ async function fetchUserOrders(user, setOrders, setError, setIsLoading) {
         },
       }
     );
-    console.log(response);
+    console.log('response in fetchuserOrders', response);
     if (response.status === 200) {
       setOrders(response.data);
       setError(null);
     }
   } catch (error) {
-    setError(error.response.data.error.message);
+    setError(error.response.data.error);
     console.error('Error fetching orders:', error);
   } finally {
     setIsLoading(false);

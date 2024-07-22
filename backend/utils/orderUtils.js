@@ -1,11 +1,10 @@
 import { Types } from 'mongoose';
 import { User } from '../models/userModel.js';
-import { OrderItem } from '../models/orderModel.js';
 
 async function createOrderItems(items) {
   return Promise.all(
     items.map(async (item) => {
-      const { product, quantity, price, taxRate } = item;
+      const { product, quantity, price, taxRate, title, image } = item;
 
       if (!Types.ObjectId.isValid(product)) {
         throw new Error(`Invalid product ID: ${product}`);
@@ -27,14 +26,17 @@ async function createOrderItems(items) {
       const tax = parseFloat((itemPrice * taxRate).toFixed(2));
       const totalItemPrice = itemPrice + tax;
 
-      return new OrderItem({
+      const orderItem = {
         product,
+        title,
+        image,
         quantity,
         price,
         itemPrice,
         tax,
         totalItemPrice,
-      });
+      };
+      return orderItem;
     })
   );
 }

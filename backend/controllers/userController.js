@@ -13,21 +13,44 @@ const checkUndefined = (obj) => {
   return obj;
 };
 const getCurrentUser = async (req, res) => {
-  const user = req.user;
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
+  try {
+    const user = req.user;
+    // console.log(user);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-  const userData = {
-    _id: user._id,
-    email: user.email,
-    address: checkUndefined(user.address),
-    creditCardInfo: checkUndefined(user.creditCardInfo),
-    orders: checkUndefined(user.orders),
-  };
-  return res.status(200).json(userData);
+    const userData = {
+      _id: user._id,
+      email: user.email,
+      address: checkUndefined(user.address),
+      creditCardInfo: checkUndefined(user.creditCardInfo),
+      orders: checkUndefined(user.orders),
+    };
+    return res.status(200).json(userData);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
 };
 
+const getUserOrders = async (req, res) => {
+  try {
+    const { user } = req;
+
+    const orders = await Order.find({ user: user._id }).populate('user');
+    // console.log(orders);
+    if (!orders) {
+      return res.status(400).json({
+        message: 'Order not found',
+      });
+    }
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 const connectUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -210,24 +233,6 @@ const updateUserPaymentInfo = async (req, res) => {
   }
 };
 
-const getUserOrders = async (req, res) => {
-  try {
-    const { user } = req;
-    console.log(user);
-    // const orders = await Order.find({ user: user._id });
-    const orders = await Order.find({ user: user._id }).populate('orderItems');
-    console.log(orders);
-    if (!orders) {
-      return res.status(400).json({
-        message: 'Order not found',
-      });
-    }
-    return res.status(200).json(orders);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
-  }
-};
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;

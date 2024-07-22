@@ -56,19 +56,19 @@ const Navbar = () => {
         <li>
           <Link
             onClick={() => handleClick()}
-            to="/contact"
+            to="/checkout"
             className="nav_link"
           >
-            Contact
+            Checkout
           </Link>
         </li>
         <li>
           <Link
             onClick={() => handleClick()}
-            to="/checkout"
+            to="/orders"
             className="nav_link"
           >
-            Checkout
+            Orders
           </Link>
         </li>
       </ul>

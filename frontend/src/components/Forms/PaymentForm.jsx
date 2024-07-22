@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Loading from '../Loading';
 
-const PaymentForm = ({ handleCreateOrder }) => {
+const PaymentForm = ({ checkIsReadyToPlaceOrder }) => {
   const { user } = useAuthContext();
   const [creditCardInfo, setCreditCardInfo] = useState({
     cardNumber: '',
@@ -37,7 +37,7 @@ const PaymentForm = ({ handleCreateOrder }) => {
       if (response.status === 200) {
         setError(null);
         localStorage.setItem('userInfo', JSON.stringify(response.data));
-        handleCreateOrder();
+        checkIsReadyToPlaceOrder();
       } else {
         setIsLoading(false);
         setError(response.data.message);
@@ -94,7 +94,7 @@ const PaymentForm = ({ handleCreateOrder }) => {
         />
       </div>
       <button disabled={isLoading} className="payment_form_btn" type="submit">
-        Place Order
+        SUBMIT
       </button>
       {error && <div className="form_error">{error}</div>}
     </form>
