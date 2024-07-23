@@ -32,7 +32,7 @@ const ProductContextProvider = ({ children }) => {
   const removeProduct = async (productId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5555/api/products/remove_product/${productId}`,
+        `http://localhost:5555/api/admin/remove_product/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -50,7 +50,7 @@ const ProductContextProvider = ({ children }) => {
   const addNewProduct = async (newProduct) => {
     try {
       const response = await axios.post(
-        'http://localhost:5555/api/products/add_product',
+        'http://localhost:5555/api/admin/add_product',
         newProduct,
         {
           headers: {

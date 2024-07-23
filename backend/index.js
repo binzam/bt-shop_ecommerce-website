@@ -6,9 +6,9 @@ import cors from 'cors';
 import productsRoute from './routes/productsRoute.js';
 import usersRoute from './routes/usersRoute.js';
 import ordersRoute from './routes/ordersRoute.js';
-import feedbackRoute from './routes/feedbackRoute.js';
-import resetUserOrders from './utils/resetUserOrders.js';
-import updateUserOrders from './utils/UpdateUserOrders.js';
+import adminRoute from './routes/adminRoute.js';
+// import resetUserOrders from './utils/resetUserOrders.js';
+// import updateUserOrders from './utils/UpdateUserOrders.js';
 const app = express();
 app.use(express.json());
 app.use(cors())
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 app.use('/api/products', productsRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/orders', ordersRoute);
-app.use('/api/feedback', feedbackRoute);
+app.use('/api/admin', adminRoute);
 
 mongoose
   .connect(process.env.MONGO_URI)

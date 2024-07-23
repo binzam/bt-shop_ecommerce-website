@@ -12,7 +12,7 @@ const useOrders = () => {
     setLoading(true);
     try {
       if (user) {
-        const { data } = await axios.get('http://localhost:5555/api/orders', {
+        const { data } = await axios.get('http://localhost:5555/api/admin/orders', {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -40,7 +40,7 @@ const useOrders = () => {
       setLoading(true);
       try {
         const response = await axios.delete(
-          `http://localhost:5555/api/orders/remove_order/${orderId}`,
+          `http://localhost:5555/api/admin/remove_order/${orderId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

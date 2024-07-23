@@ -21,7 +21,7 @@ const UserProfile = () => {
   };
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/home');
     handleClearCart();
     handleCloseModal();
   };

@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/userModel.js';
+import { Feedback } from '../models/feedbackModel.js';
 import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
 import validator from 'validator';
-import { Order } from '../models/orderModel.js';
 
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
@@ -34,23 +34,6 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
-const getUserOrders = async (req, res) => {
-  try {
-    const { user } = req;
-
-    const orders = await Order.find({ user: user._id }).populate('user');
-    // console.log(orders);
-    if (!orders) {
-      return res.status(400).json({
-        message: 'Order not found',
-      });
-    }
-    return res.status(200).json(orders);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
-  }
-};
 const connectUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -90,24 +73,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-const getUsers = async (req, res) => {
-  try {
-    // const users = await User.find({});
-    // const users = await User.find({}, 'username role email _id');
-    // In your user controller or route
-    // const users = await User.find({}).populate('orders');
-    const users = await User.find({});
-    if (!users) {
-      return res.status(400).json({ error: 'Users Not found' });
-    }
-    return res.status(200).json({
-      userCount: users.length,
-      allUsers: users,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+
 const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -295,29 +261,38 @@ const resetPassword = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
-const deleteUser = async (req, res) => {
+
+const postFeedback = async (req, res) => {
   try {
-    const { id } = req.params;
-    await User.findByIdAndDelete(id);
-    return res
-      .status(200)
-      .json({ userRemoved: true, message: 'User deleted successfully' });
+    const { name, email, message } = req.body;
+    if (!email || !name || !message) {
+      throw Error('All fields must be filled');
+    }
+    if (!validator.isEmail(email)) {
+      throw Error('Email not valid');
+    }
+    await Feedback.create({
+      name,
+      email,
+      message,
+    });
+    return res.status(200).json({ feedbackSubmitted: true });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: error.message, feedbackSubmitted: false });
   }
 };
 export {
   registerUser,
-  getUsers,
   getUserById,
   updateUserPassword,
-  deleteUser,
   connectUser,
   updateUserShippingInfo,
   updateUserPaymentInfo,
   getCurrentUser,
   forgotPassword,
   resetPassword,
-  getUserOrders,
+  postFeedback,
 };

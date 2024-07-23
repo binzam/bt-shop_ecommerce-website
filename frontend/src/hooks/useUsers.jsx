@@ -12,7 +12,7 @@ const useUsers = () => {
     setLoading(true);
     try {
       if (user) {
-        const { data } = await axios.get('http://localhost:5555/api/users', {
+        const { data } = await axios.get('http://localhost:5555/api/admin/users', {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -40,7 +40,7 @@ const useUsers = () => {
       setLoading(true);
       try {
         const response = await axios.delete(
-          `http://localhost:5555/api/users/remove_user/${userId}`,
+          `http://localhost:5555/api/admin/remove_user/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

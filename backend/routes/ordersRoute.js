@@ -1,17 +1,15 @@
 import express from 'express';
 import {
   createOrder,
-  getOrders,
-  removeOrder,
+  getOrdersByUser,
+  cancelUserOrder,
 } from '../controllers/orderController.js';
-import { requireAuth, verifyAdmin } from '../middleware/authMiddleware.js';
+import { requireAuth } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// place order
 router.post('/place_order', createOrder);
-// router.get('/', requireAuth, verifyAdmin, getOrders);
-router.get('/',  getOrders);
-router.delete('/remove_order/:id', requireAuth, verifyAdmin, removeOrder);
+router.get('/user/:id', requireAuth, getOrdersByUser);
+router.post('/cancel_order/:id', requireAuth, cancelUserOrder);
 
 export default router;

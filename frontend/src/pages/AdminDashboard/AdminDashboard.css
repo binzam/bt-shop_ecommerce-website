@@ -19,7 +19,8 @@
 }
 .customer_btn,
 .orders_btn,
-.products_btn {
+.products_btn,
+.feedbacks_btn {
   padding: 8px;
   display: flex;
   align-items: center;
@@ -97,7 +98,8 @@
   }
   .customer_btn,
   .orders_btn,
-  .products_btn {
+  .products_btn,
+  .feedbacks_btn  {
     padding: 7px;
     gap: 10px;
     font-size: 0.8rem;

@@ -8,6 +8,7 @@ import AdminPanel from './adminComponents/AdminPanel';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Loading from '../../components/Loading';
 import { NavContext } from '../../contexts/NavContext';
+import Feedbacks from './adminComponents/FeedbacksListing/Feedbacks';
 
 const AdminDashboard = () => {
   const { isAdmin } = useAuthContext();
@@ -40,6 +41,7 @@ const AdminDashboard = () => {
           {currentView === 'customers' && <UsersList />}
           {currentView === 'orders' && <OrdersList />}
           {currentView === 'products' && <ProductsPage />}
+          {currentView === 'feedbacks' && <Feedbacks />}
     </div>
   );
 };

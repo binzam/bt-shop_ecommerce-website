@@ -6,6 +6,7 @@
   border-bottom-right-radius: 15px;
   background-color: #f7f7f7;
 }
+
 .orders_header {
   width: 100%;
   background-color: #ed9121;
@@ -14,25 +15,7 @@
   text-align: center;
   border-bottom: 5px solid cadetblue;
 }
-.place_order_btn {
-  width: 90%;
-  padding: 10px 15px;
-  border-radius: 3px;
-  display: block;
-  margin: 0 auto;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 5px;
-  gap: 10px;
-  background-color: #ffffff;
-  border: 2px solid #ed9121;
-  color: #ed9121;
-
-  transition: all 0.3s ease-in-out;
-}
-.place_order_btn:hover{
-  letter-spacing: 2px;
-  background-color: green;
-  border: 2px solid transparent;
-  color: white;
+.orders_view{
+  padding: 20px;
+  align-content: center;
 }

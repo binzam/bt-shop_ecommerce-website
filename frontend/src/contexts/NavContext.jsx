@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from 'react';
+// import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavContext = createContext();
 
@@ -11,7 +12,8 @@ const NavContextProvider = ({ children }) => {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
-
+  // const navigate = useNavigate();
+  // const location = useLocation();
   const handleOpenRegisterForm = () => {
     setShowRegisterForm(true);
     setShowLoginForm(false);
@@ -40,6 +42,13 @@ const NavContextProvider = ({ children }) => {
   }
   const handleCloseModal = () => {
     setShowUserOptions(false);
+    // const previousPath = location.state?.previousPath;
+    // if (previousPath === '/auth') {
+    //   navigate(-2); 
+    // } else {
+    //   navigate(-1); 
+    // }
+    // navigate(-1)
   };
   const handleOpenPassResetModal = () => {
     setShowLoginForm(false);

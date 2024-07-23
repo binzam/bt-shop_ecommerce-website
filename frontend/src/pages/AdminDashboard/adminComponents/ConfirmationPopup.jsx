@@ -13,6 +13,7 @@ const ConfirmationPopup = ({ remove, id, close, type }) => {
     } else if (type === 'User') {
       updateUsers((prevUsers) => prevUsers.filter((u) => u._id !== id));
     }
+
   };
   return (
     <div className="confirmation_popup">

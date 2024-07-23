@@ -33,6 +33,14 @@ const AdminPanel = ({ currentView, onViewChange }) => {
       >
         Products
       </button>
+      <button
+        className={`feedbacks_btn ${
+          activeView === 'feedbacks' ? 'selected' : ''
+        }`}
+        onClick={() => handleViewChange('feedbacks')}
+      >
+        Feedbacks
+      </button>
     </div>
   );
 };

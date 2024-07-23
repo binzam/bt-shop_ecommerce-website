@@ -4,10 +4,8 @@ import UserIcon from '../../assets/user-name-icon.svg';
 import EmailIcon from '../../assets/email-icon.svg';
 import MsgIcon from '../../assets/message-icon.svg';
 import axios from 'axios';
-import { useAuthContext } from '../../hooks/useAuthContext';
 
 function Contact() {
-  const { user } = useAuthContext();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -17,27 +15,22 @@ function Contact() {
     e.preventDefault();
     setError(null);
     try {
-      const response = await axios.post(
-        'http://localhost:5555/api/feedback',
-        { name, email, message },
-        {
-          headers: {
-            authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const response = await axios.post('http://localhost:5555/api/users/feedback', {
+        name,
+        email,
+        message,
+      });
 
       if (response.data && response.data.feedbackSubmitted === true) {
-        console.log('Feedback successfully submitted');
         setIsSubmitted(true);
         setError(null);
       } else {
         setIsSubmitted(false);
-        setError("ERROR: NETWORK ERROR");
+        setError('ERROR: NETWORK ERROR');
       }
     } catch (error) {
       console.error(error);
-      setError(error.response.data.message || "ERROR: NETWORK ERROR");
+      setError(error.response.data.message || 'ERROR: NETWORK ERROR');
     }
   };
 

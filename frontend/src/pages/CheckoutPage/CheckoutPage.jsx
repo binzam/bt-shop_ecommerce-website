@@ -1,22 +1,20 @@
 import { useContext, useEffect, useState } from 'react';
 import { NavContext } from '../../contexts/NavContext';
+import { Link } from 'react-router-dom';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { getMe } from '../../utils/userUtils';
 import './CheckoutPage.css';
 import CartItems from '../../components/Header/Cart/CartItems';
 import ArrowRight from '../../assets/arrow-right-solid.svg';
 import ShippingForm from '../../components/Forms/ShippingForm';
-import {
-  Link,
-  // useNavigate
-} from 'react-router-dom';
 import PaymentForm from '../../components/Forms/PaymentForm';
 import OrderSummary from '../../components/OrderSummary';
-import { useAuthContext } from '../../hooks/useAuthContext';
 import Loading from '../../components/Loading';
-import { getMe } from '../../utils/userUtils';
 import { createOrder } from '../../utils/orderUtils';
 import CheckoutHeader from './CheckoutHeader';
 import OrderComplete from './OrderComplete';
 import ArrowLeft from '../../assets/arrow-left.svg';
+
 const CheckoutPage = () => {
   const { user } = useAuthContext();
   const { cartItems, handleOpenUserOptions, handleClearCart } =
@@ -40,15 +38,16 @@ const CheckoutPage = () => {
       getMe(user, setUserData, setError, setIsLoading);
     }
   }, [user]);
-  console.log(userData);
-  const filteredValues = cartItems.map(({ _id, quantity, price, taxRate, title, image }) => ({
-    product: _id,
-    quantity,
-    price,
-    taxRate,
-    title,
-    image,
-  }));
+  const filteredValues = cartItems.map(
+    ({ _id, quantity, price, taxRate, title, image }) => ({
+      product: _id,
+      quantity,
+      price,
+      taxRate,
+      title,
+      image,
+    })
+  );
   const newOrder = {
     user: userData._id,
     orderItems: filteredValues,
@@ -78,8 +77,10 @@ const CheckoutPage = () => {
     setShowNextBtn(false);
     setShowShippingForm(false);
     setShowPaymentForm(false);
-    setIsReadyToPlaceOrder(true);
     setShowOrderSummary(true);
+    if (cartItems.length > 0) {
+      setIsReadyToPlaceOrder(true);
+    }
   };
   const handlePlaceOrder = () => {
     createOrder(setError, setIsLoading, user, newOrder, setIsOrderPlaced);
@@ -90,7 +91,7 @@ const CheckoutPage = () => {
       {error && <div className="form_error">{error}</div>}
       {isLoading && <Loading />}
 
-      <CheckoutHeader user={user} />
+      <CheckoutHeader user={user} handleOpenUserOptions={handleOpenUserOptions} />
 
       {!isOrderPlaced && (
         <div className="orders_content">
@@ -104,11 +105,14 @@ const CheckoutPage = () => {
               </div>
             ) : (
               <>
-                <p className="no_orders">You have no Pending orders</p>
+                <div className="no_orders">
+                <p className="no_orders_txt">You have no Pending orders</p>
                 <Link className="shop_link" to="/products">
                   <img src={ArrowLeft} alt="Shop link" />
                   Back to Shop
                 </Link>
+                </div>
+                
               </>
             )}
           </div>

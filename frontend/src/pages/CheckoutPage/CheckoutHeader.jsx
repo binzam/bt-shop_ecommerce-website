@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 
+import { Link } from 'react-router-dom';
 
-const CheckoutHeader = ({ user }) => {
+const CheckoutHeader = ({ user, handleOpenUserOptions }) => {
   return (
     <div className="checkout_header">
       <div className="checkout">CHECKOUT</div>
@@ -10,9 +11,16 @@ const CheckoutHeader = ({ user }) => {
           Signed in as: <span>{user.username}</span>
         </p>
       ) : (
-        <span className="not_logged_in">Please Sign In or Register</span>
+        <span>
+          <Link
+            to="/auth"
+            onClick={handleOpenUserOptions}
+             className="not_logged_in"
+          >
+            Please Sign In or Register
+          </Link>
+        </span>
       )}
-      
     </div>
   );
 };

@@ -3,6 +3,7 @@ import UserIcon from '../../../../assets/avatar.svg';
 import CalendarIcon from '../../../../assets/calendar-regular.svg';
 import LocationIcon from '../../../../assets/location-dot-solid.svg';
 import TruckIcon from '../../../../assets/truck-solid.svg';
+
 const OrderItem = ({ order, handleRemoveOrder }) => {
   return (
     <div className="order">
