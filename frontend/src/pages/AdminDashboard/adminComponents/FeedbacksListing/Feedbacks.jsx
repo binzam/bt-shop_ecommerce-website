@@ -12,7 +12,6 @@ const Feedbacks = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
-  console.log(feedbacks);
   const handleRemoveFeedback = (userId) => {
     setFeedbackId(userId);
     setShowConfirmationPopup(true);
@@ -85,10 +84,10 @@ const Feedbacks = () => {
                     Name: <span className="highlight">{user.name}</span>
                   </div>
                   <div className="user_detail">
-                    Name: <span>{user.email}</span>
+                    Email: <span>{user.email}</span>
                   </div>
                   <div className="user_detail">
-                    Email: <span className="highlight">{user.message}</span>
+                    Message: <span className="highlight">{user.message}</span>
                   </div>
 
                   <button

@@ -58,7 +58,7 @@ async function fetchUserOrders(user, setOrders, setError, setIsLoading) {
     setIsLoading(false);
   }
 }
-async function cancelUserOrder(user, orderId, setError, setisOrderCanceled) {
+async function cancelUserOrder(user, orderId, setError, setIsOrderCanceled) {
   try {
     const response = await axios.post(
       `http://localhost:5555/api/orders/cancel_order/${orderId}`,
@@ -71,7 +71,7 @@ async function cancelUserOrder(user, orderId, setError, setisOrderCanceled) {
     );
 
     if (response.data.orderCancelled) {
-      setisOrderCanceled(true);
+      setIsOrderCanceled(true);
     } else {
       setError(response.data.message);
     }

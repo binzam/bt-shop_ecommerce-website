@@ -4,6 +4,8 @@ import { Feedback } from '../models/feedbackModel.js';
 import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
 import validator from 'validator';
+import path from 'path';
+import updateUserProfilePicture from '../utils/userUtils.js';
 
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
@@ -72,7 +74,6 @@ const registerUser = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
 
 const getUserById = async (req, res) => {
   try {
@@ -198,6 +199,24 @@ const updateUserPaymentInfo = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const uploadProfilePicture = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    console.log('filee>>>', req.file);
+
+    const userId = req.user.id;
+
+    const filePath = path.join('userUploads', req.file.filename);
+
+    await updateUserProfilePicture(userId, filePath);
+
+    res.json({ message: 'Profile picture uploaded successfully', filePath });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const forgotPassword = async (req, res) => {
   try {
@@ -295,4 +314,5 @@ export {
   forgotPassword,
   resetPassword,
   postFeedback,
+  uploadProfilePicture,
 };

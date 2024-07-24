@@ -1,5 +1,5 @@
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './OrdersPage.css';
 import Loading from '../../components/Loading';
 import { cancelUserOrder, fetchUserOrders } from '../../utils/orderUtils';
@@ -7,21 +7,26 @@ import OrderItem from '../AdminDashboard/adminComponents/OrderListing/OrderItem'
 import ConfirmationPopup from '../AdminDashboard/adminComponents/ConfirmationPopup';
 import { Link } from 'react-router-dom';
 import ArrowLeft from '../../assets/arrow-left.svg';
+import CheckmarkIcon from '../../assets/check-solid.svg';
 
 const OrdersPage = () => {
   const { user } = useAuthContext();
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
-  const [isOrderCanceled, setisOrderCanceled] = useState(false);
+  const [isOrderCanceled, setIsOrderCanceled] = useState(false);
   const [isLoading, setIsLoading] = useState(null);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [orderId, setOrderId] = useState(null);
 
-  useEffect(() => {
+  const fetchOrders = useCallback(() => {
     if (user) {
+      setIsLoading(true);
       fetchUserOrders(user, setOrders, setError, setIsLoading);
     }
   }, [user]);
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
   const handleCancelOrder = (orderId) => {
     setOrderId(orderId);
     setShowConfirmationPopup(true);
@@ -30,16 +35,27 @@ const OrdersPage = () => {
   const cancelOrder = async () => {
     try {
       setIsLoading(true);
-      await cancelUserOrder(user, orderId, setError, setisOrderCanceled);
+      await cancelUserOrder(user, orderId, setError, setIsOrderCanceled);
       setShowConfirmationPopup(false);
-      fetchUserOrders(user, setOrders, setError, setIsLoading);
+      fetchOrders();
     } catch (err) {
       console.error('Error canceling order:', err);
       setError(
         'An error occurred while canceling the order. Please try again.'
       );
+    } finally {
+      setIsLoading(false);
     }
   };
+  useEffect(() => {
+    if (isOrderCanceled) {
+      const timer = setTimeout(() => {
+        setIsOrderCanceled(false);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isOrderCanceled]);
   return (
     <div className="orders_page">
       {isLoading && <Loading />}
@@ -48,7 +64,7 @@ const OrdersPage = () => {
       </div>
       <div className="orders_view">
         {error && <div className="form_error">{error}</div>}
-        {orders.length === 0 ? (
+        {orders.length === 0 && (
           <div className="no_orders">
             <p className="no_orders_txt">
               You haven&apos;t placed any orders yet.
@@ -58,21 +74,25 @@ const OrdersPage = () => {
               Back to Shop
             </Link>
           </div>
-        ) : (
-          <>
-            {isOrderCanceled && (
-              <div className="order_canceled">Order Canceled</div>
-            )}
-            {orders.map((order) => (
-              <OrderItem
-                key={order._id}
-                order={order}
-                handleRemoveOrder={handleCancelOrder}
-              />
-            ))}
-          </>
         )}
+        {isOrderCanceled && (
+          <div className="order_canceled">
+            <span className="order_canceled_txt">Order canceled.</span>
+            <span className="order_canceled_img">
+              <img src={CheckmarkIcon} alt="" />
+            </span>
+          </div>
+        )}
+
+        {orders.map((order) => (
+          <OrderItem
+            key={order._id}
+            order={order}
+            handleRemoveOrder={handleCancelOrder}
+          />
+        ))}
       </div>
+
       {showConfirmationPopup && (
         <ConfirmationPopup
           type="order"

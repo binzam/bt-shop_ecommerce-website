@@ -169,31 +169,7 @@
   background-color: #ed9121;
   border: 1px solid #333;
 }
-.change_pass_btn {
-  color: #e7195a;
-  cursor: pointer;
-}
-.close_user_profile {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
-}
-.logout_btn {
-  position: absolute;
-  right: 6px;
-  bottom: -6px;
-  padding: 5px 10px;
-  margin: 10px 0;
-  background-color: #e7195a;
-  color: #ffefef;
-  font-weight: 600;
-  font-size: 17px;
-}
-.logout_btn:hover {
-  background-color: #ffefef;
-  color: #e7195a;
-}
+
 .product_rating_form {
   position: absolute;
   padding: 20px 30px;

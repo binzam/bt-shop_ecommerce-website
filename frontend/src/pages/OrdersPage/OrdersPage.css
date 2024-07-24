@@ -15,7 +15,42 @@
   text-align: center;
   border-bottom: 5px solid cadetblue;
 }
-.orders_view{
+.orders_view {
   padding: 20px;
   align-content: center;
+}
+.order_canceled {
+  /* width: 100%; */
+  padding: 5px 10px;
+  background-color: #ffffff00;
+  border: 2px solid #ff0000;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.order_canceled_txt {
+  color: #ff0000;
+  font-size: 16px;
+  font-weight: 700;
+}
+.order_canceled_img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  padding: 2px;
+  border-radius: 50%;
+  border: 2px solid #ff0000;
+}
+.order_canceled_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }

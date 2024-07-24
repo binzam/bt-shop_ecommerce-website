@@ -1,5 +1,5 @@
 import { useAuthContext } from '../../../hooks/useAuthContext';
-import UserProfile from './UserProfile';
+import UserProfile from '../UserProfile/UserProfile';
 import './UserModal.css';
 import { Outlet } from 'react-router-dom';
 

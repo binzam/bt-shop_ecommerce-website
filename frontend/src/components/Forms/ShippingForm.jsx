@@ -27,7 +27,7 @@ const ShippingForm = ({ handleDisplayPaymentForm }) => {
 
     try {
       const response = await axios.put(
-        'http://localhost:5555/api/users/update_user',
+        'http://localhost:5555/api/users/update_shipping',
         { address },
         {
           headers: {

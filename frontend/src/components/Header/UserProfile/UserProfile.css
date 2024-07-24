@@ -1,0 +1,147 @@
+.user_profile {
+  width: 100%;
+  height: auto;
+  padding-bottom: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* gap: 10px; */
+}
+
+.user_info {
+  width: 100%;
+  margin: 20px 0;
+}
+.admin_title {
+  color: #ed9121;
+  font-size: 16px;
+  font-weight: 800;
+}
+.user_profile_info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.user_profile_pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background-color: #ffefef;
+  overflow: hidden;
+  cursor: pointer;
+  /* padding: 5px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  /* position: relative; */
+}
+.user_profile_pic:hover {
+  border: 2px solid #ed9121;
+  border-radius: 30%;
+}
+.user_profile_pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.upload_image_option {
+  width: 200px;
+}
+.upload_image_btn {
+  /* display: none; */
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  /* width: 20px;
+  height: 20px; */
+  /* border-radius: 50%; */
+  /* background-color: transparent; */
+  border: none;
+  padding: 5px 10px;
+  background-color: #ffefef;
+  border: 2px solid #ed9121;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+.upload_image_btn img {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+/* input#profile-picture {
+} */
+
+.profile_txts {
+  font-size: 14px;
+  color: #ed9121;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+.view_orders_btn {
+  color: cadetblue;
+  text-decoration: underline;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 10px;
+  display: block;
+}
+.account_settings {
+  /* display: block; */
+  width: 100%;
+  height: auto;
+}
+.settings_btn {
+  padding: 5px 10px;
+  width: 100%;
+  background-color: #ed9121;
+  border: 1px solid #ffffff;
+  color: #ffefef;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.settings_btn:hover {
+  background-color: #333;
+}
+.change_pass_btn,
+.update_shipping_btn,
+.update_payment_btn {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #ed9121;
+  margin: 5px 0;
+  cursor: pointer;
+  color: #ffffff;
+}
+.logout_btn {
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  padding: 5px 10px;
+  background-color: #e7195a;
+  border: 1px solid red;
+  color: #ffefef;
+  font-weight: 600;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.logout_btn:hover {
+  background-color: #ffefef;
+  color: #e7195a;
+}
