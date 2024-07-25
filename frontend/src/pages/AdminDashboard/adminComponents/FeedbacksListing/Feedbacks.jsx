@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import Loading from '../../../../components/Loading';
 import ConfirmationPopup from '../ConfirmationPopup';
 import { AuthContext } from '../../../../contexts/AuthContext';
@@ -16,7 +16,7 @@ const Feedbacks = () => {
     setFeedbackId(userId);
     setShowConfirmationPopup(true);
   };
-  const fetchFeedbacks = async () => {
+  const fetchFeedbacks = useCallback(async () => {
     setLoading(true);
     try {
       if (user) {
@@ -41,10 +41,10 @@ const Feedbacks = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
   useEffect(() => {
     fetchFeedbacks();
-  }, []);
+  }, [fetchFeedbacks]);
 
   const removeFeedback = async (feedbackId) => {
     setLoading(true);

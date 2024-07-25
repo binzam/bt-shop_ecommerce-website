@@ -10,14 +10,18 @@
 .orders_header {
   width: 100%;
   background-color: #ed9121;
-  padding: 10px;
+  padding: 6px;
   color: #ffffff;
   text-align: center;
   border-bottom: 5px solid cadetblue;
 }
 .orders_view {
-  padding: 20px;
-  align-content: center;
+  padding: 10px;
+  display: flex;
+  /* align-items: stretch; */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 .order_canceled {
   /* width: 100%; */

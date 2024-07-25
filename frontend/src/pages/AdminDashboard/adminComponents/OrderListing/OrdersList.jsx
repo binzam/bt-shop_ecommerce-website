@@ -6,7 +6,6 @@ import Loading from '../../../../components/Loading';
 import OrderItem from './OrderItem.jsx';
 
 const OrdersList = () => {
-
   const { orders, ordersError, loading, removeOrder } = useOrders();
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [orderId, setOrderId] = useState(null);
@@ -24,17 +23,18 @@ const OrdersList = () => {
       {orders.length < 1 ? (
         <div className="no_orders">You have No orders.</div>
       ) : (
-        <div className="orders_list">
+        <>
           <div className="counter">Pending Orders : {orders.length}</div>
-
-          {orders.map((order) => (
-            <OrderItem
-              key={order._id}
-              handleRemoveOrder={handleRemoveOrder}
-              order={order}
-            />
-          ))}
-        </div>
+          <div className="orders_list">
+            {orders.map((order) => (
+              <OrderItem
+                key={order._id}
+                handleRemoveOrder={handleRemoveOrder}
+                order={order}
+              />
+            ))}
+          </div>
+        </>
       )}
 
       {showConfirmationPopup && (
