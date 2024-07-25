@@ -8,9 +8,9 @@ import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import adminIcon from '../../../assets/adminIcon.svg';
 import MenuIcon from '../../../assets/icon-menu.svg';
 import CloseMenuIcon from '../../../assets/close-for-menu.svg';
-import './Navbar.css'
+import './Navbar.css';
 const Navbar = () => {
-  const { isAdmin } = useContext(AuthContext);
+  const { isAdmin, user } = useContext(AuthContext);
   const { cartItems, toggleCart, handleOpenUserOptions } =
     useContext(NavContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -38,7 +38,7 @@ const Navbar = () => {
           <img src={MenuIcon} alt="menu" />
         </button>
       )}
-      <ul className={`nav_links ${isDropdownOpen ? "show" : "hide"}`}>
+      <ul className={`nav_links ${isDropdownOpen ? 'show' : 'hide'}`}>
         <li>
           <Link onClick={() => handleClick()} to="/home" className="nav_link">
             Home
@@ -63,11 +63,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link
-            onClick={() => handleClick()}
-            to="/orders"
-            className="nav_link"
-          >
+          <Link onClick={() => handleClick()} to="/orders" className="nav_link">
             Orders
           </Link>
         </li>
@@ -102,11 +98,14 @@ const Navbar = () => {
           </div> */}
           <Link
             onClick={handleOpenUserOptions}
-            to='/auth'
+            to="/auth"
             className="user_profile_icon"
             title="User"
           >
-            <img src={UserIcon} alt="avatar" />
+            <img
+              src={user && user.profilePicture ? user.profilePicture : UserIcon}
+              alt="avatar"
+            />
           </Link>
         </li>
       </ul>

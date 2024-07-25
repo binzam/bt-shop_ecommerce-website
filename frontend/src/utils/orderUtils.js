@@ -4,9 +4,9 @@ async function createOrder(
   setError,
   setLoading,
   user,
-  // setOrderData,
   newOrder,
-  setIsOrderPlaced
+  setIsOrderPlaced,
+  handleClearCart
 ) {
   setLoading(true);
   setError(null);
@@ -26,6 +26,7 @@ async function createOrder(
     if (response.data.orderCreated) {
       setError(null);
       setIsOrderPlaced(true);
+      handleClearCart();
     }
   } catch (error) {
     console.log(error);

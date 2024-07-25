@@ -82,16 +82,36 @@ const CheckoutPage = () => {
       setIsReadyToPlaceOrder(true);
     }
   };
-  const handlePlaceOrder = () => {
-    createOrder(setError, setIsLoading, user, newOrder, setIsOrderPlaced);
-    handleClearCart();
+  const handlePlaceOrder = async () => {
+    try {
+      setIsLoading(true);
+      await createOrder(
+        setError,
+        setIsLoading,
+        user,
+        newOrder,
+        setIsOrderPlaced,
+        handleClearCart
+      );
+    } catch (err) {
+      console.error('Error creating order:', err);
+      setError(
+        'An error occurred while canceling the order. Please try again.'
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <div className="checkout_page">
       {error && <div className="form_error">{error}</div>}
       {isLoading && <Loading />}
 
-      <CheckoutHeader user={user} handleOpenUserOptions={handleOpenUserOptions} />
+      <CheckoutHeader
+        user={user}
+        handleOpenUserOptions={handleOpenUserOptions}
+      />
 
       {!isOrderPlaced && (
         <div className="orders_content">
@@ -106,13 +126,12 @@ const CheckoutPage = () => {
             ) : (
               <>
                 <div className="no_orders">
-                <p className="no_orders_txt">You have no Pending orders</p>
-                <Link className="shop_link" to="/products">
-                  <img src={ArrowLeft} alt="Shop link" />
-                  Back to Shop
-                </Link>
+                  <p className="no_orders_txt">You have no Pending orders</p>
+                  <Link className="shop_link" to="/products">
+                    <img src={ArrowLeft} alt="Shop link" />
+                    Back to Shop
+                  </Link>
                 </div>
-                
               </>
             )}
           </div>

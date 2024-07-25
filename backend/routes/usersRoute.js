@@ -18,17 +18,17 @@ const router = express.Router();
 // / Set up Multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'userUploads/'); // Specify the upload directory
+    cb(null, 'userUploads/');
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`); // Generate a unique filename
+    cb(null, `${Date.now()}-${file.originalname}`); 
   },
 });
 
 // Create the Multer upload instance
 const upload = multer({
   storage,
-  limits: { fileSize: 1000000 },
+  limits: { fileSize: 8000000 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
       cb(null, true);

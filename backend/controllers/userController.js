@@ -5,7 +5,6 @@ import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
 import validator from 'validator';
 import path from 'path';
-import updateUserProfilePicture from '../utils/userUtils.js';
 
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
@@ -28,6 +27,9 @@ const getCurrentUser = async (req, res) => {
       address: checkUndefined(user.address),
       creditCardInfo: checkUndefined(user.creditCardInfo),
       orders: checkUndefined(user.orders),
+      profilePicture: `${req.protocol}://${req.get('host')}/${
+        user.profilePicture
+      }`,
     };
     return res.status(200).json(userData);
   } catch (error) {
@@ -50,6 +52,7 @@ const connectUser = async (req, res) => {
       email,
       userId: user._id,
       role: user.role,
+      profilePicture: user.profilePicture,
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -125,6 +128,7 @@ const updateUserPassword = async (req, res) => {
         token,
         email: updatedUser.email,
         username: updatedUser.username,
+        profilePicture: updatedUser.profilePicture,
       },
     });
   } catch (error) {
@@ -160,6 +164,7 @@ const updateUserShippingInfo = async (req, res) => {
       email: updatedUser.email,
       username: updatedUser.username,
       role: updatedUser.role,
+      profilePicture: updatedUser.profilePicture,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -194,6 +199,7 @@ const updateUserPaymentInfo = async (req, res) => {
       email: updatedUser.email,
       username: updatedUser.username,
       role: updatedUser.role,
+      profilePicture: updatedUser.profilePicture,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -204,17 +210,34 @@ const uploadProfilePicture = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
-    console.log('filee>>>', req.file);
 
     const userId = req.user.id;
-
     const filePath = path.join('userUploads', req.file.filename);
-
-    await updateUserProfilePicture(userId, filePath);
-
-    res.json({ message: 'Profile picture uploaded successfully', filePath });
+    const profilePictureUrl = `${req.protocol}://${req.get(
+      'host'
+    )}/${filePath}`;
+    const updatedUser = await User.findOneAndUpdate(
+      {
+        _id: userId,
+      },
+      {
+        profilePicture: profilePictureUrl,
+      },
+      {
+        new: true,
+      }
+    );
+    const token = generateToken(updatedUser._id);
+    return res.status(200).json({
+      token,
+      email: updatedUser.email,
+      username: updatedUser.username,
+      role: updatedUser.role,
+      profilePicture: updatedUser.profilePicture,
+    });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
+    res.status(500).json({ error: 'An unexpected error occurred' });
   }
 };
 
