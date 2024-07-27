@@ -6,7 +6,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import Loading from '../Loading';
 
 const PaymentForm = ({ checkIsReadyToPlaceOrder }) => {
-  const { user } = useAuthContext();
+  const { user, updatePaymentInfo } = useAuthContext();
   const [creditCardInfo, setCreditCardInfo] = useState({
     cardNumber: '',
     cardName: '',
@@ -34,9 +34,9 @@ const PaymentForm = ({ checkIsReadyToPlaceOrder }) => {
           },
         }
       );
-      if (response.status === 200) {
+      if (response.data.paymentInfoUpdated) {
         setError(null);
-        localStorage.setItem('userInfo', JSON.stringify(response.data));
+        updatePaymentInfo(response.data.paymentInfoUpdated)
         checkIsReadyToPlaceOrder();
       } else {
         setIsLoading(false);

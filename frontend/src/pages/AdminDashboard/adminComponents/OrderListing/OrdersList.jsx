@@ -3,7 +3,7 @@ import './OrdersList.css';
 import ConfirmationPopup from '../ConfirmationPopup';
 import useOrders from '../../../../hooks/useOrders.jsx';
 import Loading from '../../../../components/Loading';
-import OrderItem from './OrderItem.jsx';
+import OrderItem from '../../../../components/OrderItem/OrderItem.jsx';
 
 const OrdersList = () => {
   const { orders, ordersError, loading, removeOrder } = useOrders();

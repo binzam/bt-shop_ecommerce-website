@@ -29,7 +29,7 @@ const ProductsPage = () => {
     if (addedPrd) {
       const timeout = setTimeout(() => {
         setShowPopup(false);
-      }, 2000);
+      }, 3000);
       return () => clearTimeout(timeout);
     }
   }, [addedPrd]);

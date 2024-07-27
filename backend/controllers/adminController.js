@@ -8,7 +8,7 @@ const getUsers = async (req, res) => {
     // const users = await User.find({}, 'username role email _id');
     // In your user controller or route
     // const users = await User.find({}).populate('orders');
-    const users = await User.find({});
+    const users = await User.find({}, '-password -updatedAt -v -address -creditCardInfo');
     if (!users) {
       return res.status(400).json({ error: 'Users Not found' });
     }
@@ -20,7 +20,23 @@ const getUsers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById({ _id: id }, '-password').populate(
+      'orders'
+    );
+    if (!user) {
+      return res.status(400).json({
+        message: 'User not found',
+      });
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -159,4 +175,5 @@ export {
   removeOrder,
   getAllFeedbacks,
   getOrders,
+  getUserById,
 };

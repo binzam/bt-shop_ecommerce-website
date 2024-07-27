@@ -3,11 +3,11 @@ import { useCallback, useEffect, useState } from 'react';
 import './OrdersPage.css';
 import Loading from '../../components/Loading';
 import { cancelUserOrder, fetchUserOrders } from '../../utils/orderUtils';
-import OrderItem from '../AdminDashboard/adminComponents/OrderListing/OrderItem';
 import ConfirmationPopup from '../AdminDashboard/adminComponents/ConfirmationPopup';
 import { Link } from 'react-router-dom';
 import ArrowLeft from '../../assets/arrow-left.svg';
 import CheckmarkIcon from '../../assets/check-solid.svg';
+import OrderItem from '../../components/OrderItem/OrderItem';
 
 const OrdersPage = () => {
   const { user } = useAuthContext();
@@ -60,7 +60,7 @@ const OrdersPage = () => {
     <div className="orders_page">
       {isLoading && <Loading />}
       <div className="orders_header">
-        <h1>Your Orders</h1>
+        <h2>Your Orders</h2>
       </div>
       <div className="orders_view">
         {error && <div className="form_error">{error}</div>}

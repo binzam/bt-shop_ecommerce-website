@@ -4,7 +4,6 @@ import {
   registerUser,
   getCurrentUser,
   connectUser,
-  getUserById,
   forgotPassword,
   resetPassword,
   postFeedback,
@@ -15,30 +14,30 @@ import {
 import { requireAuth } from '../middleware/authMiddleware.js';
 // import { handleError } from '../middleware/errorMiddleware.js';
 const router = express.Router();
-// / Set up Multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'userUploads/');
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`); 
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-
-// Create the Multer upload instance
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = ['image/jpeg', 'image/png'];
+  if (!allowedFileTypes.includes(file.mimetype)) {
+    return cb(
+      new Error('Invalid file type. Only JPEG and PNG files are allowed.'),
+      false
+    );
+  }
+  cb(null, true);
+};
 const upload = multer({
   storage,
+  fileFilter,
   limits: { fileSize: 8000000 },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type'));
-    }
-  },
 });
 router.get('/getme', requireAuth, getCurrentUser);
-router.get('/:id', getUserById);
 router.post('/register', registerUser);
 router.post('/forgot_password', forgotPassword);
 router.post('/reset_password', resetPassword);

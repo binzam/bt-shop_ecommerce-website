@@ -7,11 +7,8 @@ import closeIcon from '../../../assets/close_btn.svg';
 import SignoutIcon from '../../../assets/sign-out.svg';
 import UserSettings from './UserSettings';
 import UserDetails from './UserDetails';
-import { useAuthContext } from '../../../hooks/useAuthContext';
 
 const UserProfile = () => {
-  const { user, isAdmin } = useAuthContext();
-
   const { logout } = useLogout();
   const { handleCloseModal, handleClearCart } = useContext(NavContext);
 
@@ -30,8 +27,8 @@ const UserProfile = () => {
         <img src={closeIcon} alt="close profile" />
       </Link>
 
-      <UserDetails user={user} />
-      <UserSettings isAdmin={isAdmin} />
+      <UserDetails />
+      <UserSettings />
 
       <button className="logout_btn" onClick={handleLogout}>
         <img src={SignoutIcon} alt="sign out" />

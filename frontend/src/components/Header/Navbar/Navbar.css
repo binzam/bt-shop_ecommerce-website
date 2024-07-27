@@ -92,9 +92,9 @@
   text-align: center;
 }
 .user_profile_icon {
-  width: 35px;
-  height: 35px;
-  border: 4px solid transparent;
+  width: 30px;
+  height: 30px;
+  border: 2px solid transparent;
   overflow: hidden;
   cursor: pointer;
   /* padding: 5px; */
@@ -105,13 +105,13 @@
 }
 .user_profile_icon img{
   width: 100%;
-  border-radius: 20%;
   height: 100%;
+  border-radius: 20%;
   object-fit: cover;
 }
 .user_profile_icon:hover {
   border: 2px solid #ed9121;
-  border-radius: 20%;
+  border-radius: 30%;
 }
 
 @media only screen and (max-width: 860px) {

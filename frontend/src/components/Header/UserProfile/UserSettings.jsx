@@ -1,10 +1,11 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import UpdatePassword from '../../Forms/UpdatePassword';
 import GearIcon from '../../../assets/gear-solid.svg';
 import ShippingForm from '../../Forms/ShippingForm';
 import PaymentForm from '../../Forms/PaymentForm';
-const UserSettings = ({ isAdmin }) => {
+import { useAuthContext } from '../../../hooks/useAuthContext';
+const UserSettings = () => {
+  const { isAdmin } = useAuthContext();
   const [showUpdatePassForm, setShowUpdatePassForm] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [showUpdateShippingForm, setShowUpdateShippingForm] = useState(false);

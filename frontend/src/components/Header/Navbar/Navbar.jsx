@@ -103,7 +103,7 @@ const Navbar = () => {
             title="User"
           >
             <img
-              src={user && user.profilePicture ? user.profilePicture : UserIcon}
+              src={user && user.profilePicture || UserIcon}
               alt="avatar"
             />
           </Link>

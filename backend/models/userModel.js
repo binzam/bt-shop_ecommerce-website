@@ -20,7 +20,7 @@ const userSchema = new Schema(
     },
     profilePicture: {
       type: String,
-      default: 'default-profile-picture/avatar.svg',
+      default: 'http://localhost:5555/public/default-profile-picture/avatar.svg',
     },
     orders: [
       {

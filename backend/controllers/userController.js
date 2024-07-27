@@ -6,12 +6,17 @@ import sendResetPasswordEmail from '../utils/sendEmail.js';
 import validator from 'validator';
 import path from 'path';
 
+// const checkUndefined = (obj) => {
+//   const values = Object.values(obj);
+//   if (values.includes(undefined)) {
+//     return null;
+//   }
+//   return obj;
+// };
+
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
-  if (values.includes(undefined)) {
-    return null;
-  }
-  return obj;
+  return values.every((value) => value !== undefined);
 };
 const getCurrentUser = async (req, res) => {
   try {
@@ -24,12 +29,10 @@ const getCurrentUser = async (req, res) => {
     const userData = {
       _id: user._id,
       email: user.email,
-      address: checkUndefined(user.address),
-      creditCardInfo: checkUndefined(user.creditCardInfo),
+      hasAddress: checkUndefined(user.address),
+      hasCreditCardInfo: checkUndefined(user.creditCardInfo),
       orders: checkUndefined(user.orders),
-      profilePicture: `${req.protocol}://${req.get('host')}/${
-        user.profilePicture
-      }`,
+      profilePicture: user.profilePicture,
     };
     return res.status(200).json(userData);
   } catch (error) {
@@ -53,6 +56,8 @@ const connectUser = async (req, res) => {
       userId: user._id,
       role: user.role,
       profilePicture: user.profilePicture,
+      hasAddress: checkUndefined(user.address),
+      hasCreditCardInfo: checkUndefined(user.creditCardInfo),
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -71,26 +76,14 @@ const registerUser = async (req, res) => {
       token,
       username,
       email,
+      userId: user._id,
       role: user.role,
+      profilePicture: user.profilePicture,
+      hasAddress: checkUndefined(user.address),
+      hasCreditCardInfo: checkUndefined(user.creditCardInfo),
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
-  }
-};
-
-const getUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(400).json({
-        message: 'User not found',
-      });
-    }
-    return res.status(200).json({ user });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
   }
 };
 
@@ -158,13 +151,8 @@ const updateUserShippingInfo = async (req, res) => {
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
-    const token = generateToken(updatedUser._id);
     return res.status(200).json({
-      token,
-      email: updatedUser.email,
-      username: updatedUser.username,
-      role: updatedUser.role,
-      profilePicture: updatedUser.profilePicture,
+      shippingInfoUpdated: true,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -193,14 +181,7 @@ const updateUserPaymentInfo = async (req, res) => {
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
-    const token = generateToken(updatedUser._id);
-    return res.status(200).json({
-      token,
-      email: updatedUser.email,
-      username: updatedUser.username,
-      role: updatedUser.role,
-      profilePicture: updatedUser.profilePicture,
-    });
+    return res.status(200).json({ paymentInfoUpdated: true });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -210,6 +191,7 @@ const uploadProfilePicture = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
+    console.log('filetyoe', req.file);
 
     const userId = req.user.id;
     const filePath = path.join('userUploads', req.file.filename);
@@ -227,16 +209,15 @@ const uploadProfilePicture = async (req, res) => {
         new: true,
       }
     );
-    const token = generateToken(updatedUser._id);
     return res.status(200).json({
-      token,
-      email: updatedUser.email,
-      username: updatedUser.username,
-      role: updatedUser.role,
+      profilePictureUpdated: true,
       profilePicture: updatedUser.profilePicture,
     });
   } catch (error) {
     console.log(error.message);
+    if (error.message.startsWith('Invalid file type')) {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ error: 'An unexpected error occurred' });
   }
 };
@@ -328,7 +309,6 @@ const postFeedback = async (req, res) => {
 };
 export {
   registerUser,
-  getUserById,
   updateUserPassword,
   connectUser,
   updateUserShippingInfo,

@@ -8,7 +8,7 @@ import { requireAuth } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/place_order', createOrder);
+router.post('/place_order', requireAuth, createOrder);
 router.get('/user/:id', requireAuth, getOrdersByUser);
 router.post('/cancel_order/:id', requireAuth, cancelUserOrder);
 

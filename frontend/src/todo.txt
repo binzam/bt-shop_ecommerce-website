@@ -32,4 +32,4 @@ a context to check if a user has placed orders
 a way to store cartitems in database when the user logs out without creating order
 product review
 image upload, and way to save profile picture on users machine?
-
+switch the profile picture after upload

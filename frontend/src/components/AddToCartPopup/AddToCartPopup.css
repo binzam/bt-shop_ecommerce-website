@@ -3,9 +3,9 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-  bottom: 20px;
-  left: 20px;
-  background-color: #fff;
+  right: 100px;
+  top: 15px;
+  background-color: #ffffffad;
   border-radius: 5px;
   box-shadow: -2px 2px 4px #333;
   z-index: 999999;
@@ -59,4 +59,17 @@
   font-weight: 700;
   border-radius: 3px;
   text-align: center;
+}
+.checkout_link {
+  border: 1px solid #ed9121;
+  outline: none;
+  color: #ffffff;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px;
+  letter-spacing: 3px;
+  background-color: #333333;
+}
+.checkout_link:hover {
+  background-color: #ed9121;
 }

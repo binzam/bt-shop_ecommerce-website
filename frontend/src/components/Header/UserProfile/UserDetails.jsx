@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useContext, useState } from 'react';
 import Avatar from '../../../assets/avatar.svg';
 // import PlusIcon from '../../../assets/icon-plus.svg';
@@ -7,24 +6,29 @@ import { Link } from 'react-router-dom';
 import { NavContext } from '../../../contexts/NavContext';
 import UploadIcon from '../../../assets/upload-solid.svg';
 import Loading from '../../Loading';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 
-const UserDetails = ({ user }) => {
+const UserDetails = () => {
+  const { user, updateProfilePicture } = useAuthContext();
   const { handleCloseModal } = useContext(NavContext);
-  const [profilePicture, setProfilePicture] = useState('');
+  const [profilePicture, setProfilePicture] = useState(null);
   const [uploadImage, setUploadImage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [error, setError] = useState('');
   const handleToggleUploadImage = () => {
     setUploadImage(!uploadImage);
   };
   const handleImageChange = (e) => {
     console.log(e.target.files);
     setProfilePicture(e.target.files[0]);
+    setPreviewImage(URL.createObjectURL(e.target.files[0]));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     try {
       const formData = new FormData();
       formData.append('profilePicture', profilePicture);
@@ -39,18 +43,23 @@ const UserDetails = ({ user }) => {
           },
         }
       );
-      if (response.status === 200) {
-        // console.log("Login successful");
-        localStorage.setItem('userInfo', JSON.stringify(response.data));
-        console.log(response);
-        setIsLoading(false);
+      console.log(response);
+      if (response.data.profilePictureUpdated) {
+        updateProfilePicture(response.data.profilePicture);
+        setProfilePicture(response.data.profilePicture);
       }
     } catch (error) {
-      setError(error.message);
+      console.log(error);
+      if (error.response && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Invalid file type.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
+  // console.log(profilePicture);
   return (
     <div className="user_info">
       {user.role === 'admin' && <span className="admin_title"> ADMIN</span>}
@@ -58,7 +67,9 @@ const UserDetails = ({ user }) => {
         <div className="profile_options">
           <div className="user_profile_pic" onClick={handleToggleUploadImage}>
             <img
-              src={user.profilePicture ? user.profilePicture : Avatar}
+              src={
+                previewImage || profilePicture || user.profilePicture || Avatar
+              }
               alt="profile picture"
             />
           </div>

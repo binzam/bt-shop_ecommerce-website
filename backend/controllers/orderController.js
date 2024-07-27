@@ -5,9 +5,10 @@ import { createOrderItems, updateUserOrders } from '../utils/orderUtils.js';
 const createOrder = async (req, res) => {
   try {
     const { newOrder } = req.body;
-    const { user, orderItems, shippingAddress } = newOrder;
-    // console.log('neworrder>>', newOrder);
-    if (!user || !orderItems || orderItems.length === 0 || !shippingAddress) {
+    const user = req.user._id;
+    const { orderItems } = newOrder;
+    console.log('neworrder>>', newOrder);
+    if (!user || !orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
     if (!Types.ObjectId.isValid(user)) {
@@ -22,7 +23,6 @@ const createOrder = async (req, res) => {
       user,
       orderItems: orderItemsToCreate,
       totalAmount,
-      shippingAddress,
     });
 
     await updateUserOrders(user, order._id);

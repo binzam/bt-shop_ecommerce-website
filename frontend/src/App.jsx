@@ -19,6 +19,7 @@ import LoginForm from './components/Forms/LoginForm.jsx';
 import RegisterForm from './components/Forms/RegisterForm.jsx';
 import ForgotPasswordForm from './components/Forms/ForgotPasswordForm.jsx';
 import PasswordResetForm from './components/Forms/PasswordResetForm.jsx';
+import UserProfilePage from './pages/UserProfilePage/UserProfilePage.jsx';
 function App() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -45,6 +46,8 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/users/:id" element={<UserProfilePage />} />
+
             <Route path="/auth" element={<UserModal />}>
               <Route index element={<LoginSignupButtons />} />
               <Route path="register" element={<RegisterForm />} />

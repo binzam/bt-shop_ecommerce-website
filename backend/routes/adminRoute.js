@@ -4,7 +4,7 @@ import {
   getUsers,
   deleteUser,
   addNewProduct,
-  // updateProduct,
+  getUserById,
   deleteProduct,
   removeOrder,
   getAllFeedbacks,
@@ -14,6 +14,7 @@ const router = express.Router();
 
 router.get('/users', getUsers);
 router.get('/orders', getOrders);
+router.get('/users/:id', requireAuth, verifyAdmin, getUserById);
 router.delete('/remove_user/:id', requireAuth, verifyAdmin, deleteUser);
 router.delete('/remove_order/:id', requireAuth, verifyAdmin, removeOrder);
 router.delete('/remove_product/:id', requireAuth, verifyAdmin, deleteProduct);

@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { NavContext } from '../../contexts/NavContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { getMe } from '../../utils/userUtils';
 import './CheckoutPage.css';
 import CartItems from '../../components/Header/Cart/CartItems';
 import ArrowRight from '../../assets/arrow-right-solid.svg';
@@ -22,22 +21,12 @@ const CheckoutPage = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(true);
   const [showShippingForm, setShowShippingForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const [userData, setUserData] = useState({
-    _id: null,
-    address: null,
-    creditCardInfo: null,
-    orders: null,
-  });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [isReadyToPlaceOrder, setIsReadyToPlaceOrder] = useState(false);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [showNextBtn, setShowNextBtn] = useState(true);
-  useEffect(() => {
-    if (user) {
-      getMe(user, setUserData, setError, setIsLoading);
-    }
-  }, [user]);
+  const navigate = useNavigate();
   const filteredValues = cartItems.map(
     ({ _id, quantity, price, taxRate, title, image }) => ({
       product: _id,
@@ -49,12 +38,10 @@ const CheckoutPage = () => {
     })
   );
   const newOrder = {
-    user: userData._id,
     orderItems: filteredValues,
-    shippingAddress: userData.address,
   };
   const handleDisplayShippingForm = () => {
-    if (!userData.address) {
+    if (!user.hasAddress) {
       setShowShippingForm(true);
       setShowOrderSummary(false);
       setShowPaymentForm(false);
@@ -64,7 +51,7 @@ const CheckoutPage = () => {
     }
   };
   const handleDisplayPaymentForm = () => {
-    if (!userData.creditCardInfo) {
+    if (!user.hasCreditCardInfo) {
       setShowPaymentForm(true);
       setShowOrderSummary(false);
       setShowShippingForm(false);
@@ -74,12 +61,14 @@ const CheckoutPage = () => {
     }
   };
   const checkIsReadyToPlaceOrder = () => {
-    setShowNextBtn(false);
-    setShowShippingForm(false);
-    setShowPaymentForm(false);
-    setShowOrderSummary(true);
-    if (cartItems.length > 0) {
+    if (user.hasAddress && user.hasCreditCardInfo && cartItems.length > 0) {
+      setShowNextBtn(false);
+      setShowShippingForm(false);
+      setShowPaymentForm(false);
+      setShowOrderSummary(true);
       setIsReadyToPlaceOrder(true);
+    } else {
+      navigate('/checkout');
     }
   };
   const handlePlaceOrder = async () => {

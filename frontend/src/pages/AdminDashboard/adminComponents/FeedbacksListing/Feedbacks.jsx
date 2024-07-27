@@ -89,7 +89,7 @@ const Feedbacks = () => {
                   <div className="user_detail">
                     Message: <span className="highlight">{user.message}</span>
                   </div>
-
+                  
                   <button
                     className="remove_user_btn"
                     onClick={() => handleRemoveFeedback(user._id)}

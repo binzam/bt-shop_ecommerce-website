@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Link } from 'react-router-dom';
 import './AddToCartPopup.css';
 
 const AddToCartPopup = ({ product }) => {
@@ -15,6 +16,7 @@ const AddToCartPopup = ({ product }) => {
           <div className="popup_price">${price}</div>
         </div>
       </div>
+      <Link className='checkout_link' to='/checkout'>Checkout</Link>
     </div>
   );
 };

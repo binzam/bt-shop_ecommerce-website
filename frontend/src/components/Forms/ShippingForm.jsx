@@ -6,7 +6,8 @@ import axios from 'axios';
 import Loading from '../Loading';
 
 const ShippingForm = ({ handleDisplayPaymentForm }) => {
-  const { user } = useAuthContext();
+  const { user, updateShippingAddress } = useAuthContext();
+
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [address, setAddress] = useState({
@@ -36,8 +37,8 @@ const ShippingForm = ({ handleDisplayPaymentForm }) => {
         }
       );
       console.log(response);
-      if (response.status === 200) {
-        localStorage.setItem('userInfo', JSON.stringify(response.data));
+      if (response.data.shippingInfoUpdated) {
+        updateShippingAddress(response.data.shippingInfoUpdated)
         setError(null);
         handleDisplayPaymentForm();
       }

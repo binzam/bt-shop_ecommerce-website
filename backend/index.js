@@ -8,10 +8,12 @@ import usersRoute from './routes/usersRoute.js';
 import ordersRoute from './routes/ordersRoute.js';
 import adminRoute from './routes/adminRoute.js';
 import path from 'path';
+
 // import resetUserOrders from './utils/resetUserOrders.js';
 // import updateUserOrders from './utils/UpdateUserOrders.js';
 const app = express();
 app.use('/userUploads', express.static(path.resolve('userUploads')));
+app.use('/public', express.static(path.resolve('public')));
 app.use(express.json());
 app.use(cors());
 // app.use(

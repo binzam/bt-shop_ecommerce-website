@@ -4,17 +4,19 @@ import './UsersList.css';
 import ConfirmationPopup from '../ConfirmationPopup.jsx';
 import Loading from '../../../../components/Loading.jsx';
 import useUsers from '../../../../hooks/useUsers.jsx';
+import { Link } from 'react-router-dom';
 
 const UsersList = () => {
   const { users, usersError, loading, removeUser } = useUsers();
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [userId, setUserId] = useState(null);
-  // console.log(users);
+
+  console.log(users);
   const handleRemoveUser = (userId) => {
     setUserId(userId);
     setShowConfirmationPopup(true);
   };
-
+  console.log(users);
   return (
     <div className="users">
       {loading ? (
@@ -24,22 +26,25 @@ const UsersList = () => {
       ) : (
         <>
           <div className="counter">Registered Users: {users.length}</div>
-          <ul className="users_list">
+          <div className="users_list">
             {users &&
               users.map((user) => (
-                <li key={user._id} className="user">
+                <article key={user._id} className="user">
+                  <div className="user_detail_picture">
+                    <img src={user.profilePicture} alt="user profile picture" />
+                  </div>
                   <div className="user_detail">
                     ID: <span className="highlight">{user._id}</span>
                   </div>
                   <div className="user_detail">
-                    Name: <span>{user.username}</span>
+                    <span>{user.username}</span>
                   </div>
                   <div className="user_detail">
-                    Email: <span className="highlight">{user.email}</span>
+                    <span className="highlight">{user.email}</span>
                   </div>
-                  <div className="user_detail">
-                    Role: <span>{user.role}</span>
-                  </div>
+
+                  <Link className='view_profile_link' to={`/users/${user._id}`}>view profile</Link>
+
                   {user.role !== 'admin' && (
                     <button
                       className="remove_user_btn"
@@ -48,9 +53,9 @@ const UsersList = () => {
                       Remove user
                     </button>
                   )}
-                </li>
+                </article>
               ))}
-          </ul>
+          </div>
         </>
       )}
       {showConfirmationPopup && (
