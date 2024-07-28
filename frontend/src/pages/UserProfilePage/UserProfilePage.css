@@ -3,10 +3,6 @@
   min-height: calc(100vh - 130px);
   padding: 20px;
   background-color: #ffffff;
-  display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
-  position: relative;
 }
 .back_btn {
   position: absolute;
@@ -41,16 +37,24 @@
   justify-content: flex-start;
   gap: 20px;
 }
+.user_description_header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 20px;
+  border-bottom: 3px solid #ed9121;
+}
 .user_image_div {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  /* padding: 10px; */
   display: flex;
   align-items: center;
   justify-content: center;
   border: 5px solid #ed9121;
-  align-self: center;
+  transition: all 0.3s ease-out;
 }
 .user_image_div img {
   width: 100%;
@@ -58,28 +62,70 @@
   border-radius: 50%;
   object-fit: cover;
 }
-.user_image_div:hover{
+.user_image_div:hover {
   scale: 1.2;
 }
-.user_name {
-  font-size: 27px;
-  font-weight: 700;
-  color: #333;
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.user_email {
-  display: inline;
-  font-size: 18px;
-  color: #7bff00;
-  font-weight: 900;
-  margin-bottom: 15px;
-  padding: 5px;
-  background-color: #000000;
-  border-radius: 3px;
-  box-shadow: 3px 3px 5px #ed9121;
+.user_details_wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
 }
 .user_details {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+}
+.user_joined {
+  font-size: 13px;
+  font-weight: 400;
+  color: #333;
+}
+
+.users_orders {
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #333;
+  color: #ffffff;
+  border: 2px solid #ddd;
+  border-radius: 3px;
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  transition: all 0.3s ease-in-out;
+}
+.users_orders:hover {
+  background-color: #ffffff;
+  border: 2px solid #333;
+  color: #333;
+}
+.orange {
+  color: #ed9121;
+  font-weight: 600;
+  padding: 2px 5px;
+  background-color: #ed9121;
+  color: #ffffff;
+  border-radius: 3px;
+}
+.remove_user_btn {
+  background-color: #ffffff;
+  color: rgb(255, 4, 4);
+  padding: 2px 5px;
+  border: 1px solid rgb(255, 86, 86);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+
+}
+.remove_user_btn:hover {
+  background-color: #ff0000;
+  color: rgb(255, 255, 255);
+  border: 1px solid black;
 }

@@ -9,6 +9,42 @@
   display: flex;
   align-items: stretch;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+.sort_buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.all_orders_btn,
+.cancelled_orders_btn {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  color: #ffffff;
+  font-size: 10px;
+  border-radius: 3px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  border: none;
+  margin: 10px 0;
 }
 
+.all_orders_btn:hover,
+.cancelled_orders_btn:hover {
+  background-color: cadetblue;
+}
+.selected {
+  background-color: cadetblue;
+}
+@media only screen and (max-width: 1100px) {
+  .orders_list {
+    justify-content: center;
+  }
+  .counter {
+    margin: 0 auto 5px;
+  }
+}

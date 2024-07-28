@@ -3,19 +3,26 @@ import './OrdersList.css';
 import ConfirmationPopup from '../ConfirmationPopup';
 import useOrders from '../../../../hooks/useOrders.jsx';
 import Loading from '../../../../components/Loading';
-import OrderItem from '../../../../components/OrderItem/OrderItem.jsx';
+import OrderCard from '../../../../components/OrderCard/OrderCard.jsx';
 
 const OrdersList = () => {
   const { orders, ordersError, loading, removeOrder } = useOrders();
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [orderId, setOrderId] = useState(null);
+  const [sortType, setSortType] = useState('all');
 
+  const handleSortOrders = (type) => {
+    setSortType(type);
+  };
+
+  let filteredOrders =
+    sortType === 'all'
+      ? orders
+      : orders.filter((order) => order.orderStatus === 'Cancelled');
   const handleRemoveOrder = (orderId) => {
     setOrderId(orderId);
     setShowConfirmationPopup(true);
   };
-
-  // console.log(orders);
   return (
     <div className="orders">
       {loading && <Loading />}
@@ -25,9 +32,27 @@ const OrdersList = () => {
       ) : (
         <>
           <div className="counter">Pending Orders : {orders.length}</div>
+          <div className="sort_buttons">
+            <button
+              className={`all_orders_btn ${
+                sortType === 'all' ? 'selected' : ''
+              }`}
+              onClick={() => handleSortOrders('all')}
+            >
+              All Orders
+            </button>
+            <button
+              className={`cancelled_orders_btn ${
+                sortType !== 'all' ? 'selected' : ''
+              }`}
+              onClick={() => handleSortOrders('canceled')}
+            >
+              Canceled Orders
+            </button>
+          </div>
           <div className="orders_list">
-            {orders.map((order) => (
-              <OrderItem
+            {filteredOrders.map((order) => (
+              <OrderCard
                 key={order._id}
                 handleRemoveOrder={handleRemoveOrder}
                 order={order}

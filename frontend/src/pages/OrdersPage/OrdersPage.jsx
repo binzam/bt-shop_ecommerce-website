@@ -7,7 +7,7 @@ import ConfirmationPopup from '../AdminDashboard/adminComponents/ConfirmationPop
 import { Link } from 'react-router-dom';
 import ArrowLeft from '../../assets/arrow-left.svg';
 import CheckmarkIcon from '../../assets/check-solid.svg';
-import OrderItem from '../../components/OrderItem/OrderItem';
+import OrderCard from '../../components/OrderCard/OrderCard';
 
 const OrdersPage = () => {
   const { user } = useAuthContext();
@@ -85,7 +85,7 @@ const OrdersPage = () => {
         )}
 
         {orders.map((order) => (
-          <OrderItem
+          <OrderCard
             key={order._id}
             order={order}
             handleRemoveOrder={handleCancelOrder}

@@ -3,10 +3,18 @@ import UserIcon from '../../assets/avatar.svg';
 import CalendarIcon from '../../assets/calendar-regular.svg';
 import LocationIcon from '../../assets/location-dot-solid.svg';
 import TruckIcon from '../../assets/truck-solid.svg';
-import './OrderItem.css'
-const OrderItem = ({ order, handleRemoveOrder }) => {
+import { useAuthContext } from '../../hooks/useAuthContext';
+import './OrderCard.css';
+const OrderCard = ({ order, handleRemoveOrder }) => {
+  // console.log(order);
+  const { isAdmin } = useAuthContext();
+
   return (
-    <div className="order">
+    <div
+      className={`order ${
+        order?.orderStatus === 'Cancelled' ? 'cancelled' : ''
+      }`}
+    >
       <div className="order_title">
         <div>
           <img src={CalendarIcon} alt="calendar" />
@@ -17,19 +25,26 @@ const OrderItem = ({ order, handleRemoveOrder }) => {
             #ID <span className="highlight"> {order._id}</span>
           </small>
         </div>
+        {order.orderStatus === 'Cancelled' && (
+          <div className="order_cancelled_txt">Order Cancelled</div>
+        )}
       </div>
       <div className="order_header">
-        <div className="order_customer">
-          <div className="order_icon_wrapper">
-            <img src={UserIcon} alt="user" />
+        {!isAdmin() && (
+          <div className="order_customer">
+            <div className="order_user_icon">
+              <img src={order.user?.profilePicture || UserIcon} alt="user" />
+            </div>
+            <div className="order_customer_info">
+              <p className="bold">Customer</p>
+              <p className="highlight">
+                {order.user?.username || 'User Not Active'}
+              </p>
+              <p>{order.user?.email || '---'}</p>
+              <p>{order.user?.address.phoneNumber || '---'}</p>
+            </div>
           </div>
-          <div className="order_customer_info">
-            <p className="bold">Customer</p>
-            <p>{order.user?.username || 'User Not Active'}</p>
-            <p>{order.user?.email || '---'}</p>
-            <p>{order.user?.address.phoneNumber || '---'}</p>
-          </div>
-        </div>
+        )}
         <div className="order_address">
           <div className="order_icon_wrapper">
             <img src={TruckIcon} alt="truck" />
@@ -41,19 +56,21 @@ const OrderItem = ({ order, handleRemoveOrder }) => {
             <p>Status: {order.paymentStatus}</p>
           </div>
         </div>
-        <div className="order_delivery">
-          <div className="order_icon_wrapper">
-            <img className="icon" src={LocationIcon} alt="address" />
+        {!isAdmin() && (
+          <div className="order_delivery">
+            <div className="order_icon_wrapper">
+              <img className="icon" src={LocationIcon} alt="address" />
+            </div>
+            <div className="order_delivery_info">
+              <p className="bold">Deliver to</p>
+              <p>
+                City:
+                {order.user?.address.city}, {order.user?.address.country}
+              </p>
+              <p>Street: {order.user?.address.street}</p>
+            </div>
           </div>
-          <div className="order_delivery_info">
-            <p className="bold">Deliver to</p>
-            <p>
-              City:
-              {order.shippingAddress.city}, {order.shippingAddress.country}
-            </p>
-            <p>Street: {order.shippingAddress.street}</p>
-          </div>
-        </div>
+        )}
       </div>
       <table className="order_table">
         <thead>
@@ -113,14 +130,16 @@ const OrderItem = ({ order, handleRemoveOrder }) => {
           {order.totalAmount}
         </span>{' '}
       </div>
-      <button
-        className="remove_order_btn"
-        onClick={() => handleRemoveOrder(order._id)}
-      >
-        Remove Order
-      </button>
+      {!isAdmin() && (
+        <button
+          className="remove_order_btn"
+          onClick={() => handleRemoveOrder(order._id)}
+        >
+          Remove Order
+        </button>
+      )}
     </div>
   );
 };
 
-export default OrderItem;
+export default OrderCard;
