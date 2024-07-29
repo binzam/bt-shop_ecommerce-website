@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/userModel.js';
+import { Product } from '../models/productModel.js';
 import { Feedback } from '../models/feedbackModel.js';
 import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
@@ -14,6 +15,17 @@ import path from 'path';
 //   return obj;
 // };
 
+const restructureObject = (obj) => {
+  if (!obj || !obj.item) {
+    return {};
+  }
+  const { item, _id, ...rest } = obj;
+  return {
+    ...item,
+    _id: item._id,
+    ...rest,
+  };
+};
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
   return values.every((value) => value !== undefined);
@@ -48,8 +60,9 @@ const connectUser = async (req, res) => {
     if (!user) {
       return res.status(500).json({ message: 'User Not Found' });
     }
+    console.log('user>>>', user);
     const token = generateToken(user._id);
-    res.status(200).json({
+    const userData = {
       token,
       username: user.username,
       email,
@@ -58,7 +71,10 @@ const connectUser = async (req, res) => {
       profilePicture: user.profilePicture,
       hasAddress: checkUndefined(user.address),
       hasCreditCardInfo: checkUndefined(user.creditCardInfo),
-    });
+    };
+    const cartData =
+      user.cart && user.cart.length > 0 ? user.cart.map(restructureObject) : [];
+    res.status(200).json({ userData, cartData });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -123,6 +139,39 @@ const updateUserPassword = async (req, res) => {
         username: updatedUser.username,
         profilePicture: updatedUser.profilePicture,
       },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const saveCartItems = async (req, res) => {
+  try {
+    const user = req.user;
+    const { cartItems } = req.body;
+    for (const cartItem of cartItems) {
+      const product = await Product.findById(cartItem._id);
+      if (!product) {
+        return res
+          .status(404)
+          .json({ message: `Product ${cartItem._id} not found` });
+      }
+      const existingCartItem = user.cart.find(
+        (item) => item.item.toString() === cartItem._id
+      );
+      if (existingCartItem) {
+        existingCartItem.quantity = cartItem.quantity;
+      } else {
+        user.cart.push({
+          item: cartItem._id,
+          quantity: cartItem.quantity,
+        });
+      }
+    }
+
+    await user.save();
+    return res.status(200).json({
+      cartSaved: true,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -318,4 +367,5 @@ export {
   resetPassword,
   postFeedback,
   uploadProfilePicture,
+  saveCartItems,
 };

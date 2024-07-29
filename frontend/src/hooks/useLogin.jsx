@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export const useLogin = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
+  const [loginSuccess, setLoginSuccess] = useState(false);
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
@@ -20,23 +21,26 @@ export const useLogin = () => {
           password,
         }
       );
+      console.log(response);
       if (response.status === 200) {
-        // console.log("Login successful");
-        localStorage.setItem('userInfo', JSON.stringify(response.data));
-        dispatch({ type: 'LOGIN', payload: response.data });
-        if (response.data.role === 'admin') {
+        setLoginSuccess(true);
+        localStorage.setItem(
+          'userInfo',
+          JSON.stringify(response.data.userData)
+        );
+        localStorage.setItem('cart', JSON.stringify(response.data.cartData));
+        dispatch({ type: 'LOGIN', payload: response.data.userData });
+        if (response.data.userData.role === 'admin') {
           navigate('/admin');
         }
-      } else {
-        setIsLoading(false);
-        setError(response.data.message);
-      }
+      } 
     } catch (error) {
+      console.log(error);
       setError(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { login, isLoading, error };
+  return { login, isLoading, error, loginSuccess };
 };

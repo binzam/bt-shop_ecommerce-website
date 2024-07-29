@@ -51,9 +51,15 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
           </div>
           <div className="order_shipping_info">
             <p className="bold">Shipping</p>
-            <p>Shipping: {order.shippingCompany}</p>
-            <p>Payment method: {order.paymentMethod}</p>
-            <p>Status: {order.paymentStatus}</p>
+            <p>
+              Shipping: <strong>{order.shippingCompany}</strong>
+            </p>
+            <p>
+              Payment method: <strong>{order.paymentMethod}</strong>
+            </p>
+            <p>
+              Payment Status: <strong>{order.paymentStatus}</strong>
+            </p>
           </div>
         </div>
         {!isAdmin() && (
@@ -65,37 +71,41 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
               <p className="bold">Deliver to</p>
               <p>
                 City:
-                {order.user?.address.city}, {order.user?.address.country}
+                <strong> {order.user?.address.city}</strong> ,
+                <strong>{order.user?.address.country}</strong>
               </p>
-              <p>Street: {order.user?.address.street}</p>
+              <p>
+                Street: <strong>{order.user?.address.street}</strong>
+              </p>
             </div>
           </div>
         )}
       </div>
       <table className="order_table">
-        <thead>
-          <tr>
-            <th className="wider">Product</th>
-            <th className="narrow">Quantity</th>
-            <th className="mid">
+        <thead className="table_head">
+          <tr className="order_table_header">
+            <th className="prd_column_head">Product</th>
+            <th className="quantity_column">Quantity</th>
+            <th className="price_tax_column">
               Price
               <small>
                 <i>(per)</i>
               </small>
             </th>
-            <th className="mid">
+            <th className="price_tax_column">
               Price
+              <br />
               <small>
                 <i>(before TAX)</i>
               </small>
             </th>
-            <th className="mid">
+            <th className="price_tax_column">
               <small>
                 <i>(Item)</i>
               </small>
               TAX
             </th>
-            <th className="wide">
+            <th className="item_tax_column">
               <small>
                 <i>(Item)</i>
               </small>
@@ -105,20 +115,22 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
         </thead>
         <tbody>
           {order.orderItems.map((item) => (
-            <tr className="ordered_product" key={item._id}>
-              <td className="wider">
+            <tr className="ordered_product_row" key={item._id}>
+              <td className="prd_column_data">
                 <div className="order_table_prd_data">
                   <div className="order_prd_img">
                     <img src={item.image} alt={item.title} />
                   </div>
-                  <span className="order_table_prd_title">{item.title}</span>{' '}
+                  <span className="order_table_prd_title">{item.title}</span>
                 </div>
               </td>
-              <td className="narrow">{item.quantity}</td>
-              <td className="mid">${item.price}</td>
-              <td className="mid">${item.itemPrice}</td>
-              <td className="mid">${item.tax}</td>
-              <td className="wide">${item.totalItemPrice.toFixed(2)}</td>
+              <td className="quantity_column">{item.quantity}</td>
+              <td className="price_tax_column">${item.price}</td>
+              <td className="price_tax_column">${item.itemPrice}</td>
+              <td className="price_tax_column">${item.tax}</td>
+              <td className="item_tax_column">
+                ${item.totalItemPrice.toFixed(2)}
+              </td>
             </tr>
           ))}
         </tbody>

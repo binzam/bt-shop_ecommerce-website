@@ -1,5 +1,5 @@
 .order {
-  width: 49%;
+  width: 45%;
   border: 3px solid #ddd;
   padding: 10px;
   display: flex;
@@ -14,10 +14,10 @@
   border-radius: 3px;
   position: relative;
 }
-.cancelled{
+.cancelled {
   border: 3px solid red;
 }
-.order_cancelled_txt{
+.order_cancelled_txt {
   position: absolute;
   right: 5px;
   top: 5px;
@@ -63,7 +63,6 @@
 .order_icon_wrapper {
   padding: 5px;
   border: 1px solid cadetblue;
-
 }
 .order_user_icon img,
 .order_icon_wrapper img {
@@ -97,7 +96,10 @@
   padding: 10px;
   border: 1px solid #ddd;
 }
-.order_table thead tr {
+.table_head {
+  width: 100%;
+}
+.order_table_header {
   width: 100%;
   display: flex;
   align-items: center;
@@ -107,9 +109,11 @@
   font-weight: 400;
   border-bottom: 1px solid #ddd;
   padding-bottom: 5px;
+  line-height: 1;
+
 }
 
-.ordered_product {
+.ordered_product_row {
   width: 100%;
   display: flex;
   align-items: center;
@@ -122,19 +126,23 @@
 .ordered_product:last-of-type {
   border-bottom: none;
 }
-.wider {
+.prd_column_head {
+  width: 30%;
+  text-align: center;
+}
+.prd_column_data {
   width: 30%;
   text-align: left;
 }
-.narrow {
+.quantity_column {
   width: 10%;
   text-align: center;
 }
-.wide {
+.item_tax_column {
   width: 15%;
   text-align: center;
 }
-.mid {
+.price_tax_column {
   width: 20%;
   text-align: center;
 }
@@ -150,12 +158,12 @@
 .order_table_prd_title {
   font-size: 9px;
   line-height: 1;
+  /* display: block; */
+  text-align: left;
 }
 .order_prd_img {
   background-color: #ffffff;
-  min-width: 50px;
   width: 50px;
-  max-width: 50px;
   height: 45px;
   padding: 3px;
   border-radius: 5px;
@@ -196,13 +204,44 @@
   color: white;
 }
 @media only screen and (max-width: 1100px) {
-  .order {
+  /* .order {
     width: 70%;
-  }
+  } */
 }
 
 @media only screen and (max-width: 800px) {
   .order {
     width: 100%;
+    padding: 5px;
+  }
+  .order_title {
+    padding: 5px 0 10px;
+  }
+  .order_header {
+    padding: 5px;
+    justify-content: space-around;
+  }
+  .order_table {
+    padding: 5px;
+  }
+  .total_amount {
+    padding: 5px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .order{
+    gap: 2px;
+  }
+  .order_customer,
+  .order_address,
+  .order_delivery {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .order_table_header{
+    font-size: 9px;
+  }
+  .ordered_product_row{
+    font-size: 10px;
   }
 }

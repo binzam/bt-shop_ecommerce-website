@@ -56,13 +56,14 @@ const OrdersPage = () => {
       return () => clearTimeout(timer);
     }
   }, [isOrderCanceled]);
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="orders_page">
-      {isLoading && <Loading />}
       <div className="orders_header">
         <h2>Your Orders</h2>
       </div>
-      <div className="orders_view">
         {error && <div className="form_error">{error}</div>}
         {orders.length === 0 && (
           <div className="no_orders">
@@ -83,7 +84,7 @@ const OrdersPage = () => {
             </span>
           </div>
         )}
-
+      <div className="orders_view">
         {orders.map((order) => (
           <OrderCard
             key={order._id}

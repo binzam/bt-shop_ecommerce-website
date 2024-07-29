@@ -10,6 +10,7 @@ import {
   updateUserShippingInfo,
   updateUserPaymentInfo,
   uploadProfilePicture,
+  saveCartItems,
 } from '../controllers/userController.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
 // import { handleError } from '../middleware/errorMiddleware.js';
@@ -43,6 +44,7 @@ router.post('/forgot_password', forgotPassword);
 router.post('/reset_password', resetPassword);
 router.post('/login', connectUser);
 router.post('/feedback', postFeedback);
+router.post('/cart', requireAuth, saveCartItems);
 router.post(
   '/upload_image',
   requireAuth,

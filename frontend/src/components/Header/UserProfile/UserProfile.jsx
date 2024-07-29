@@ -10,12 +10,11 @@ import UserDetails from './UserDetails';
 
 const UserProfile = () => {
   const { logout } = useLogout();
-  const { handleCloseModal, handleClearCart } = useContext(NavContext);
+  const { handleCloseModal } = useContext(NavContext);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    handleClearCart();
     handleCloseModal();
     logout();
     navigate('/home');

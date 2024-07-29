@@ -33,3 +33,4 @@ a way to store cartitems in database when the user logs out without creating ord
 product review
 image upload, and way to save profile picture on users machine?
 switch the profile picture after upload
+save cart items to user database

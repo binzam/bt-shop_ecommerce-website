@@ -7,7 +7,8 @@ import { NavContext } from '../../contexts/NavContext';
 import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
-  const { handleOpenPassResetModal, handleCloseForms } = useContext(NavContext);
+  const { handleOpenPassResetModal, handleCloseForms } =
+    useContext(NavContext);
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
@@ -30,11 +31,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <Link
-        to="/auth"
-        onClick={handleCloseForms}
-        className="close_popup_icon"
-      >
+      <Link to="/auth" onClick={handleCloseForms} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
       </Link>
       {isLoading && <Loading />}

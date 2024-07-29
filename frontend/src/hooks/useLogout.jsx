@@ -1,13 +1,21 @@
-import { useAuthContext } from './useAuthContext'
+import { useContext } from 'react';
+import { NavContext } from '../contexts/NavContext';
+import { AuthContext } from '../contexts/AuthContext';
 
 export const useLogout = () => {
-  const { dispatch } = useAuthContext()
+  const { dispatch, user } = useContext(AuthContext);
+  const { clearCart } = useContext(NavContext);
+  const logout = async () => {
+    try {
+      await clearCart(user);
 
-  const logout = () => {
-    localStorage.removeItem('userInfo')
+      localStorage.removeItem('userInfo');
 
-    dispatch({ type: 'LOGOUT' })
-  }
+      dispatch({ type: 'LOGOUT' });
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
 
-  return { logout }
-}
+  return { logout };
+};

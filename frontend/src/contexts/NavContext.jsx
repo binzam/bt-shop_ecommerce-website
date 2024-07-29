@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from 'react';
+import { saveCartToDatabase } from '../utils/userUtils';
 // import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavContext = createContext();
@@ -14,10 +15,18 @@ const NavContextProvider = ({ children }) => {
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
   // const navigate = useNavigate();
   // const location = useLocation();
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    console.log(storedCart);
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
+    }
+  }, []);
   const handleOpenRegisterForm = () => {
     setShowRegisterForm(true);
     setShowLoginForm(false);
   };
+ 
   const handleOpenLoginForm = () => {
     setShowLoginForm(true);
     setShowRegisterForm(false);
@@ -33,7 +42,7 @@ const NavContextProvider = ({ children }) => {
     setShowUserOptions(true);
     setShowCart(false);
     handleCloseForms();
-  }
+  }//biani@bini.com
   function toggleCart() {
     setShowCart(!showCart);
   }
@@ -44,9 +53,9 @@ const NavContextProvider = ({ children }) => {
     setShowUserOptions(false);
     // const previousPath = location.state?.previousPath;
     // if (previousPath === '/auth') {
-    //   navigate(-2); 
+    //   navigate(-2);
     // } else {
-    //   navigate(-1); 
+    //   navigate(-1);
     // }
     // navigate(-1)
   };
@@ -61,13 +70,7 @@ const NavContextProvider = ({ children }) => {
     setShowRegisterForm(false);
     setShowResetPasswordForm(false);
   };
-  useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
-    }
-  }, []);
-
+  
   const addToCart = (product, quantity = 1) => {
     const existsInCart = cartItems.find((item) => item._id === product._id);
     if (existsInCart) {
@@ -98,6 +101,19 @@ const NavContextProvider = ({ children }) => {
     localStorage.removeItem('cart');
   };
 
+  const clearCart = async (user) => {
+    try {
+      if (cartItems.length > 0) {
+        await saveCartToDatabase(user, cartItems);
+      }
+
+      setCartItems([]);
+      localStorage.removeItem('cart');
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+    }
+  };
+
   return (
     <NavContext.Provider
       value={{
@@ -121,6 +137,7 @@ const NavContextProvider = ({ children }) => {
         showResetPasswordForm,
         handleOpenResetPasswordForm,
         setShowResetPasswordForm,
+        clearCart,
       }}
     >
       {children}

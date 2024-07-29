@@ -20,8 +20,20 @@ const userSchema = new Schema(
     },
     profilePicture: {
       type: String,
-      default: 'http://localhost:5555/public/default-profile-picture/avatar.svg',
+      default:
+        'http://localhost:5555/public/default-profile-picture/avatar.svg',
     },
+    cart: [
+      {
+        item: {
+          type: Schema.Types.ObjectId,
+          ref: 'Product',
+          quantity: {
+            type: Number,
+          },
+        },
+      },
+    ],
     orders: [
       {
         type: Schema.Types.ObjectId,
@@ -82,7 +94,7 @@ userSchema.statics.login = async function (email, password) {
     throw Error('All fields must be filled');
   }
 
-  const user = await this.findOne({ email });
+  const user = await this.findOne({ email }).populate('cart.item');
   if (!user) {
     throw Error('Incorrect email');
   }
