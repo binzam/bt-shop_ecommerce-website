@@ -2,7 +2,7 @@ import { Product } from '../models/productModel.js';
 
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find({}, '-updatedAt -createdAt -__v');
+    const products = await Product.find({}, '-updatedAt -createdAt -__v -ratingCount');
     return res.status(200).json({
       productCount: products.length,
       data: products,

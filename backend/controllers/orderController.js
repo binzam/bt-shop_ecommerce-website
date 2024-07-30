@@ -1,17 +1,17 @@
 import { Order } from '../models/orderModel.js';
+import { User } from '../models/userModel.js';
 import { Types } from 'mongoose';
 import { createOrderItems, updateUserOrders } from '../utils/orderUtils.js';
 
 const createOrder = async (req, res) => {
   try {
     const { newOrder } = req.body;
-    const user = req.user._id;
+    const userId = req.user._id;
     const { orderItems } = newOrder;
-    console.log('neworrder>>', newOrder);
-    if (!user || !orderItems || orderItems.length === 0) {
+    if (!userId || !orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
-    if (!Types.ObjectId.isValid(user)) {
+    if (!Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: 'Invalid user ID' });
     }
     const orderItemsToCreate = await createOrderItems(orderItems);
@@ -20,12 +20,14 @@ const createOrder = async (req, res) => {
       .toFixed(2);
 
     const order = await Order.create({
-      user,
+      user: userId,
       orderItems: orderItemsToCreate,
       totalAmount,
     });
 
-    await updateUserOrders(user, order._id);
+    await updateUserOrders(userId, order._id);
+
+    await User.findByIdAndUpdate(userId, { $set: { cart: [] } });
 
     return res.status(201).json({ orderCreated: true, order });
   } catch (error) {
@@ -36,8 +38,6 @@ const createOrder = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
-
-
 
 const getOrdersByUser = async (req, res) => {
   try {
@@ -85,8 +85,4 @@ const cancelUserOrder = async (req, res) => {
   }
 };
 
-export {
-  createOrder,
-  getOrdersByUser,
-  cancelUserOrder,
-};
+export { createOrder, getOrdersByUser, cancelUserOrder };

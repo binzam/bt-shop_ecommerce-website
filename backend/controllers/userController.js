@@ -15,17 +15,6 @@ import path from 'path';
 //   return obj;
 // };
 
-const restructureObject = (obj) => {
-  if (!obj || !obj.item) {
-    return {};
-  }
-  const { item, _id, ...rest } = obj;
-  return {
-    ...item,
-    _id: item._id,
-    ...rest,
-  };
-};
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
   return values.every((value) => value !== undefined);
@@ -72,8 +61,7 @@ const connectUser = async (req, res) => {
       hasAddress: checkUndefined(user.address),
       hasCreditCardInfo: checkUndefined(user.creditCardInfo),
     };
-    const cartData =
-      user.cart && user.cart.length > 0 ? user.cart.map(restructureObject) : [];
+    const cartData = user.cart.length > 0 ? user.cart : [];
     res.status(200).json({ userData, cartData });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -157,19 +145,25 @@ const saveCartItems = async (req, res) => {
           .json({ message: `Product ${cartItem._id} not found` });
       }
       const existingCartItem = user.cart.find(
-        (item) => item.item.toString() === cartItem._id
+        (item) => item._id.toString() === cartItem._id
       );
       if (existingCartItem) {
         existingCartItem.quantity = cartItem.quantity;
       } else {
         user.cart.push({
-          item: cartItem._id,
+          _id: product._id,
+          title: product.title,
+          image: product.image,
+          price: product.price,
           quantity: cartItem.quantity,
+          taxRate: cartItem.taxRate,
         });
       }
     }
 
     await user.save();
+    console.log('user cart>>', user.cart);
+
     return res.status(200).json({
       cartSaved: true,
     });

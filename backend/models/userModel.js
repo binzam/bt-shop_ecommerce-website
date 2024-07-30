@@ -25,12 +25,34 @@ const userSchema = new Schema(
     },
     cart: [
       {
-        item: {
+        _id: {
           type: Schema.Types.ObjectId,
           ref: 'Product',
-          quantity: {
-            type: Number,
-          },
+          required: true,
+        },
+        title: {
+          type: String,
+          required: true,
+        },
+        image: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+          default: 1,
+        },
+        taxRate: {
+          type: Number,
+          required: true,
+          default: 0.15,
+          min: 0,
+          max: 1,
         },
       },
     ],
@@ -94,7 +116,7 @@ userSchema.statics.login = async function (email, password) {
     throw Error('All fields must be filled');
   }
 
-  const user = await this.findOne({ email }).populate('cart.item');
+  const user = await this.findOne({ email });
   if (!user) {
     throw Error('Incorrect email');
   }

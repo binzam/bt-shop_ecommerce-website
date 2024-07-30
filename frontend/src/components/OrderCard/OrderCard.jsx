@@ -88,6 +88,7 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
             <th className="quantity_column">Quantity</th>
             <th className="price_tax_column">
               Price
+              <br />
               <small>
                 <i>(per)</i>
               </small>

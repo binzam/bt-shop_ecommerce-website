@@ -17,7 +17,6 @@ const NavContextProvider = ({ children }) => {
   // const location = useLocation();
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
-    console.log(storedCart);
     if (storedCart) {
       setCartItems(JSON.parse(storedCart));
     }

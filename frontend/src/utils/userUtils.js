@@ -59,7 +59,7 @@ async function saveCartToDatabase(user, cartItems) {
         },
       }
     );
-    console.log(response);
+   
 
     if (response.data.cartSaved) {
       console.log('cart saved');

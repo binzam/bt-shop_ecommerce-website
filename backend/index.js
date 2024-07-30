@@ -11,6 +11,7 @@ import path from 'path';
 
 // import resetUserOrders from './utils/resetUserOrders.js';
 // import updateUserOrders from './utils/UpdateUserOrders.js';
+// import clearAllCarts from './utils/clearAllCarts.js';
 const app = express();
 app.use('/userUploads', express.static(path.resolve('userUploads')));
 app.use('/public', express.static(path.resolve('public')));
@@ -25,6 +26,7 @@ app.use(cors());
 // );
 // resetUserOrders()
 // updateUserOrders()
+// clearAllCarts()
 app.get('/', (req, res) => {
   return res.status(200).json('Welcome to bt-shop');
 });
