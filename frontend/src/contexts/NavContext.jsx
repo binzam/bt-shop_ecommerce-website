@@ -21,11 +21,15 @@ const NavContextProvider = ({ children }) => {
       setCartItems(JSON.parse(storedCart));
     }
   }, []);
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+  
   const handleOpenRegisterForm = () => {
     setShowRegisterForm(true);
     setShowLoginForm(false);
   };
- 
+
   const handleOpenLoginForm = () => {
     setShowLoginForm(true);
     setShowRegisterForm(false);
@@ -41,7 +45,7 @@ const NavContextProvider = ({ children }) => {
     setShowUserOptions(true);
     setShowCart(false);
     handleCloseForms();
-  }//biani@bini.com
+  } //biani@bini.com
   function toggleCart() {
     setShowCart(!showCart);
   }
@@ -69,7 +73,7 @@ const NavContextProvider = ({ children }) => {
     setShowRegisterForm(false);
     setShowResetPasswordForm(false);
   };
-  
+
   const addToCart = (product, quantity = 1) => {
     const existsInCart = cartItems.find((item) => item._id === product._id);
     if (existsInCart) {

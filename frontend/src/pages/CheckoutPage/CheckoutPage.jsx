@@ -13,7 +13,8 @@ import { createOrder } from '../../utils/orderUtils';
 import CheckoutHeader from './CheckoutHeader';
 import OrderComplete from './OrderComplete';
 import ArrowLeft from '../../assets/arrow-left.svg';
-
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
 const CheckoutPage = () => {
   const { user } = useAuthContext();
   const { cartItems, handleOpenUserOptions, handleClearCart } =
@@ -91,7 +92,21 @@ const CheckoutPage = () => {
       setIsLoading(false);
     }
   };
-
+  const makePayment = async () => {
+    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);
+    const body = {
+      products: cartItems,
+    };
+    const response = await axios.post(
+      'http://localhost:5555/api/create_checkout_session',
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+  };
   return (
     <div className="checkout_page">
       {error && <div className="form_error">{error}</div>}
@@ -137,6 +152,9 @@ const CheckoutPage = () => {
               />
             )}
             <div className="checkout_option_btns">
+              <button onClick={makePayment} className="checkout_login_btn">
+                Make payment
+              </button>
               {!user && cartItems.length > 0 && (
                 <Link
                   to="/auth"
