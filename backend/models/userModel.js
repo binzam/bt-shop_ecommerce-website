@@ -68,12 +68,6 @@ const userSchema = new Schema(
       country: String,
       phoneNumber: String,
     },
-    creditCardInfo: {
-      cardNumber: String,
-      cardName: String,
-      expiryDate: String,
-      cvv: String,
-    },
     role: {
       type: String,
       enum: ['admin', 'user'],

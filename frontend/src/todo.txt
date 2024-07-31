@@ -20,17 +20,19 @@ checkout page responsivencess: done
 create order!!: done
 product description minus icon: done
 add new product :done
+switch the profile picture after upload: done
+save cart items to user database: done
+reset password with email: done
+orders page: done
+checkout page isorderPlaced: done
+a way to store cartitems in database when the user logs out without creating order
+product review:done
 ...
 https://blog.logrocket.com/building-react-modal-module-with-react-router/
 ...
 restructor modal?
-reset password with email
 modal?
-orders page
-checkout page isorderPlaced
 a context to check if a user has placed orders
-a way to store cartitems in database when the user logs out without creating order
-product review
-image upload, and way to save profile picture on users machine?
-switch the profile picture after upload
-save cart items to user database
+remove styles for payment form
+displaying the Stripe Checkout modal directly within the application.
+organise checkout page

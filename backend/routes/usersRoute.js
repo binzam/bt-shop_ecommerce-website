@@ -8,9 +8,9 @@ import {
   resetPassword,
   postFeedback,
   updateUserShippingInfo,
-  updateUserPaymentInfo,
   uploadProfilePicture,
   saveCartItems,
+  makePayment,
 } from '../controllers/userController.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
 // import { handleError } from '../middleware/errorMiddleware.js';
@@ -51,8 +51,7 @@ router.post(
   upload.single('profilePicture'),
   uploadProfilePicture
 );
-router.put('/update_payment', requireAuth, updateUserPaymentInfo);
 router.put('/update_shipping', requireAuth, updateUserShippingInfo);
-
+router.post("/create_checkout_session", makePayment)
 // router.use(handleError)
 export default router;

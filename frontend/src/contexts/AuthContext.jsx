@@ -15,8 +15,6 @@ export const authReducer = (state, action) => {
       return { user: { ...state.user, profilePicture: action.payload } };
     case 'UPDATE_SHIPPING_ADDRESS':
       return { user: { ...state.user, hasAddress: action.payload } };
-    case 'UPDATE_PAYMENT_INFO':
-      return { user: { ...state.user, hasCreditCardInfo: action.payload } };
     default:
       return state;
   }
@@ -57,15 +55,7 @@ export const AuthContextProvider = ({ children }) => {
       );
     }
   };
-  const updatePaymentInfo = (paymentInfo) => {
-    dispatch({ type: 'UPDATE_PAYMENT_INFO', payload: paymentInfo });
-    if (state.user) {
-      localStorage.setItem(
-        'userInfo',
-        JSON.stringify({ ...state.user, hasCreditCardInfo: paymentInfo })
-      );
-    }
-  };
+ 
   return (
     <AuthContext.Provider
       value={{
@@ -75,7 +65,6 @@ export const AuthContextProvider = ({ children }) => {
         isLoggedIn,
         updateProfilePicture,
         updateShippingAddress,
-        updatePaymentInfo,
       }}
     >
       {children}

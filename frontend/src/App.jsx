@@ -20,6 +20,7 @@ import RegisterForm from './components/Forms/RegisterForm.jsx';
 import ForgotPasswordForm from './components/Forms/ForgotPasswordForm.jsx';
 import PasswordResetForm from './components/Forms/PasswordResetForm.jsx';
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage.jsx';
+import CheckoutSuccess from './pages/CheckoutPage/CheckoutSuccess.jsx';
 function App() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -41,6 +42,7 @@ function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDescription />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/checkout_success" element={<CheckoutSuccess />} />
             <Route path="/orders" element={<OrdersPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

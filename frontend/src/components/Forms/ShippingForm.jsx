@@ -5,7 +5,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from 'axios';
 import Loading from '../Loading';
 
-const ShippingForm = ({ handleDisplayPaymentForm }) => {
+const ShippingForm = ({ checkIsReadyToPlaceOrder }) => {
   const { user, updateShippingAddress } = useAuthContext();
 
   const [error, setError] = useState(null);
@@ -40,7 +40,7 @@ const ShippingForm = ({ handleDisplayPaymentForm }) => {
       if (response.data.shippingInfoUpdated) {
         updateShippingAddress(response.data.shippingInfoUpdated)
         setError(null);
-        handleDisplayPaymentForm();
+        checkIsReadyToPlaceOrder();
       }
     } catch (error) {
       setError(error.response.data.message);

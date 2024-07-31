@@ -6,15 +6,7 @@ import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
 import validator from 'validator';
 import path from 'path';
-
-// const checkUndefined = (obj) => {
-//   const values = Object.values(obj);
-//   if (values.includes(undefined)) {
-//     return null;
-//   }
-//   return obj;
-// };
-
+import stripe from 'stripe';
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
   return values.every((value) => value !== undefined);
@@ -31,7 +23,6 @@ const getCurrentUser = async (req, res) => {
       _id: user._id,
       email: user.email,
       hasAddress: checkUndefined(user.address),
-      hasCreditCardInfo: checkUndefined(user.creditCardInfo),
       orders: checkUndefined(user.orders),
       profilePicture: user.profilePicture,
     };
@@ -59,7 +50,6 @@ const connectUser = async (req, res) => {
       role: user.role,
       profilePicture: user.profilePicture,
       hasAddress: checkUndefined(user.address),
-      hasCreditCardInfo: checkUndefined(user.creditCardInfo),
     };
     const cartData = user.cart.length > 0 ? user.cart : [];
     res.status(200).json({ userData, cartData });
@@ -84,7 +74,6 @@ const registerUser = async (req, res) => {
       role: user.role,
       profilePicture: user.profilePicture,
       hasAddress: checkUndefined(user.address),
-      hasCreditCardInfo: checkUndefined(user.creditCardInfo),
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -171,7 +160,39 @@ const saveCartItems = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const makePayment = async (req, res) => {
+  const stripeClient = stripe(process.env.STRIPE_SECRET_KEY);
 
+  try {
+    const { cartItems } = req.body;
+    if (!cartItems || cartItems.length === 0) {
+      return res.status(400).json({ error: 'Cart items are required' });
+    }
+    // console.log('cartItems>>', cartItems);
+    const session = await stripeClient.checkout.sessions.create({
+      line_items: cartItems.map((item) => {
+        return {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: item.title,
+              images: [item.image],
+            },
+            unit_amount: Math.round(item.price * 100),
+          },
+          quantity: item.quantity,
+        };
+      }),
+      mode: 'payment',
+      success_url: `${process.env.CLIENT_SUCCESS_URL}`,
+      cancel_url: `${process.env.CLIENT_CANCEL_URL}`,
+    });
+    res.json({ sessionUrl: session.url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while creating the payment session.' });
+  }
+};
 const updateUserShippingInfo = async (req, res) => {
   try {
     const _id = req.user._id;
@@ -201,34 +222,7 @@ const updateUserShippingInfo = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-const updateUserPaymentInfo = async (req, res) => {
-  try {
-    const _id = req.user._id;
-    const { creditCardInfo } = req.body;
-    const { cardNumber, cardName, expiryDate, cvv } = creditCardInfo;
 
-    if (!cardNumber || !cardName || !expiryDate || !cvv) {
-      throw Error('All fields must be filled');
-    }
-    const updatedUser = await User.findOneAndUpdate(
-      {
-        _id,
-      },
-      {
-        creditCardInfo: creditCardInfo,
-      },
-      {
-        new: true,
-      }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    return res.status(200).json({ paymentInfoUpdated: true });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 const uploadProfilePicture = async (req, res) => {
   try {
     if (!req.file) {
@@ -355,11 +349,11 @@ export {
   updateUserPassword,
   connectUser,
   updateUserShippingInfo,
-  updateUserPaymentInfo,
   getCurrentUser,
   forgotPassword,
   resetPassword,
   postFeedback,
   uploadProfilePicture,
   saveCartItems,
+  makePayment,
 };
