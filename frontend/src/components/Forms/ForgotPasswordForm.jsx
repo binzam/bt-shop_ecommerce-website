@@ -2,12 +2,12 @@ import { useContext, useState } from 'react';
 import { useForgotPassword } from '../../hooks/useForgotPassword';
 import Loading from '../Loading';
 import closeIcon from '../../assets/close_btn.svg';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
 import CheckMarkIcon from '../../assets/check-solid.svg';
 import { Link } from 'react-router-dom';
 
 const ForgotPasswordForm = () => {
-  const { handleCloseModal } = useContext(NavContext);
+  const { handleCloseModal } = useContext(ShopContext);
   const [email, setEmail] = useState('');
   const { error, isLoading, forgotPassword, isResetEmailSent } =
     useForgotPassword();

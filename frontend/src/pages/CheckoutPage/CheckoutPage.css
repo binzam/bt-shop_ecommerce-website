@@ -216,6 +216,23 @@
   border: 2px solid transparent;
   color: white;
 }
+.order_submitted_msg{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  margin: 20px auto;
+  text-align: center;
+  padding: 20px;
+}
+.order_submitted_msg p{
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  width: 80%;
+  margin: 10px 0;
+}
 @media only screen and (max-width: 800px) {
   .checkout_header {
     text-align: right;

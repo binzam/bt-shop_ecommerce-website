@@ -1,22 +1,21 @@
 import { useContext, useEffect, useState } from 'react';
-import { ProductContext } from '../../contexts/ProductContext.jsx';
+// import { ProductContext } from '../../contexts/ProductContext.jsx';
 import './ProductsPage.css';
 import ProductBox from '../../components/ProductBox/ProductBox.jsx';
 import { useParams } from 'react-router-dom';
 import AddToCartPopup from '../../components/AddToCartPopup/AddToCartPopup.jsx';
-import { NavContext } from '../../contexts/NavContext.jsx';
+import { ShopContext } from '../../contexts/ShopContext.jsx';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import AddProductForm from '../../components/Forms/AddProductForm.jsx';
 import addIcon from '../../assets/add_icon.svg';
 
 const ProductsPage = () => {
   const { category } = useParams();
-  const { products, loading, error } = useContext(ProductContext);
   const [selectedCategory, setSelectedCategory] = useState(category || '');
   const [sortOrder, setSortOrder] = useState('asc');
   const [showPopup, setShowPopup] = useState(false);
   const [addedPrd, setAddedPrd] = useState(null);
-  const { addToCart } = useContext(NavContext);
+  const { addToCart, products, loading, error } = useContext(ShopContext);
   const [showAddForm, setShowAddForm] = useState(false);
   const { isAdmin } = useContext(AuthContext);
 

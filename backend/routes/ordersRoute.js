@@ -11,5 +11,4 @@ const router = express.Router();
 router.post('/place_order', requireAuth, createOrder);
 router.get('/user/:id', requireAuth, getOrdersByUser);
 router.post('/cancel_order/:id', requireAuth, cancelUserOrder);
-
 export default router;

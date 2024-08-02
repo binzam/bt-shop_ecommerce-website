@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
+import { useContext } from 'react';
 import UserIcon from '../../assets/avatar.svg';
 import CalendarIcon from '../../assets/calendar-regular.svg';
 import LocationIcon from '../../assets/location-dot-solid.svg';
 import TruckIcon from '../../assets/truck-solid.svg';
-import { useAuthContext } from '../../hooks/useAuthContext';
 import './OrderCard.css';
+import { AuthContext } from '../../contexts/AuthContext';
 const OrderCard = ({ order, handleRemoveOrder }) => {
   // console.log(order);
-  const { isAdmin } = useAuthContext();
+  const { isAdmin } = useContext(AuthContext);
 
   return (
     <div

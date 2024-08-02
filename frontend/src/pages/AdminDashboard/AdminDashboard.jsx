@@ -7,12 +7,12 @@ import OrdersList from './adminComponents/OrderListing/OrdersList';
 import AdminPanel from './adminComponents/AdminPanel';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Loading from '../../components/Loading';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
 import Feedbacks from './adminComponents/FeedbacksListing/Feedbacks';
 
 const AdminDashboard = () => {
   const { isAdmin } = useAuthContext();
-  const { toggleCart } = useContext(NavContext);
+  const { toggleCart } = useContext(ShopContext);
   const [currentView, setCurrentView] = useState('customers');
   const [isUserAdmin, setIsUserAdmin] = useState(null);
   const navigate = useNavigate();

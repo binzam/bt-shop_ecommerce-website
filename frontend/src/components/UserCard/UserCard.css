@@ -32,6 +32,7 @@
   transform: translateX(-50%);
   box-shadow: 0px 1px 5px #000000a6;
   z-index: 9999;
+  object-fit: cover;
   background-color: #ffffff;
 }
 

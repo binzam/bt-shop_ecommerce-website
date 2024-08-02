@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
 import { Link } from 'react-router-dom';
 
 const LoginSignupButtons = () => {
   const { handleOpenRegisterForm, handleOpenLoginForm, handleCloseModal } =
-    useContext(NavContext);
+    useContext(ShopContext);
   return (
     <div className="login_signup_div">
       <div className="login_signup_btns">

@@ -3,14 +3,14 @@ import Avatar from '../../../assets/avatar.svg';
 // import PlusIcon from '../../../assets/icon-plus.svg';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { NavContext } from '../../../contexts/NavContext';
+import { ShopContext } from '../../../contexts/ShopContext';
 import UploadIcon from '../../../assets/upload-solid.svg';
 import Loading from '../../Loading';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 
 const UserDetails = () => {
   const { user, updateProfilePicture } = useAuthContext();
-  const { handleCloseModal } = useContext(NavContext);
+  const { handleCloseModal } = useContext(ShopContext);
   const [profilePicture, setProfilePicture] = useState(null);
   const [uploadImage, setUploadImage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

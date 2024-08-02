@@ -5,12 +5,13 @@ import './ProductBox.css';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useContext, useState } from 'react';
 import removeIcon from '../../assets/close_btn.svg';
-import { ProductContext } from '../../contexts/ProductContext.jsx';
+// import { ProductContext } from '../../contexts/ProductContext.jsx';
 import ConfirmationPopup from '../../pages/AdminDashboard/adminComponents/ConfirmationPopup.jsx';
+import { ShopContext } from '../../contexts/ShopContext.jsx';
 
 const ProductBox = ({ product, addToCart }) => {
   const { isAdmin } = useContext(AuthContext);
-  const { removeProduct } = useContext(ProductContext);
+  const { removeProduct } = useContext(ShopContext);
   const [productId, setProductId] = useState(null);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 

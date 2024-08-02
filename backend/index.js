@@ -7,16 +7,17 @@ import productsRoute from './routes/productsRoute.js';
 import usersRoute from './routes/usersRoute.js';
 import ordersRoute from './routes/ordersRoute.js';
 import adminRoute from './routes/adminRoute.js';
+import paymentRoute from './routes/paymentRoute.js';
 import path from 'path';
-
 // import resetUserOrders from './utils/resetUserOrders.js';
 // import updateUserOrders from './utils/UpdateUserOrders.js';
 // import clearAllCarts from './utils/clearAllCarts.js';
 const app = express();
+app.use(cors());
 app.use('/userUploads', express.static(path.resolve('userUploads')));
 app.use('/public', express.static(path.resolve('public')));
+app.use('/api/payment', paymentRoute);
 app.use(express.json());
-app.use(cors());
 // app.use(
 //   cors({
 //     origin: 'http://localhost:5173',

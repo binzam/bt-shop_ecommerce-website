@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import { User } from '../models/userModel.js';
+import { Order } from '../models/orderModel.js';
 
 async function createOrderItems(items) {
   return Promise.all(
@@ -49,5 +50,13 @@ async function updateUserOrders(userId, orderId) {
     { new: true }
   );
 }
-
-export { createOrderItems, updateUserOrders };
+async function updateOrderStatus(orderId, newStatus) {
+  console.log('utils line 54>>', orderId);
+  
+  return Order.findByIdAndUpdate(
+    orderId,
+    { $set: { paymentStatus: newStatus } },
+    { new: true }
+  );
+}
+export { createOrderItems, updateUserOrders, updateOrderStatus };

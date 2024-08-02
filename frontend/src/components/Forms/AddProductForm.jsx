@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
 import "./Forms.css";
-import { ProductContext } from "../../contexts/ProductContext";
+// import { ProductContext } from "../../contexts/ProductContext";
+import { ShopContext } from "../../contexts/ShopContext";
 
 function AddProductForm({ closeForm }) {
-  const { addNewProduct } = useContext(ProductContext);
+  const { addNewProduct } = useContext(ShopContext);
 
   const [newProduct, setNewProduct] = useState({
     category: "",

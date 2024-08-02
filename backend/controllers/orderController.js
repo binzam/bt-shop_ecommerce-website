@@ -29,7 +29,7 @@ const createOrder = async (req, res) => {
 
     await User.findByIdAndUpdate(userId, { $set: { cart: [] } });
 
-    return res.status(201).json({ orderCreated: true, order });
+    return res.status(201).json({ orderCreated: true, orderId: order._id });
   } catch (error) {
     console.error(error.message);
     if (error.name === 'ValidationError') {

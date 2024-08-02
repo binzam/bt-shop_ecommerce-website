@@ -5,8 +5,7 @@ async function createOrder(
   setLoading,
   user,
   newOrder,
-  setIsOrderPlaced,
-  handleClearCart
+  setIsOrderPlaced
 ) {
   setLoading(true);
   setError(null);
@@ -26,7 +25,7 @@ async function createOrder(
     if (response.data.orderCreated) {
       setError(null);
       setIsOrderPlaced(true);
-      handleClearCart();
+      localStorage.setItem('orderId', JSON.stringify(response.data.orderId));
     }
   } catch (error) {
     console.log(error);

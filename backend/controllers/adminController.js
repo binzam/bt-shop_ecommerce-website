@@ -8,7 +8,10 @@ const getUsers = async (req, res) => {
     // const users = await User.find({}, 'username role email _id');
     // In your user controller or route
     // const users = await User.find({}).populate('orders');
-    const users = await User.find({}, '-password -updatedAt -v -address -creditCardInfo');
+    const users = await User.find(
+      {},
+      '-password -updatedAt -v -address -creditCardInfo'
+    );
     if (!users) {
       return res.status(400).json({ error: 'Users Not found' });
     }

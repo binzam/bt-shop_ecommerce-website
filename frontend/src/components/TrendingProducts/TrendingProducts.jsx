@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import { ProductContext } from '../../contexts/ProductContext';
+// import { ProductContext } from '../../contexts/ProductContext';
 import { Link } from 'react-router-dom';
 import './TrendingProducts.css';
 import Error from '../Error';
 import Loading from '../Loading';
+import { ShopContext } from '../../contexts/ShopContext';
 const TrendingProducts = () => {
-  const { products, loading, error } = useContext(ProductContext);
+  const { products, loading, error } = useContext(ShopContext);
   const [topProducts, setTopProducts] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
 

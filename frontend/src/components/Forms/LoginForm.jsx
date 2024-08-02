@@ -3,12 +3,12 @@ import { useLogin } from '../../hooks/useLogin';
 import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
 import Loading from '../Loading';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
 import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   const { handleOpenPassResetModal, handleCloseForms } =
-    useContext(NavContext);
+    useContext(ShopContext);
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',

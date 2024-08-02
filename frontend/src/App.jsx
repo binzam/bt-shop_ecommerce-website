@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { ProductContextProvider } from './contexts/ProductContext.jsx';
-import { NavContextProvider } from './contexts/NavContext.jsx';
+// import { ProductContextProvider } from './contexts/ProductContext.jsx';
+import { ShopContextProvider } from './contexts/ShopContext.jsx';
 import { useEffect } from 'react';
 import HomePage from './pages/HomePage/HomePage.jsx';
 import ProductDescription from './pages/ProductDescription/ProductDescription';
@@ -28,10 +28,9 @@ function App() {
   }, [pathname]);
 
   return (
-    <NavContextProvider>
+    <ShopContextProvider>
       <Header />
       <main className="main_content">
-        <ProductContextProvider>
           <Routes>
             <Route index element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
@@ -61,10 +60,9 @@ function App() {
               />
             </Route>
           </Routes>
-        </ProductContextProvider>
       </main>
       <Footer />
-    </NavContextProvider>
+    </ShopContextProvider>
   );
 }
 

@@ -99,8 +99,7 @@
   border-radius: 4px;
 }
 /* SHIPPING FORM */
-.shipping_form,
-.payment_form {
+.shipping_form{
   width: 100%;
   margin-bottom: 20px;
   padding: 0 20px;
@@ -109,22 +108,20 @@
   width: 100%;
 }
 
-.shipping_header,
-.payment_header {
+.shipping_header {
   color: black;
   font-size: 20px;
   font-weight: 600;
   margin: 10px 0;
   text-align: center;
 }
-.shipping_form_group,
-.payment_form_group {
+.shipping_form_group{
   display: flex;
   flex-direction: column;
   margin-bottom: 5px;
 }
 .shipping_form_group label,
-.payment_form_group label,
+
 .update_password_form label {
   color: #000000;
   font-size: 1rem;
@@ -132,7 +129,6 @@
   margin-bottom: 0.2rem;
 }
 .shipping_form_group input,
-.payment_form_group input,
 .update_password_form input {
   font-size: 1rem;
   font-weight: 600;
@@ -145,13 +141,11 @@
   border-radius: 3px;
 }
 .shipping_form_group input:focus,
-.payment_form_group input:focus,
 .update_password_form input:focus {
   border: 1px solid transparent;
   outline: 1px solid #ed9121;
 }
 .shipping_form_btn,
-.payment_form_btn,
 .update_pass_btn {
   width: 100%;
   padding: 0.5rem;
@@ -164,7 +158,6 @@
   margin: 10px auto;
 }
 .shipping_form_btn:hover,
-.payment_form_btn:hover,
 .update_pass_btn:hover {
   background-color: #ed9121;
   border: 1px solid #333;

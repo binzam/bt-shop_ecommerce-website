@@ -3,10 +3,10 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import './Header.css';
 import Navbar from './Navbar/Navbar';
 import Cart from './Cart/Cart';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
 const Header = () => {
   const { user } = useAuthContext();
-  const { showCart } = useContext(NavContext);
+  const { showCart } = useContext(ShopContext);
 
   return (
     <header>

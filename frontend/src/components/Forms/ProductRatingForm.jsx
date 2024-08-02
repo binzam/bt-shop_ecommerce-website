@@ -5,13 +5,15 @@ import ThumbsUpIcon from '../../assets/thumbs_up.svg';
 import './Forms.css';
 import axios from 'axios';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
+import { useNavigate } from 'react-router-dom';
 const ProductRatingForm = ({ productId, setShowRatingForm }) => {
   const { user } = useAuthContext();
-  const { handleOpenUserOptions } = useContext(NavContext);
+  const { handleOpenUserOptions } = useContext(ShopContext);
   const [rating, setRating] = useState(2.5);
   const [showMessage, setShowMessage] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setRating(e.target.value);
   };
@@ -50,10 +52,11 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
       setError(error.response.data.message);
     }
   };
-  
+
   const handleUserNotLoggedIn = () => {
     setShowRatingForm(false);
     handleOpenUserOptions();
+    navigate('/auth');
   };
   return (
     <>
@@ -81,10 +84,7 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
             Submit
           </button>
         ) : (
-          <button
-            onClick={handleUserNotLoggedIn}
-            className="must_login_btn"
-          >
+          <button onClick={handleUserNotLoggedIn} className="must_login_btn">
             Login to Submit rating
           </button>
         )}

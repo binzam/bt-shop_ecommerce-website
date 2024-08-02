@@ -1,14 +1,14 @@
 import { useContext, useState } from 'react';
 import Loading from '../Loading';
 import closeIcon from '../../assets/close_btn.svg';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
 import { Link, useParams } from 'react-router-dom';
 import { useResetPassword } from '../../hooks/useResetPassword';
 
 const PasswordResetForm = () => {
   const { token } = useParams();
   // console.log(token);
-  const { handleCloseModal, handleOpenLoginForm } = useContext(NavContext);
+  const { handleCloseModal, handleOpenLoginForm } = useContext(ShopContext);
   const [resetPasswordForm, setResetPasswordForm] = useState({
     newPassword: '',
     confirmNewPassword: '',

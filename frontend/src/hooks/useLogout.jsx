@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { NavContext } from '../contexts/NavContext';
+import { ShopContext } from '../contexts/ShopContext';
 import { AuthContext } from '../contexts/AuthContext';
 
 export const useLogout = () => {
   const { dispatch, user } = useContext(AuthContext);
-  const { clearCart } = useContext(NavContext);
+  const { clearCart } = useContext(ShopContext);
   const logout = async () => {
     try {
       await clearCart(user);

@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { saveCartToDatabase } from '../utils/userUtils';
+import axios from 'axios';
+import { AuthContext } from './AuthContext';
 // import { useLocation, useNavigate } from 'react-router-dom';
 
-const NavContext = createContext();
+const ShopContext = createContext();
 
-const NavContextProvider = ({ children }) => {
+const ShopContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [showUserOptions, setShowUserOptions] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -15,16 +17,75 @@ const NavContextProvider = ({ children }) => {
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
   // const navigate = useNavigate();
   // const location = useLocation();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:5555/api/products');
+      if (response.status !== 200) {
+        throw new Error('Failed to fetch products');
+      }
+      const data = response.data.data;
+      setProducts(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const { user } = useContext(AuthContext);
+  const removeProduct = async (productId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5555/api/admin/remove_product/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.data.productRemoved) {
+        fetchProducts();
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+  const addNewProduct = async (newProduct) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5555/api/admin/add_product',
+        newProduct,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.data.productAdded) {
+        fetchProducts();
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       setCartItems(JSON.parse(storedCart));
     }
   }, []);
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-  }, [cartItems]);
   
+
   const handleOpenRegisterForm = () => {
     setShowRegisterForm(true);
     setShowLoginForm(false);
@@ -118,7 +179,7 @@ const NavContextProvider = ({ children }) => {
   };
 
   return (
-    <NavContext.Provider
+    <ShopContext.Provider
       value={{
         handleClearCart,
         showUserOptions,
@@ -141,11 +202,16 @@ const NavContextProvider = ({ children }) => {
         handleOpenResetPasswordForm,
         setShowResetPasswordForm,
         clearCart,
+        products,
+        loading,
+        error,
+        removeProduct,
+        addNewProduct,
       }}
     >
       {children}
-    </NavContext.Provider>
+    </ShopContext.Provider>
   );
 };
 
-export { NavContextProvider, NavContext };
+export { ShopContextProvider, ShopContext };

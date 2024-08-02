@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import CartIcon from '../../../assets/icon-cart.svg';
 import UserIcon from '../../../assets/avatar.svg';
 import { useContext, useState } from 'react';
-import { NavContext } from '../../../contexts/NavContext.jsx';
+import { ShopContext } from '../../../contexts/ShopContext.jsx';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import adminIcon from '../../../assets/adminIcon.svg';
 import MenuIcon from '../../../assets/icon-menu.svg';
@@ -12,7 +12,7 @@ import './Navbar.css';
 const Navbar = () => {
   const { isAdmin, user } = useContext(AuthContext);
   const { cartItems, toggleCart, handleOpenUserOptions } =
-    useContext(NavContext);
+    useContext(ShopContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   function toggleDropdown() {

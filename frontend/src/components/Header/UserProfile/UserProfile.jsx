@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useLogout } from '../../../hooks/useLogout';
-import { NavContext } from '../../../contexts/NavContext';
+import { ShopContext } from '../../../contexts/ShopContext';
 import { Link, useNavigate } from 'react-router-dom';
 import './UserProfile.css';
 import closeIcon from '../../../assets/close_btn.svg';
@@ -10,7 +10,7 @@ import UserDetails from './UserDetails';
 
 const UserProfile = () => {
   const { logout } = useLogout();
-  const { handleCloseModal } = useContext(NavContext);
+  const { handleCloseModal } = useContext(ShopContext);
 
   const navigate = useNavigate();
 

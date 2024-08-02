@@ -6,7 +6,6 @@ import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
 import validator from 'validator';
 import path from 'path';
-import stripe from 'stripe';
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
   return values.every((value) => value !== undefined);
@@ -160,39 +159,7 @@ const saveCartItems = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-const makePayment = async (req, res) => {
-  const stripeClient = stripe(process.env.STRIPE_SECRET_KEY);
 
-  try {
-    const { cartItems } = req.body;
-    if (!cartItems || cartItems.length === 0) {
-      return res.status(400).json({ error: 'Cart items are required' });
-    }
-    // console.log('cartItems>>', cartItems);
-    const session = await stripeClient.checkout.sessions.create({
-      line_items: cartItems.map((item) => {
-        return {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: item.title,
-              images: [item.image],
-            },
-            unit_amount: Math.round(item.price * 100),
-          },
-          quantity: item.quantity,
-        };
-      }),
-      mode: 'payment',
-      success_url: `${process.env.CLIENT_SUCCESS_URL}`,
-      cancel_url: `${process.env.CLIENT_CANCEL_URL}`,
-    });
-    res.json({ sessionUrl: session.url });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred while creating the payment session.' });
-  }
-};
 const updateUserShippingInfo = async (req, res) => {
   try {
     const _id = req.user._id;
@@ -355,5 +322,4 @@ export {
   postFeedback,
   uploadProfilePicture,
   saveCartItems,
-  makePayment,
 };

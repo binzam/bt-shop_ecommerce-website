@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import './CheckoutPage.css';
@@ -14,15 +14,17 @@ import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 const CheckoutPage = () => {
   const { user } = useAuthContext();
-  const { cartItems, handleOpenUserOptions, handleClearCart } =
-    useContext(NavContext);
+  const { cartItems, handleOpenUserOptions } =
+    useContext(ShopContext);
   const [showOrderSummary, setShowOrderSummary] = useState(true);
   const [showShippingForm, setShowShippingForm] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-  const [isReadyToPlaceOrder, setIsReadyToPlaceOrder] = useState(false);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
-  const [showNextBtn, setShowNextBtn] = useState(false);
+  const [showNextBtn, setShowNextBtn] = useState(true);
+  const [showOrderBtn, setShowOrderBtn] = useState(false);
+  const [showLoginBtn, setShowLoginBtn] = useState(false);
+  const [showPayBtn, setShowPayBtn] = useState(false);
   const navigate = useNavigate();
   const filteredValues = cartItems.map(
     ({ _id, quantity, price, taxRate, title, image }) => ({
@@ -38,20 +40,23 @@ const CheckoutPage = () => {
     orderItems: filteredValues,
   };
   const handleDisplayShippingForm = () => {
-    if (!user.hasAddress) {
-      setShowShippingForm(true);
+    if (!user) {
+      setShowLoginBtn(true);
+      setShowNextBtn(false);
+    } else if (user && !user.hasAddress && cartItems.length > 0) {
       setShowOrderSummary(false);
+      setShowShippingForm(true);
       setShowNextBtn(false);
     } else {
       checkIsReadyToPlaceOrder();
     }
   };
   const checkIsReadyToPlaceOrder = () => {
+    setShowShippingForm(false);
+    setShowOrderSummary(true);
     if (user.hasAddress && cartItems.length > 0) {
       setShowNextBtn(false);
-      setShowShippingForm(false);
-      setShowOrderSummary(true);
-      setIsReadyToPlaceOrder(true);
+      setShowOrderBtn(true);
     } else {
       navigate('/checkout');
     }
@@ -65,11 +70,8 @@ const CheckoutPage = () => {
         user,
         newOrder,
         setIsOrderPlaced,
-        handleClearCart
       );
-      if (isOrderPlaced) {
-        navigate('/orders');
-      }
+      setShowPayBtn(true);
     } catch (err) {
       console.error('Error creating order:', err);
       setError(
@@ -79,22 +81,20 @@ const CheckoutPage = () => {
       setIsLoading(false);
     }
   };
-  
-  const makePayment = async () => {
-    handlePlaceOrder();
-    await loadStripe(`${import.meta.env.VITE_STRIPE_KEY}`);
 
+  const makePayment = async () => {
+    const orderId = localStorage.getItem('orderId');
+    await loadStripe(`${import.meta.env.VITE_STRIPE_KEY}`);
     try {
       const response = await axios.post(
-        'http://localhost:5555/api/users/create_checkout_session',
-        { cartItems },
+        'http://localhost:5555/api/payment/create_checkout_session',
+        { cartItems, orderId },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         }
       );
-
       // await stripe.redirectToCheckout({ sessionId: response.data.sessionId });
       // window.location.href = response.data.sessionUrl;
       window.open(response.data.sessionUrl, '_blank');
@@ -108,7 +108,7 @@ const CheckoutPage = () => {
       {error && <div className="form_error">{error}</div>}
       {isLoading && <Loading />}
 
-      {!isOrderPlaced && (
+      {!isOrderPlaced ? (
         <div className="orders_content">
           <div className="checkout_orders">
             <span className="pending_orders_count">
@@ -132,13 +132,13 @@ const CheckoutPage = () => {
           </div>
           <div className="checkout_progress_wrapper">
             {showOrderSummary && <OrderSummary />}
-            {showShippingForm && cartItems.length > 0 && (
+            {showShippingForm && (
               <ShippingForm
                 checkIsReadyToPlaceOrder={checkIsReadyToPlaceOrder}
               />
             )}
             <div className="checkout_option_btns">
-              {!user && cartItems.length > 0 && (
+              {showLoginBtn && (
                 <Link
                   to="/auth"
                   onClick={handleOpenUserOptions}
@@ -147,7 +147,7 @@ const CheckoutPage = () => {
                   Login to Continue
                 </Link>
               )}
-              {user && showNextBtn && (
+              {showNextBtn && (
                 <button
                   onClick={handleDisplayShippingForm}
                   className="checkout_next_btn"
@@ -156,20 +156,29 @@ const CheckoutPage = () => {
                 </button>
               )}
             </div>
-            {isReadyToPlaceOrder && (
-              <>
-                <button className="place_order_btn" onClick={handlePlaceOrder}>
-                  ORDER NOW
-                </button>
-              </>
+            {showOrderBtn && (
+              <button className="place_order_btn" onClick={handlePlaceOrder}>
+                ORDER NOW
+              </button>
             )}
+          </div>
+        </div>
+      ) : (
+        <div className="order_submitted_msg">
+          <h2>Order Submmited</h2>
+          <p>
+            Your order is placed and is <strong>pending payment</strong>{' '}
+            complete transaction by proceeding to payment using the button
+            below.
+          </p>
+          {showPayBtn && (
             <button
               onClick={makePayment}
               className="checkout_login_btn payment_btn"
             >
               Make payment
             </button>
-          </div>
+          )}
         </div>
       )}
     </div>

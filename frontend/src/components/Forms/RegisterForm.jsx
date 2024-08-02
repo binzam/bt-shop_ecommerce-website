@@ -3,11 +3,11 @@ import { useSignup } from '../../hooks/useSignup';
 import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
 import Loading from '../Loading';
-import { NavContext } from '../../contexts/NavContext';
+import { ShopContext } from '../../contexts/ShopContext';
 import { Link } from 'react-router-dom';
 
 const RegisterForm = () => {
-  const { handleCloseForms } = useContext(NavContext);
+  const { handleCloseForms } = useContext(ShopContext);
   const [registerForm, setRegisterForm] = useState({
     firstName: '',
     lastName: '',

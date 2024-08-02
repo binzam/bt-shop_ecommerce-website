@@ -5,8 +5,8 @@ import './ProductDescription.css';
 import CartIcon from '../../assets/icon-cart-btn.svg';
 import PlusIcon from '../../assets/icon-plus.svg';
 import MinusIcon from '../../assets/minus-icon.svg';
-import { ProductContext } from '../../contexts/ProductContext.jsx';
-import { NavContext } from '../../contexts/NavContext.jsx';
+// import { ProductContext } from '../../contexts/ProductContext.jsx';
+import { ShopContext } from '../../contexts/ShopContext.jsx';
 import Loading from '../../components/Loading.jsx';
 import Error from '../../components/Error.jsx';
 import StarIcon from '../../assets/star_icon.svg';
@@ -15,8 +15,7 @@ import { AuthContext } from '../../contexts/AuthContext.jsx';
 const ProductDescription = () => {
   const { isAdmin } = useContext(AuthContext);
 
-  const { products, loading, error } = useContext(ProductContext);
-  const { addToCart } = useContext(NavContext);
+  const { addToCart, products, loading, error } = useContext(ShopContext);
   const { id } = useParams();
   const [displayedProduct, setDisplayedProduct] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -38,7 +37,7 @@ const ProductDescription = () => {
       setQuantity(quantity - 1);
     }
   };
-  
+
   const { image, title, price, description } = displayedProduct;
 
   const handleAddToCart = () => {
