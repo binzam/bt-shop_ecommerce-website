@@ -10,15 +10,12 @@ async function createOrderItems(items) {
       if (!Types.ObjectId.isValid(product)) {
         throw new Error(`Invalid product ID: ${product}`);
       }
-
       if (quantity <= 0) {
         throw new Error(`Invalid quantity: ${quantity}`);
       }
-
       if (price <= 0) {
         throw new Error(`Invalid price: ${price}`);
       }
-
       if (taxRate < 0 || taxRate > 1) {
         throw new Error(`Invalid tax rate: ${taxRate}`);
       }
@@ -41,8 +38,30 @@ async function createOrderItems(items) {
     })
   );
 }
+async function createLineItems(cartItems) {
+  const orderItems = [];
 
-// update the user's order history
+  for (const item of cartItems) {
+    const { title, quantity, price, image, taxRate } = item;
+    const tax = parseFloat((price * taxRate).toFixed(2));
+    const totalItemPrice = price + tax;
+    const lineItem = {
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: title,
+          images: [image],
+        },
+        unit_amount: Math.round(totalItemPrice * 100),
+      },
+      quantity,
+    };
+
+    orderItems.push(lineItem);
+  }
+
+  return orderItems;
+}
 async function updateUserOrders(userId, orderId) {
   return User.findByIdAndUpdate(
     userId,
@@ -52,11 +71,16 @@ async function updateUserOrders(userId, orderId) {
 }
 async function updateOrderStatus(orderId, newStatus) {
   console.log('utils line 54>>', orderId);
-  
+
   return Order.findByIdAndUpdate(
     orderId,
     { $set: { paymentStatus: newStatus } },
     { new: true }
   );
 }
-export { createOrderItems, updateUserOrders, updateOrderStatus };
+export {
+  createOrderItems,
+  createLineItems,
+  updateUserOrders,
+  updateOrderStatus,
+};

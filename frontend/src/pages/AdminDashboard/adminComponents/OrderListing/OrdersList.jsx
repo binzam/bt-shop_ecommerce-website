@@ -18,7 +18,12 @@ const OrdersList = () => {
   let filteredOrders =
     sortType === 'all'
       ? orders
-      : orders.filter((order) => order.orderStatus === 'Cancelled');
+      : sortType === 'paid'
+      ? orders.filter((order) => order.paymentStatus === 'Paid')
+      : sortType === 'canceled'
+      ? orders.filter((order) => order.orderStatus === 'Cancelled')
+      : orders;
+
   const handleRemoveOrder = (orderId) => {
     setOrderId(orderId);
     setShowConfirmationPopup(true);
@@ -43,11 +48,19 @@ const OrdersList = () => {
             </button>
             <button
               className={`cancelled_orders_btn ${
-                sortType !== 'all' ? 'selected' : ''
+                sortType === 'canceled' ? 'selected' : ''
               }`}
               onClick={() => handleSortOrders('canceled')}
             >
               Canceled Orders
+            </button>
+            <button
+              className={`paid_orders_btn ${
+                sortType === 'paid' ? 'selected' : ''
+              }`}
+              onClick={() => handleSortOrders('paid')}
+            >
+              Paid
             </button>
           </div>
           <div className="orders_list">

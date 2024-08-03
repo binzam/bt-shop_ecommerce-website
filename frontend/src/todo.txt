@@ -36,4 +36,7 @@ a context to check if a user has placed orders
 displaying the Stripe Checkout modal directly within the application.
 organise checkout page
 a way to identify the database orderid during Stripe checkout
-research checkout process workflow
+research checkout process workflow 
+remove order id from users' orders array when user cancels order
+remove unneccessary functions from checkout page
+make the create order function a util function or add it to the checkoutsession endpoint

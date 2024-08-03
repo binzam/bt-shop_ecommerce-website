@@ -1,37 +1,29 @@
 import stripe from 'stripe';
-import { updateOrderStatus } from '../utils/orderUtils.js';
+import { createLineItems } from '../utils/orderUtils.js';
+import { createOrder } from './orderController.js';
 
 const getCheckoutSession = async (req, res) => {
   const stripeClient = stripe(process.env.STRIPE_SECRET_KEY);
 
   try {
-    const { cartItems, orderId } = req.body;
-    if (!cartItems || cartItems.length === 0) {
+    const { orderedItems } = req.body;
+    const userId = req.user._id
+    if (!orderedItems || orderedItems.length === 0) {
       return res.status(400).json({ error: 'Cart items are required' });
     }
-    // console.log('cartItems>>', cartItems);
+    const orderItems = await createLineItems(orderedItems);
     const session = await stripeClient.checkout.sessions.create({
-      line_items: cartItems.map((item) => {
-        return {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: item.title,
-              images: [item.image],
-            },
-            unit_amount: Math.round(item.price * 100),
-          },
-          quantity: item.quantity,
-        };
-      }),
+      line_items: orderItems,
       mode: 'payment',
-      success_url: `${process.env.CLIENT_SUCCESS_URL}`,
-      cancel_url: `${process.env.CLIENT_CANCEL_URL}`,
-      orderId: req.orderId,
+      success_url: `${process.env.CLIENT_BASE_URL}/checkout_success`,
+      cancel_url: `${process.env.CLIENT_BASE_URL}/checkout`,
+      automatic_tax: {
+        enabled: true,
+      },
     });
-    console.log('line 33>>', session);
 
-    res.json({ sessionUrl: session.url });
+    res.send({ stripeSession: session });
+    await createOrder(orderedItems, userId);
   } catch (error) {
     console.error(error);
     res
@@ -61,10 +53,7 @@ const webhookCheckout = async (req, res) => {
   switch (event.type) {
     case 'checkout.session.completed':
       const checkoutSessionCompleted = event.data.object;
-      console.log('checkoutSessionCompleted>>>', checkoutSessionCompleted);
-
-      const orderId = checkoutSessionCompleted.orderId;
-      await updateOrderStatus(orderId, 'paid');
+      
       break;
 
     default:

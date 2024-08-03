@@ -25,7 +25,6 @@ async function createOrder(
     if (response.data.orderCreated) {
       setError(null);
       setIsOrderPlaced(true);
-      localStorage.setItem('orderId', JSON.stringify(response.data.orderId));
     }
   } catch (error) {
     console.log(error);

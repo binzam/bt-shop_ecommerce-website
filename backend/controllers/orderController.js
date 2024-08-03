@@ -1,20 +1,13 @@
 import { Order } from '../models/orderModel.js';
 import { User } from '../models/userModel.js';
-import { Types } from 'mongoose';
-import { createOrderItems, updateUserOrders } from '../utils/orderUtils.js';
+import {
+  createOrderItems,
+  updateUserOrders,
+} from '../utils/orderUtils.js';
 
-const createOrder = async (req, res) => {
+const createOrder = async (orderedItems, userId) => {
   try {
-    const { newOrder } = req.body;
-    const userId = req.user._id;
-    const { orderItems } = newOrder;
-    if (!userId || !orderItems || orderItems.length === 0) {
-      return res.status(400).json({ message: 'Missing required fields' });
-    }
-    if (!Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ message: 'Invalid user ID' });
-    }
-    const orderItemsToCreate = await createOrderItems(orderItems);
+    const orderItemsToCreate = await createOrderItems(orderedItems);
     const totalAmount = orderItemsToCreate
       .reduce((acc, item) => acc + item.totalItemPrice, 0)
       .toFixed(2);
@@ -23,22 +16,18 @@ const createOrder = async (req, res) => {
       user: userId,
       orderItems: orderItemsToCreate,
       totalAmount,
+      paymentStatus: 'Paid',
     });
 
     await updateUserOrders(userId, order._id);
 
-    await User.findByIdAndUpdate(userId, { $set: { cart: [] } });
-
-    return res.status(201).json({ orderCreated: true, orderId: order._id });
+    await User.findByIdAndUpdate(userId, {
+      $set: { cart: [] },
+    });
   } catch (error) {
     console.error(error.message);
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ message: error.message });
-    }
-    return res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 const getOrdersByUser = async (req, res) => {
   try {
     const { user } = req;
@@ -77,7 +66,7 @@ const cancelUserOrder = async (req, res) => {
 
     order.orderStatus = 'Cancelled';
     await order.save();
-
+    // make this function call a util function to remove the order id from the users orders property
     res.json({ orderCancelled: true, message: 'Order canceled successfully.' });
   } catch (error) {
     console.error(error);

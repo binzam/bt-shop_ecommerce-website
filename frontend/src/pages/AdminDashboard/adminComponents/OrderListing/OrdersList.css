@@ -18,7 +18,8 @@
   gap: 10px;
 }
 .all_orders_btn,
-.cancelled_orders_btn {
+.cancelled_orders_btn,
+.paid_orders_btn {
   padding: 5px;
   display: flex;
   align-items: center;
@@ -34,7 +35,8 @@
 }
 
 .all_orders_btn:hover,
-.cancelled_orders_btn:hover {
+.cancelled_orders_btn:hover,
+.paid_orders_btn:hover {
   background-color: cadetblue;
 }
 .selected {
