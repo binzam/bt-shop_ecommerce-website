@@ -1,18 +1,19 @@
 import stripe from 'stripe';
-import { createLineItems } from '../utils/orderUtils.js';
-import { createOrder } from './orderController.js';
+import { createLineItems, updateOrderStatus } from '../utils/orderUtils.js';
 
-const getCheckoutSession = async (req, res) => {
+const getCheckoutSession = async (req, res, next) => {
   const stripeClient = stripe(process.env.STRIPE_SECRET_KEY);
 
   try {
     const { orderedItems } = req.body;
-    const userId = req.user._id
+    const { _id, email } = req.user;
     if (!orderedItems || orderedItems.length === 0) {
       return res.status(400).json({ error: 'Cart items are required' });
     }
     const orderItems = await createLineItems(orderedItems);
     const session = await stripeClient.checkout.sessions.create({
+      client_reference_id: `${_id}`,
+      customer_email: email,
       line_items: orderItems,
       mode: 'payment',
       success_url: `${process.env.CLIENT_BASE_URL}/checkout_success`,
@@ -23,7 +24,7 @@ const getCheckoutSession = async (req, res) => {
     });
 
     res.send({ stripeSession: session });
-    await createOrder(orderedItems, userId);
+    next();
   } catch (error) {
     console.error(error);
     res
@@ -50,17 +51,19 @@ const webhookCheckout = async (req, res) => {
     return res.status(400).send(`Webhook Error: ${error.message}`);
   }
 
-  switch (event.type) {
-    case 'checkout.session.completed':
-      const checkoutSessionCompleted = event.data.object;
-      
-      break;
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    console.log('sessjon>>> ', session);
 
-    default:
-      console.log(`Unhandled event type ${event.type}`);
+    try {
+      //update order payment status to 'paid'
+      // await updateOrderStatus(req.user._id, 'Paid')
+    } catch (error) {
+      return res.status(404).send({ error, session });
+    }
   }
 
-  res.send();
+  return res.status(200).send({ received: true });
 };
 
 export { getCheckoutSession, webhookCheckout };

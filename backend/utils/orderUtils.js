@@ -38,7 +38,7 @@ async function createOrderItems(items) {
     })
   );
 }
-async function createLineItems(cartItems) {
+async function  createLineItems(cartItems) {
   const orderItems = [];
 
   for (const item of cartItems) {
@@ -62,6 +62,7 @@ async function createLineItems(cartItems) {
 
   return orderItems;
 }
+
 async function updateUserOrders(userId, orderId) {
   return User.findByIdAndUpdate(
     userId,
@@ -70,7 +71,6 @@ async function updateUserOrders(userId, orderId) {
   );
 }
 async function updateOrderStatus(orderId, newStatus) {
-  console.log('utils line 54>>', orderId);
 
   return Order.findByIdAndUpdate(
     orderId,

@@ -59,15 +59,21 @@ const orderSchema = new Schema(
       enum: ['Fedex', 'DHL'],
       default: 'DHL',
     },
-    paymentMethod: {
-      type: String,
-      enum: ['Credit Card', 'PayPal', 'Apple Pay', 'Google Pay'],
-      default: 'Credit Card',
-    },
-    paymentStatus: {
-      type: String,
-      enum: ['Pending', 'Paid', 'Failed'],
-      default: 'Pending',
+    payment: {
+      paymentId: {
+        type: String,
+        required: true,
+      },
+      paymentMethod: {
+        type: String,
+        enum: ['Credit Card', 'PayPal', 'Apple Pay', 'Google Pay'],
+        default: 'Credit Card',
+      },
+      paymentStatus: {
+        type: String,
+        enum: ['Pending', 'Paid', 'Failed'],
+        default: 'Pending',
+      },
     },
     orderStatus: {
       type: String,

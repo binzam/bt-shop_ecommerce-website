@@ -1,12 +1,11 @@
 import { Order } from '../models/orderModel.js';
 import { User } from '../models/userModel.js';
-import {
-  createOrderItems,
-  updateUserOrders,
-} from '../utils/orderUtils.js';
+import { createOrderItems, updateUserOrders } from '../utils/orderUtils.js';
 
-const createOrder = async (orderedItems, userId) => {
+const createOrder = async (req, res) => {
   try {
+    const { orderedItems } = req.body;
+    const userId = req.user._id;
     const orderItemsToCreate = await createOrderItems(orderedItems);
     const totalAmount = orderItemsToCreate
       .reduce((acc, item) => acc + item.totalItemPrice, 0)
@@ -16,14 +15,14 @@ const createOrder = async (orderedItems, userId) => {
       user: userId,
       orderItems: orderItemsToCreate,
       totalAmount,
-      paymentStatus: 'Paid',
     });
 
-    await updateUserOrders(userId, order._id);
+    const updatedUser = await updateUserOrders(userId, order._id);
 
-    await User.findByIdAndUpdate(userId, {
+    await User.findByIdAndUpdate(updatedUser._id, {
       $set: { cart: [] },
     });
+    
   } catch (error) {
     console.error(error.message);
   }

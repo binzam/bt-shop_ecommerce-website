@@ -4,13 +4,15 @@ import {
 } from '../controllers/paymentController.js';
 import express from 'express';
 import { requireAuth } from '../middleware/authMiddleware.js';
+import { createOrder } from '../controllers/orderController.js';
 const router = express.Router();
 
 router.post(
   '/create_checkout_session',
   express.json(),
   requireAuth,
-  getCheckoutSession
+  getCheckoutSession,
+  createOrder
 );
 router.post(
   '/webhook_checkout',
