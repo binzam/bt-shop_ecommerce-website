@@ -50,9 +50,10 @@ const orderSchema = new Schema(
       default: 0.0,
     },
     shippingAddress: {
-      street: String,
-      city: String,
-      country: String,
+      street: { type: String, required: true },
+      city: { type: String, required: true },
+      country: { type: String, required: true },
+      phoneNumber: { type: String, required: true },
     },
     shippingCompany: {
       type: String,
@@ -62,7 +63,6 @@ const orderSchema = new Schema(
     payment: {
       paymentId: {
         type: String,
-        required: true,
       },
       paymentMethod: {
         type: String,

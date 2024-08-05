@@ -1,10 +1,10 @@
 import {
   getCheckoutSession,
   webhookCheckout,
+  verifyPayment,
 } from '../controllers/paymentController.js';
 import express from 'express';
 import { requireAuth } from '../middleware/authMiddleware.js';
-import { createOrder } from '../controllers/orderController.js';
 const router = express.Router();
 
 router.post(
@@ -12,12 +12,17 @@ router.post(
   express.json(),
   requireAuth,
   getCheckoutSession,
-  createOrder
 );
 router.post(
   '/webhook_checkout',
   express.raw({ type: 'application/json' }),
   webhookCheckout
+);
+router.post(
+  '/verify_payment',
+  express.json(),
+
+  verifyPayment
 );
 
 export default router;

@@ -1,16 +1,9 @@
 /* eslint-disable react/prop-types */
 import './Forms.css';
 import { useState } from 'react';
-import { useAuthContext } from '../../hooks/useAuthContext';
-import axios from 'axios';
-import Loading from '../Loading';
 
-const ShippingForm = ({ checkIsReadyToPlaceOrder }) => {
-  const { user, updateShippingAddress } = useAuthContext();
-
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [address, setAddress] = useState({
+const ShippingForm = ({ onShippingAddressUpdate }) => {
+  const [shippingAddress, setShippingAddress] = useState({
     street: '',
     city: '',
     country: '',
@@ -18,40 +11,20 @@ const ShippingForm = ({ checkIsReadyToPlaceOrder }) => {
   });
 
   const handleChange = (e) => {
-    setAddress({ ...address, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setShippingAddress((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
-  const { phoneNumber, street, city, country } = address;
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.put(
-        'http://localhost:5555/api/users/update_shipping',
-        { address },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-      console.log(response);
-      if (response.data.shippingInfoUpdated) {
-        updateShippingAddress(response.data.shippingInfoUpdated)
-        setError(null);
-        checkIsReadyToPlaceOrder();
-      }
-    } catch (error) {
-      setError(error.response.data.message);
-    } finally {
-      setIsLoading(false);
-    }
+  
+  const { phoneNumber, street, city, country } = shippingAddress;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onShippingAddressUpdate(shippingAddress);
   };
   return (
     <form onSubmit={handleSubmit} className="shipping_form">
-      {isLoading && <Loading />}
-
       <div className="shipping_header">Shipping Address</div>
       <div className="shipping_form_group">
         <label htmlFor="street">Street</label>
@@ -63,6 +36,7 @@ const ShippingForm = ({ checkIsReadyToPlaceOrder }) => {
           placeholder="Enter your street"
           onChange={handleChange}
           autoComplete="false"
+          required={true}
         />
       </div>
       <div className="shipping_form_group">
@@ -75,6 +49,7 @@ const ShippingForm = ({ checkIsReadyToPlaceOrder }) => {
           placeholder="Enter your city"
           onChange={handleChange}
           autoComplete="false"
+          required={true}
         />
       </div>
       <div className="shipping_form_group">
@@ -87,6 +62,7 @@ const ShippingForm = ({ checkIsReadyToPlaceOrder }) => {
           placeholder="Enter your country"
           onChange={handleChange}
           autoComplete="false"
+          required={true}
         />
       </div>
       <div className="shipping_form_group">
@@ -99,12 +75,12 @@ const ShippingForm = ({ checkIsReadyToPlaceOrder }) => {
           placeholder="Enter your Phone Number"
           onChange={handleChange}
           autoComplete="false"
+          required={true}
         />
       </div>
-      <button disabled={isLoading} type="submit" className="shipping_form_btn">
-        SUBMIT
+      <button type="submit" className="shipping_form_btn">
+        Save Shipping Address
       </button>
-      {error && <div className="form_error">{error}</div>}
     </form>
   );
 };

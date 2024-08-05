@@ -21,7 +21,6 @@ const getCurrentUser = async (req, res) => {
     const userData = {
       _id: user._id,
       email: user.email,
-      hasAddress: checkUndefined(user.address),
       orders: checkUndefined(user.orders),
       profilePicture: user.profilePicture,
     };
@@ -48,7 +47,6 @@ const connectUser = async (req, res) => {
       userId: user._id,
       role: user.role,
       profilePicture: user.profilePicture,
-      hasAddress: checkUndefined(user.address),
     };
     const cartData = user.cart.length > 0 ? user.cart : [];
     res.status(200).json({ userData, cartData });
@@ -72,7 +70,6 @@ const registerUser = async (req, res) => {
       userId: user._id,
       role: user.role,
       profilePicture: user.profilePicture,
-      hasAddress: checkUndefined(user.address),
     });
   } catch (error) {
     res.status(400).json({ message: error.message });

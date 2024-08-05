@@ -158,7 +158,8 @@ const getAllFeedbacks = async (req, res) => {
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({}).populate('user');
+    const orders = await Order.find({});
+    // const orders = await Order.find({}).populate('user');
     return res.status(200).json({
       orderCount: orders.length,
       allOrders: orders,

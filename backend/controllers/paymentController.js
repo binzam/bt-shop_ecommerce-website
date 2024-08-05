@@ -1,35 +1,60 @@
 import stripe from 'stripe';
-import { createLineItems, updateOrderStatus } from '../utils/orderUtils.js';
+import {
+  createLineItems,
+  createOrder,
+  updateOrderStatus,
+} from '../utils/orderUtils.js';
 
-const getCheckoutSession = async (req, res, next) => {
+const getCheckoutSession = async (req, res) => {
   const stripeClient = stripe(process.env.STRIPE_SECRET_KEY);
 
   try {
-    const { orderedItems } = req.body;
+    const { cartItems, shippingAddress } = req.body;
     const { _id, email } = req.user;
-    if (!orderedItems || orderedItems.length === 0) {
+    const userId = req.user._id;
+    if (!cartItems || cartItems.length === 0) {
       return res.status(400).json({ error: 'Cart items are required' });
     }
-    const orderItems = await createLineItems(orderedItems);
+    const orderItems = await createLineItems(cartItems);
     const session = await stripeClient.checkout.sessions.create({
       client_reference_id: `${_id}`,
       customer_email: email,
       line_items: orderItems,
       mode: 'payment',
-      success_url: `${process.env.CLIENT_BASE_URL}/checkout_success`,
+      success_url: `${process.env.CLIENT_BASE_URL}/checkout_success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_BASE_URL}/checkout`,
       automatic_tax: {
         enabled: true,
       },
     });
+    const order = await createOrder(
+      cartItems,
+      shippingAddress,
+      userId,
+      session.id
+    );
 
-    res.send({ stripeSession: session });
-    next();
+    res.send({ stripeSession: session, orderId: order._id });
   } catch (error) {
     console.error(error);
     res
       .status(500)
       .json({ error: 'An error occurred while creating the payment session.' });
+  }
+};
+const verifyPayment = async (req, res) => {
+  const stripeClient = stripe(process.env.STRIPE_SECRET_KEY);
+
+  const { sessionId, orderId } = req.body;
+  try {
+    const session = await stripeClient.checkout.sessions.retrieve(sessionId);
+    if (session.payment_status === 'paid') {
+      await updateOrderStatus(`${orderId}`, 'Paid');
+    }
+    return res.json({ status: session.payment_status });
+  } catch (error) {
+    console.error('Error verifying payment:', error);
+    res.status(500).json({ error: 'Error verifying payment' });
   }
 };
 
@@ -53,7 +78,7 @@ const webhookCheckout = async (req, res) => {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    console.log('sessjon>>> ', session);
+    // console.log('sessjon>>> ', session);
 
     try {
       //update order payment status to 'paid'
@@ -66,4 +91,4 @@ const webhookCheckout = async (req, res) => {
   return res.status(200).send({ received: true });
 };
 
-export { getCheckoutSession, webhookCheckout };
+export { getCheckoutSession, webhookCheckout, verifyPayment };

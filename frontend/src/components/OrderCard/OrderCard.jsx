@@ -13,7 +13,7 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
   return (
     <div
       className={`order ${
-        order?.orderStatus === 'Cancelled' ? 'cancelled' : ''
+        order.orderStatus === 'Cancelled' ? 'cancelled' : ''
       }`}
     >
       <div className="order_title">
@@ -34,7 +34,7 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
         {!isAdmin() && (
           <div className="order_customer">
             <div className="order_user_icon">
-              <img src={order.user?.profilePicture || UserIcon} alt="user" />
+              <img src={order.user.profilePicture || UserIcon} alt="user" />
             </div>
             <div className="order_customer_info">
               <p className="bold">Customer</p>
@@ -42,7 +42,7 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
                 {order.user?.username || 'User Not Active'}
               </p>
               <p>{order.user?.email || '---'}</p>
-              <p>{order.user?.address.phoneNumber || '---'}</p>
+              <p>{order.shippingAddress.phoneNumber || '---'}</p>
             </div>
           </div>
         )}
@@ -56,10 +56,10 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
               Shipping: <strong>{order.shippingCompany}</strong>
             </p>
             <p>
-              Payment method: <strong>{order.paymentMethod}</strong>
+              Payment method: <strong>{order.payment.paymentMethod}</strong>
             </p>
             <p>
-              Payment Status: <strong>{order.paymentStatus}</strong>
+              Payment Status: <strong>{order.payment.paymentStatus}</strong>
             </p>
           </div>
         </div>
@@ -72,11 +72,11 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
               <p className="bold">Deliver to</p>
               <p>
                 City:
-                <strong> {order.user?.address.city}</strong> ,
-                <strong>{order.user?.address.country}</strong>
+                <strong> {order.shippingAddress.city}</strong> ,
+                <strong>{order.shippingAddress.country}</strong>
               </p>
               <p>
-                Street: <strong>{order.user?.address.street}</strong>
+                Street: <strong>{order.shippingAddress.street}</strong>
               </p>
             </div>
           </div>

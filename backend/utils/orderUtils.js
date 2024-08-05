@@ -38,7 +38,7 @@ async function createOrderItems(items) {
     })
   );
 }
-async function  createLineItems(cartItems) {
+async function createLineItems(cartItems) {
   const orderItems = [];
 
   for (const item of cartItems) {
@@ -71,16 +71,53 @@ async function updateUserOrders(userId, orderId) {
   );
 }
 async function updateOrderStatus(orderId, newStatus) {
-
   return Order.findByIdAndUpdate(
     orderId,
     { $set: { paymentStatus: newStatus } },
     { new: true }
   );
 }
+async function createOrder(cartItems, shippingAddress, userId, sessionId) {
+  try {
+
+    const orderedItems = cartItems.map(
+      ({ _id, quantity, price, taxRate, title, image }) => ({
+        product: _id,
+        quantity,
+        price,
+        taxRate,
+        title,
+        image,
+      })
+    );
+    const orderItemsToCreate = await createOrderItems(orderedItems);
+    const totalAmount = orderItemsToCreate
+      .reduce((acc, item) => acc + item.totalItemPrice, 0)
+      .toFixed(2);
+
+    const order = await Order.create({
+      user: userId,
+      orderItems: orderItemsToCreate,
+      totalAmount,
+      shippingAddress: shippingAddress,
+      'payment.paymentId': sessionId,
+    });
+
+    const updatedUser = await updateUserOrders(userId, order._id);
+
+    await User.findByIdAndUpdate(userId, {
+      $set: { cart: [] },
+    });
+    return order;
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+}
 export {
   createOrderItems,
   createLineItems,
   updateUserOrders,
   updateOrderStatus,
+  createOrder,
 };

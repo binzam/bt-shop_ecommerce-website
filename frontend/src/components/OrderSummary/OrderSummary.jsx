@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { ShopContext } from '../contexts/ShopContext';
-
+import { ShopContext } from '../../contexts/ShopContext';
+import './OrderSummary.css'
 const OrderSummary = () => {
   const TAX_RATE = 0.15;
   const { cartItems } = useContext(ShopContext);
