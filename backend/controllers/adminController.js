@@ -8,10 +8,7 @@ const getUsers = async (req, res) => {
     // const users = await User.find({}, 'username role email _id');
     // In your user controller or route
     // const users = await User.find({}).populate('orders');
-    const users = await User.find(
-      {},
-      '-password -updatedAt -v -address -creditCardInfo'
-    );
+    const users = await User.find({}, '-password -updatedAt -v -address');
     if (!users) {
       return res.status(400).json({ error: 'Users Not found' });
     }
@@ -40,13 +37,31 @@ const getUserById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getOrderById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const orders = await Order.findById({ _id: id });
+    if (!orders) {
+      return res.status(400).json({
+        message: 'Order not found',
+      });
+    }
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
+    await Order.deleteMany({ user: id });
     await User.findByIdAndDelete(id);
-    return res
-      .status(200)
-      .json({ userRemoved: true, message: 'User deleted successfully' });
+    return res.status(200).json({
+      userRemoved: true,
+      message: 'User and their orders deleted successfully',
+    });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -158,8 +173,7 @@ const getAllFeedbacks = async (req, res) => {
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({});
-    // const orders = await Order.find({}).populate('user');
+    const orders = await Order.find({}).populate('user');
     return res.status(200).json({
       orderCount: orders.length,
       allOrders: orders,
@@ -180,4 +194,5 @@ export {
   getAllFeedbacks,
   getOrders,
   getUserById,
+  getOrderById,
 };

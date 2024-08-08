@@ -18,11 +18,21 @@ const CheckoutProcess = ({
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const { cartItems, handleOpenUserOptions } = useContext(ShopContext);
+  const orderedItems = cartItems.map(
+    ({ _id, quantity, price, taxRate, title, image }) => ({
+      product: _id,
+      quantity,
+      price,
+      taxRate,
+      title,
+      image,
+    })
+  );
   const makePayment = async () => {
     try {
       const response = await axios.post(
         'http://localhost:5555/api/payment/create_checkout_session',
-        { cartItems, shippingAddress },
+        { orderedItems, shippingAddress },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -62,7 +72,7 @@ const CheckoutProcess = ({
           {!showShippingForm && isShippingAddressFilled && (
             <button
               onClick={makePayment}
-              className="checkout_login_btn payment_btn"
+              className="checkout_login_btn"
             >
               Proceed to payment
             </button>

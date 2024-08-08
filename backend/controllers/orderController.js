@@ -20,6 +20,7 @@ const getOrdersByUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 const cancelUserOrder = async (req, res) => {
   try {
     const { id } = req.params;

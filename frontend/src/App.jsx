@@ -20,7 +20,7 @@ import RegisterForm from './components/Forms/RegisterForm.jsx';
 import ForgotPasswordForm from './components/Forms/ForgotPasswordForm.jsx';
 import PasswordResetForm from './components/Forms/PasswordResetForm.jsx';
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage.jsx';
-import CheckoutSuccess from './pages/CheckoutPage/CheckoutSuccess.jsx';
+import CheckoutSuccess from './pages/CheckoutPage/CheckoutSuccess/CheckoutSuccess.jsx';
 function App() {
   const { pathname } = useLocation();
   useEffect(() => {

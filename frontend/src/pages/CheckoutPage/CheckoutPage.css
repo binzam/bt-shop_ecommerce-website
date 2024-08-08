@@ -144,59 +144,7 @@
   background-color: #333;
   border: 1px solid #ed9121;
 }
-.checkout_success_page {
-  width: 100%;
-  height: calc(100vh - 130px);
-  background-color: #ffffff;
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.checkout_success_page p {
-  color: black;
-  width: 50%;
-  text-align: center;
-}
-.place_order_btn {
-  width: 90%;
-  padding: 10px 15px;
-  border-radius: 3px;
-  display: block;
-  margin: 0 auto;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 5px;
-  gap: 10px;
-  background-color: #ffffff;
-  border: 2px solid #ed9121;
-  color: #ed9121;
-  transition: all 0.3s ease-in-out;
-}
-.place_order_btn:hover {
-  letter-spacing: 2px;
-  background-color: green;
-  border: 2px solid transparent;
-  color: white;
-}
-.order_submitted_msg {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-  margin: 20px auto;
-  text-align: center;
-  padding: 20px;
-}
-.order_submitted_msg p {
-  color: #333;
-  font-size: 14px;
-  font-weight: 500;
-  width: 80%;
-  margin: 10px 0;
-}
+
 @media only screen and (max-width: 800px) {
   .checkout_header {
     text-align: right;

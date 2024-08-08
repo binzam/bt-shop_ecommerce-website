@@ -36,8 +36,7 @@
   gap: 10px;
   position: fixed;
   top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 20%;
 }
 .order_canceled_txt {
   color: #ff0000;

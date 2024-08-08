@@ -19,7 +19,11 @@ const OrdersList = () => {
     sortType === 'all'
       ? orders
       : sortType === 'paid'
-      ? orders.filter((order) => order.paymentStatus === 'Paid')
+      ? orders.filter(
+          (order) =>
+            order.payment.paymentStatus === 'paid' &&
+            order.orderStatus !== 'Cancelled'
+        )
       : sortType === 'canceled'
       ? orders.filter((order) => order.orderStatus === 'Cancelled')
       : orders;
@@ -69,6 +73,7 @@ const OrdersList = () => {
                 key={order._id}
                 handleRemoveOrder={handleRemoveOrder}
                 order={order}
+                user={order.user}
               />
             ))}
           </div>

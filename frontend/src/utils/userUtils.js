@@ -35,7 +35,6 @@ async function getUserById(user, id, setSelectedUser, setError, setIsLoading) {
         },
       }
     );
-    // console.log(response);
     if (response.status === 200) {
       setSelectedUser(response.data.user);
       // console.log(response);

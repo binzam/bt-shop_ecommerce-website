@@ -4,7 +4,6 @@ import useUsers from '../../hooks/useUsers';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
 import Arrow from '../../assets/arrow-left.svg';
-import UserIcon from '../../assets/avatar.svg';
 import ArrowDown from '../../assets/arrow-down-solid.svg';
 import RemoveIcon from '../../assets/icon-remove.svg';
 import { useEffect, useState } from 'react';
@@ -17,21 +16,21 @@ const UserProfilePage = () => {
   const { user } = useAuthContext();
   const { id } = useParams();
   const { removeUser } = useUsers();
-  const [selectedUser, setSelectedUser] = useState([]);
+  const [displayedUser, setDisplayedUser] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    if (user) {
+      getUserById(user, id, setDisplayedUser, setError, setIsLoading);
+    }
+  }, [user, id]);
 
   const handleRemoveUser = (userId) => {
     setUserId(userId);
     setShowConfirmationPopup(true);
   };
-  useEffect(() => {
-    if (user) {
-      getUserById(user, id, setSelectedUser, setError, setIsLoading);
-    }
-  }, [user, id]);
   if (isLoading) {
     return <Loading />;
   }
@@ -42,11 +41,12 @@ const UserProfilePage = () => {
 
   const {
     username,
+    role,
     profilePicture,
     email,
     createdAt,
     orders = [],
-  } = selectedUser;
+  } = displayedUser;
   return (
     <div className="user_profile_page">
       <Link className="back_btn" to="/admin">
@@ -56,7 +56,7 @@ const UserProfilePage = () => {
       <div className="user_description">
         <div className="user_description_header">
           <div className="user_image_div">
-            <img src={profilePicture || UserIcon} alt="profile picture" />
+            <img src={profilePicture} alt="profile picture" />
           </div>
           <div className="user_details_wrapper">
             <div className="user_details">
@@ -74,7 +74,7 @@ const UserProfilePage = () => {
               <img src={ArrowDown} alt="arrow down" />
             </div>
 
-            {user.role === 'user' && (
+            {role === 'user' && (
               <button
                 onClick={() => handleRemoveUser(id)}
                 className="remove_user_btn"
@@ -88,7 +88,7 @@ const UserProfilePage = () => {
 
         <div className="orders_list">
           {orders.map((order) => (
-            <OrderCard key={order._id} order={order} />
+            <OrderCard key={order._id} order={order} user={displayedUser}  />
           ))}
         </div>
       </div>

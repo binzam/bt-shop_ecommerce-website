@@ -6,10 +6,9 @@ import LocationIcon from '../../assets/location-dot-solid.svg';
 import TruckIcon from '../../assets/truck-solid.svg';
 import './OrderCard.css';
 import { AuthContext } from '../../contexts/AuthContext';
-const OrderCard = ({ order, handleRemoveOrder }) => {
-  // console.log(order);
+const OrderCard = ({ order, handleRemoveOrder, user }) => {
   const { isAdmin } = useContext(AuthContext);
-
+  
   return (
     <div
       className={`order ${
@@ -31,21 +30,20 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
         )}
       </div>
       <div className="order_header">
-        {!isAdmin() && (
-          <div className="order_customer">
-            <div className="order_user_icon">
-              <img src={order.user.profilePicture || UserIcon} alt="user" />
-            </div>
-            <div className="order_customer_info">
-              <p className="bold">Customer</p>
-              <p className="highlight">
-                {order.user?.username || 'User Not Active'}
-              </p>
-              <p>{order.user?.email || '---'}</p>
-              <p>{order.shippingAddress.phoneNumber || '---'}</p>
-            </div>
+         <div className="order_customer">
+          <div className="order_user_icon">
+            <img src={user.profilePicture || UserIcon } alt="user" />
           </div>
-        )}
+          <div className="order_customer_info">
+            <p className="bold">Customer</p>
+            <p className="highlight">
+              {user?.username || 'User Not Active'}
+            </p>
+            <p>{user?.email || '---'}</p>
+            <p>{order.shippingAddress.phoneNumber || '---'}</p>
+          </div>
+        </div>
+
         <div className="order_address">
           <div className="order_icon_wrapper">
             <img src={TruckIcon} alt="truck" />
@@ -59,28 +57,26 @@ const OrderCard = ({ order, handleRemoveOrder }) => {
               Payment method: <strong>{order.payment.paymentMethod}</strong>
             </p>
             <p>
-              Payment Status: <strong>{order.payment.paymentStatus}</strong>
+              Payment Status: <strong className='highlight'>{order.payment.paymentStatus}</strong>
             </p>
           </div>
         </div>
-        {!isAdmin() && (
-          <div className="order_delivery">
-            <div className="order_icon_wrapper">
-              <img className="icon" src={LocationIcon} alt="address" />
-            </div>
-            <div className="order_delivery_info">
-              <p className="bold">Deliver to</p>
-              <p>
-                City:
-                <strong> {order.shippingAddress.city}</strong> ,
-                <strong>{order.shippingAddress.country}</strong>
-              </p>
-              <p>
-                Street: <strong>{order.shippingAddress.street}</strong>
-              </p>
-            </div>
+        <div className="order_delivery">
+          <div className="order_icon_wrapper">
+            <img className="icon" src={LocationIcon} alt="address" />
           </div>
-        )}
+          <div className="order_delivery_info">
+            <p className="bold">Deliver to</p>
+            <p>
+              City:
+              <strong> {order.shippingAddress.city}</strong> ,
+              <strong>{order.shippingAddress.country}</strong>
+            </p>
+            <p>
+              Street: <strong>{order.shippingAddress.street}</strong>
+            </p>
+          </div>
+        </div>
       </div>
       <table className="order_table">
         <thead className="table_head">

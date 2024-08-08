@@ -38,14 +38,13 @@ async function fetchUserOrders(user, setOrders, setError, setIsLoading) {
     setError(null);
     setIsLoading(true);
     const response = await axios.get(
-      `http://localhost:5555/api/orders/user/${user.userId}`,
+      `http://localhost:5555/api/orders/user`,
       {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       }
     );
-    // console.log('response in fetchuserOrders', response);
     if (response.status === 200) {
       setOrders(response.data);
       setError(null);

@@ -11,18 +11,13 @@ router.post(
   '/create_checkout_session',
   express.json(),
   requireAuth,
-  getCheckoutSession,
+  getCheckoutSession
 );
 router.post(
   '/webhook_checkout',
   express.raw({ type: 'application/json' }),
   webhookCheckout
 );
-router.post(
-  '/verify_payment',
-  express.json(),
-
-  verifyPayment
-);
+router.post('/verify_payment', express.json(), requireAuth, verifyPayment);
 
 export default router;

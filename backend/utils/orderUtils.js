@@ -1,14 +1,15 @@
 import { Types } from 'mongoose';
-import { User } from '../models/userModel.js';
 import { Order } from '../models/orderModel.js';
+import stripe from 'stripe';
+import { clearUserCart, updateUserOrders } from './userUtils.js';
 
 async function createOrderItems(items) {
   return Promise.all(
     items.map(async (item) => {
-      const { product, quantity, price, taxRate, title, image } = item;
+      const { _id, quantity, price, taxRate, title, image } = item;
 
-      if (!Types.ObjectId.isValid(product)) {
-        throw new Error(`Invalid product ID: ${product}`);
+      if (!Types.ObjectId.isValid(_id)) {
+        throw new Error(`Invalid product ID: ${_id}`);
       }
       if (quantity <= 0) {
         throw new Error(`Invalid quantity: ${quantity}`);
@@ -25,7 +26,7 @@ async function createOrderItems(items) {
       const totalItemPrice = itemPrice + tax;
 
       const orderItem = {
-        product,
+        product: _id,
         title,
         image,
         quantity,
@@ -38,10 +39,10 @@ async function createOrderItems(items) {
     })
   );
 }
-async function createLineItems(cartItems) {
+async function createLineItems(orderedItems) {
   const orderItems = [];
 
-  for (const item of cartItems) {
+  for (const item of orderedItems) {
     const { title, quantity, price, image, taxRate } = item;
     const tax = parseFloat((price * taxRate).toFixed(2));
     const totalItemPrice = price + tax;
@@ -63,33 +64,19 @@ async function createLineItems(cartItems) {
   return orderItems;
 }
 
-async function updateUserOrders(userId, orderId) {
-  return User.findByIdAndUpdate(
-    userId,
-    { $push: { orders: orderId } },
-    { new: true }
-  );
-}
-async function updateOrderStatus(orderId, newStatus) {
-  return Order.findByIdAndUpdate(
-    orderId,
-    { $set: { paymentStatus: newStatus } },
-    { new: true }
-  );
-}
-async function createOrder(cartItems, shippingAddress, userId, sessionId) {
-  try {
 
-    const orderedItems = cartItems.map(
-      ({ _id, quantity, price, taxRate, title, image }) => ({
-        product: _id,
-        quantity,
-        price,
-        taxRate,
-        title,
-        image,
-      })
-    );
+async function updateOrderStatus(sessionId, newStatus) {
+  const order = await Order.findOne({ 'payment.paymentId': sessionId });
+
+  if (order) {
+    order.payment.paymentStatus = newStatus;
+    await order.save();
+  }
+}
+
+async function createOrder(orderedItems, shippingAddress, userId, sessionId) {
+  try {
+   
     const orderItemsToCreate = await createOrderItems(orderedItems);
     const totalAmount = orderItemsToCreate
       .reduce((acc, item) => acc + item.totalItemPrice, 0)
@@ -103,21 +90,36 @@ async function createOrder(cartItems, shippingAddress, userId, sessionId) {
       'payment.paymentId': sessionId,
     });
 
-    const updatedUser = await updateUserOrders(userId, order._id);
+    await updateUserOrders(userId, order._id);
+    await clearUserCart(userId);
 
-    await User.findByIdAndUpdate(userId, {
-      $set: { cart: [] },
-    });
+   
     return order;
   } catch (error) {
     console.error(error.message);
     throw error;
   }
 }
+const getShippingFromSession = async (sessionId) => {
+  const stripeClient = stripe(process.env.STRIPE_SECRET_KEY);
+
+  try {
+    const session = await stripeClient.checkout.sessions.retrieve(sessionId);
+
+    const shippingAddress = JSON.parse(session.metadata.shippingAddress);
+
+    return { shippingAddress };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   createOrderItems,
   createLineItems,
   updateUserOrders,
   updateOrderStatus,
   createOrder,
+  getShippingFromSession,
 };

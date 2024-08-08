@@ -59,37 +59,39 @@ const OrdersPage = () => {
   if (isLoading) {
     return <Loading />;
   }
+
   return (
     <div className="orders_page">
       <div className="orders_header">
         <h2>Your Orders</h2>
       </div>
-        {error && <div className="form_error">{error}</div>}
-        {orders.length === 0 && (
-          <div className="no_orders">
-            <p className="no_orders_txt">
-              You haven&apos;t placed any orders yet.
-            </p>
-            <Link className="shop_link" to="/products">
-              <img src={ArrowLeft} alt="Shop link" />
-              Back to Shop
-            </Link>
-          </div>
-        )}
-        {isOrderCanceled && (
-          <div className="order_canceled">
-            <span className="order_canceled_txt">Order canceled.</span>
-            <span className="order_canceled_img">
-              <img src={CheckmarkIcon} alt="" />
-            </span>
-          </div>
-        )}
+      {error && <div className="form_error">{error}</div>}
+      {orders.length === 0 && (
+        <div className="no_orders">
+          <p className="no_orders_txt">
+            You haven&apos;t placed any orders yet.
+          </p>
+          <Link className="shop_link" to="/products">
+            <img src={ArrowLeft} alt="Shop link" />
+            Back to Shop
+          </Link>
+        </div>
+      )}
+      {isOrderCanceled && (
+        <div className="order_canceled">
+          <span className="order_canceled_txt">Order canceled.</span>
+          <span className="order_canceled_img">
+            <img src={CheckmarkIcon} alt="" />
+          </span>
+        </div>
+      )}
       <div className="orders_view">
         {orders.map((order) => (
           <OrderCard
             key={order._id}
             order={order}
             handleRemoveOrder={handleCancelOrder}
+            user={order.user}
           />
         ))}
       </div>

@@ -12,6 +12,7 @@ import path from 'path';
 // import resetUserOrders from './utils/resetUserOrders.js';
 // import updateUserOrders from './utils/UpdateUserOrders.js';
 // import clearAllCarts from './utils/clearAllCarts.js';
+// import deleteAllOrders from './utils/deleteAllOrders.js';
 const app = express();
 app.use(cors());
 app.use('/userUploads', express.static(path.resolve('userUploads')));
@@ -28,6 +29,7 @@ app.use(express.json());
 // resetUserOrders()
 // updateUserOrders()
 // clearAllCarts()
+// deleteAllOrders()
 app.get('/', (req, res) => {
   return res.status(200).json('Welcome to bt-shop');
 });
