@@ -5,7 +5,6 @@ import './ProductBox.css';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useContext, useState } from 'react';
 import removeIcon from '../../assets/close_btn.svg';
-// import { ProductContext } from '../../contexts/ProductContext.jsx';
 import ConfirmationPopup from '../../pages/AdminDashboard/adminComponents/ConfirmationPopup.jsx';
 import { ShopContext } from '../../contexts/ShopContext.jsx';
 

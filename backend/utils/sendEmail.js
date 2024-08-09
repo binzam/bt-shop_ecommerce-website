@@ -12,7 +12,7 @@ const sendResetPasswordEmail = async (email, token) => {
     );
     const template = handlebars.compile(fs.readFileSync(templatePath, 'utf8'));
 
-    const resetUrl = `http://localhost:5173/auth/password_reset/${token}`;
+    const resetUrl = `http://localhost:5173/?reset_token=${token}`;
     const mailOptions = {
       from: process.env.EMAIL_USER,
       // to: email,

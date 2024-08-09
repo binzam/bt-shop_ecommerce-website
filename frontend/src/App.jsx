@@ -1,5 +1,4 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-// import { ProductContextProvider } from './contexts/ProductContext.jsx';
 import { ShopContextProvider } from './contexts/ShopContext.jsx';
 import { useEffect } from 'react';
 import HomePage from './pages/HomePage/HomePage.jsx';
@@ -13,12 +12,6 @@ import PrivacyPolicy from './pages/PrivacyPolicyPage/PrivacyPolicy.jsx';
 import Contact from './pages/ContactPage/Contact.jsx';
 import About from './pages/AboutPage/About.jsx';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard.jsx';
-import UserModal from './components/Header/UserModals/UserModal.jsx';
-import LoginSignupButtons from './components/Header/LoginSignupButtons.jsx';
-import LoginForm from './components/Forms/LoginForm.jsx';
-import RegisterForm from './components/Forms/RegisterForm.jsx';
-import ForgotPasswordForm from './components/Forms/ForgotPasswordForm.jsx';
-import PasswordResetForm from './components/Forms/PasswordResetForm.jsx';
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage.jsx';
 import CheckoutSuccess from './pages/CheckoutPage/CheckoutSuccess/CheckoutSuccess.jsx';
 function App() {
@@ -48,17 +41,6 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/users/:id" element={<UserProfilePage />} />
-
-            <Route path="/auth" element={<UserModal />}>
-              <Route index element={<LoginSignupButtons />} />
-              <Route path="register" element={<RegisterForm />} />
-              <Route path="login" element={<LoginForm />} />
-              <Route path="forgot_password" element={<ForgotPasswordForm />} />
-              <Route
-                path="password_reset/:token"
-                element={<PasswordResetForm />}
-              />
-            </Route>
           </Routes>
       </main>
       <Footer />

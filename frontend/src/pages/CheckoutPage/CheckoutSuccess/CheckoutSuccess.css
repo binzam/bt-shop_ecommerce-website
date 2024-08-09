@@ -3,11 +3,8 @@
   height: calc(100vh - 130px);
   background-color: #ffffff;
   display: flex;
-  /* gap: 10px; */
   flex-direction: column;
   padding: 40px;
-  /* align-items: center; */
-  /* justify-content: center; */
 }
 .checkout_success_page p {
   color: black;
@@ -15,7 +12,7 @@
   text-align: center;
 }
 .payment_verifyed {
-  width: 60%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -24,11 +21,13 @@
   border: 2px solid #028a18;
   padding: 10px;
   border-radius: 5px;
+  font-size: 16px;
 }
 .paid_icon {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  padding: 5px;
   border: 3px solid #028a18;
   display: flex;
   align-items: center;

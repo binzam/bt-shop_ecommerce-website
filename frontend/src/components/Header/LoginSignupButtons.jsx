@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { ShopContext } from '../../contexts/ShopContext';
-import { Link } from 'react-router-dom';
 
 const LoginSignupButtons = () => {
   const { handleOpenRegisterForm, handleOpenLoginForm, handleCloseModal } =
@@ -8,16 +7,16 @@ const LoginSignupButtons = () => {
   return (
     <div className="login_signup_div">
       <div className="login_signup_btns">
-        <Link to='login' onClick={handleOpenLoginForm} className="login_btn">
+        <button onClick={handleOpenLoginForm} className="login_btn">
           Log In
-        </Link>
-        <Link to='register' onClick={handleOpenRegisterForm} className="signup_btn">
+        </button>
+        <button onClick={handleOpenRegisterForm} className="signup_btn">
           Sign Up
-        </Link>
+        </button>
       </div>
-      <Link to='/home' onClick={handleCloseModal} className="stay_out_btn">
+      <button onClick={handleCloseModal} className="stay_out_btn">
         Stay signed out
-      </Link>
+      </button>
     </div>
   );
 };

@@ -8,39 +8,43 @@ import './OrderCard.css';
 import { AuthContext } from '../../contexts/AuthContext';
 const OrderCard = ({ order, handleRemoveOrder, user }) => {
   const { isAdmin } = useContext(AuthContext);
-  
+  const {
+    orderStatus,
+    createdAt,
+    shippingCompany,
+    shippingAddress,
+    payment,
+    _id,
+    totalAmount,
+    orderItems,
+  } = order;
+  const { profilePicture, email, username } = user;
   return (
-    <div
-      className={`order ${
-        order.orderStatus === 'Cancelled' ? 'cancelled' : ''
-      }`}
-    >
+    <div className={`order ${orderStatus === 'Cancelled' ? 'cancelled' : ''}`}>
       <div className="order_title">
         <div>
           <img src={CalendarIcon} alt="calendar" />
         </div>
         <div>
-          <p>{new Date(order.createdAt).toUTCString()}</p>
+          <p>{new Date(createdAt).toUTCString()}</p>
           <small>
-            #ID <span className="highlight"> {order._id}</span>
+            #ID <span className="highlight"> {_id}</span>
           </small>
         </div>
-        {order.orderStatus === 'Cancelled' && (
+        {orderStatus === 'Cancelled' && (
           <div className="order_cancelled_txt">Order Cancelled</div>
         )}
       </div>
       <div className="order_header">
-         <div className="order_customer">
+        <div className="order_customer">
           <div className="order_user_icon">
-            <img src={user.profilePicture || UserIcon } alt="user" />
+            <img src={profilePicture || UserIcon} alt="user" />
           </div>
           <div className="order_customer_info">
             <p className="bold">Customer</p>
-            <p className="highlight">
-              {user?.username || 'User Not Active'}
-            </p>
-            <p>{user?.email || '---'}</p>
-            <p>{order.shippingAddress.phoneNumber || '---'}</p>
+            <p className="highlight">{username || 'User Not Active'}</p>
+            <p>{email || '---'}</p>
+            <p>{shippingAddress.phoneNumber || '---'}</p>
           </div>
         </div>
 
@@ -51,13 +55,18 @@ const OrderCard = ({ order, handleRemoveOrder, user }) => {
           <div className="order_shipping_info">
             <p className="bold">Shipping</p>
             <p>
-              Shipping: <strong>{order.shippingCompany}</strong>
+              Shipping: <strong>{shippingCompany}</strong>
             </p>
             <p>
-              Payment method: <strong>{order.payment.paymentMethod}</strong>
+              Payment method: <strong>{payment.paymentMethod}</strong>
             </p>
             <p>
-              Payment Status: <strong className='highlight'>{order.payment.paymentStatus}</strong>
+              Payment Status:{' '}
+              <strong
+                className={`${payment.paymentStatus === 'paid' ? 'green' : ''}`}
+              >
+                {payment.paymentStatus}
+              </strong>
             </p>
           </div>
         </div>
@@ -69,11 +78,11 @@ const OrderCard = ({ order, handleRemoveOrder, user }) => {
             <p className="bold">Deliver to</p>
             <p>
               City:
-              <strong> {order.shippingAddress.city}</strong> ,
-              <strong>{order.shippingAddress.country}</strong>
+              <strong> {shippingAddress.city}</strong> ,
+              <strong>{shippingAddress.country}</strong>
             </p>
             <p>
-              Street: <strong>{order.shippingAddress.street}</strong>
+              Street: <strong>{shippingAddress.street}</strong>
             </p>
           </div>
         </div>
@@ -112,7 +121,7 @@ const OrderCard = ({ order, handleRemoveOrder, user }) => {
           </tr>
         </thead>
         <tbody>
-          {order.orderItems.map((item) => (
+          {orderItems.map((item) => (
             <tr className="ordered_product_row" key={item._id}>
               <td className="prd_column_data">
                 <div className="order_table_prd_data">
@@ -137,17 +146,15 @@ const OrderCard = ({ order, handleRemoveOrder, user }) => {
         {' '}
         <span className="total_amount">
           Total:<span className="dollar_sign">$</span>
-          {order.totalAmount}
+          {totalAmount}
         </span>{' '}
       </div>
-      {!isAdmin() && (
-        <button
-          className="remove_order_btn"
-          onClick={() => handleRemoveOrder(order._id)}
-        >
-          Remove Order
-        </button>
-      )}
+      <button
+        className="remove_order_btn"
+        onClick={() => handleRemoveOrder(_id)}
+      >
+        {!isAdmin() ? 'Cancel Order' : 'Remove Order'}
+      </button>
     </div>
   );
 };

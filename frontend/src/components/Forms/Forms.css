@@ -324,8 +324,11 @@
   height: 100%;
   object-fit: contain;
 }
+.success_reset_div{
+  padding: 5px;
+}
 .sign_in_btn {
-  margin-top: 10px;
+  margin: 10px auto 0;
   display: block;
   text-align: center;
   font-size: 14px;
@@ -344,7 +347,7 @@
   font-size: 14px;
   font-weight: 700;
   text-align: center;
-  padding: 2px;
+  padding: 5px;
   color: white;
   border-radius: 4px;
   background-color: #24d62d;

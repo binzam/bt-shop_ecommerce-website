@@ -8,7 +8,6 @@ const getOrdersByUser = async (req, res) => {
       user: user._id,
       orderStatus: { $ne: 'Cancelled' },
     }).populate('user');
-    // console.log(orders);
     if (!orders) {
       return res.status(400).json({
         message: 'Order not found',
@@ -25,7 +24,6 @@ const cancelUserOrder = async (req, res) => {
   try {
     const { id } = req.params;
     const order = await Order.findById(id);
-    // console.log('order>>', order);
     if (order.user.toString() !== req.user.id) {
       return res
         .status(403)
@@ -39,7 +37,6 @@ const cancelUserOrder = async (req, res) => {
 
     order.orderStatus = 'Cancelled';
     await order.save();
-    // make this function call a util function to remove the order id from the users orders property
     res.json({ orderCancelled: true, message: 'Order canceled successfully.' });
   } catch (error) {
     console.error(error);

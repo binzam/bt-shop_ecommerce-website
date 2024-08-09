@@ -44,7 +44,6 @@ const CheckoutProcess = ({
       const stripe = await stripePromise;
       const { id } = response.data.stripeSession;
       setIsLoading(true);
-      localStorage.setItem('orderId', JSON.stringify(response.data.orderId));
 
       await stripe.redirectToCheckout({ sessionId: id });
     } catch (error) {

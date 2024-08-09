@@ -3,27 +3,35 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { saveCartToDatabase } from '../utils/userUtils';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
-// import { useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 const ShopContext = createContext();
 
 const ShopContextProvider = ({ children }) => {
+  const { user } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
-  const [showUserOptions, setShowUserOptions] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
-  // const navigate = useNavigate();
-  // const location = useLocation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('reset_token');
+
   useEffect(() => {
     fetchProducts();
   }, []);
-
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
+    }
+  }, [user]);
+  
   const fetchProducts = async () => {
     try {
       const response = await axios.get('http://localhost:5555/api/products');
@@ -39,7 +47,6 @@ const ShopContextProvider = ({ children }) => {
     }
   };
 
-  const { user } = useContext(AuthContext);
   const removeProduct = async (productId) => {
     try {
       const response = await axios.delete(
@@ -55,7 +62,7 @@ const ShopContextProvider = ({ children }) => {
         fetchProducts();
       }
     } catch (error) {
-      alert(error.message);
+      console.log(error);
     }
   };
   const addNewProduct = async (newProduct) => {
@@ -78,14 +85,6 @@ const ShopContextProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
-    }
-  }, []);
-  
-
   const handleOpenRegisterForm = () => {
     setShowRegisterForm(true);
     setShowLoginForm(false);
@@ -102,11 +101,11 @@ const ShopContextProvider = ({ children }) => {
     setShowPasswordResetModal(false);
     setShowResetPasswordForm(false);
   };
-  function handleOpenUserOptions() {
-    setShowUserOptions(true);
+  function handleOpenModal() {
+    setShowModal(true);
     setShowCart(false);
     handleCloseForms();
-  } //biani@bini.com
+  }
   function toggleCart() {
     setShowCart(!showCart);
   }
@@ -114,14 +113,8 @@ const ShopContextProvider = ({ children }) => {
     setShowCart(false);
   }
   const handleCloseModal = () => {
-    setShowUserOptions(false);
-    // const previousPath = location.state?.previousPath;
-    // if (previousPath === '/auth') {
-    //   navigate(-2);
-    // } else {
-    //   navigate(-1);
-    // }
-    // navigate(-1)
+    handleCloseForms();
+    setShowModal(false);
   };
   const handleOpenPassResetModal = () => {
     setShowLoginForm(false);
@@ -132,7 +125,8 @@ const ShopContextProvider = ({ children }) => {
     setShowLoginForm(false);
     setShowPasswordResetModal(false);
     setShowRegisterForm(false);
-    setShowResetPasswordForm(false);
+    setShowModal(true);
+    setShowResetPasswordForm(true);
   };
 
   const addToCart = (product, quantity = 1) => {
@@ -177,14 +171,18 @@ const ShopContextProvider = ({ children }) => {
       console.error('Error clearing cart:', error);
     }
   };
-
+  useEffect(() => {
+    if (token) {
+      handleOpenResetPasswordForm();
+    }
+  }, [token]);
   return (
     <ShopContext.Provider
       value={{
         handleClearCart,
-        showUserOptions,
+        showModal,
         showCart,
-        handleOpenUserOptions,
+        handleOpenModal,
         toggleCart,
         handleCloseCart,
         handleCloseModal,

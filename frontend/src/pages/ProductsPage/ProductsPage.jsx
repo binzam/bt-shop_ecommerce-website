@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-// import { ProductContext } from '../../contexts/ProductContext.jsx';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import './ProductsPage.css';
 import ProductBox from '../../components/ProductBox/ProductBox.jsx';
 import { useParams } from 'react-router-dom';
@@ -8,104 +7,75 @@ import { ShopContext } from '../../contexts/ShopContext.jsx';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import AddProductForm from '../../components/Forms/AddProductForm.jsx';
 import addIcon from '../../assets/add_icon.svg';
-
+import Loading from '../../components/Loading.jsx';
+import ProductFilterBar from './ProductFilterBar.jsx';
+const POPUP_TIMEOUT = 3000;
 const ProductsPage = () => {
   const { category } = useParams();
   const [selectedCategory, setSelectedCategory] = useState(category || '');
   const [sortOrder, setSortOrder] = useState('asc');
   const [showPopup, setShowPopup] = useState(false);
-  const [addedPrd, setAddedPrd] = useState(null);
+  const [addedProduct, setAddedProduct] = useState(null);
   const { addToCart, products, loading, error } = useContext(ShopContext);
   const [showAddForm, setShowAddForm] = useState(false);
   const { isAdmin } = useContext(AuthContext);
 
+  
+  const filteredProducts = useMemo(() => {
+    return selectedCategory
+      ? products.filter((product) => product.category === selectedCategory)
+      : products;
+  }, [products, selectedCategory]);
+
+  const sortedProducts = useMemo(() => {
+    return [...filteredProducts].sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a.price - b.price;
+      } else {
+        return b.price - a.price;
+      }
+    });
+  }, [filteredProducts, sortOrder]);
+ 
+  // let filteredProducts = selectedCategory
+  //   ? products.filter((product) => product.category === selectedCategory)
+  //   : products;
+  // filteredProducts = filteredProducts.slice().sort((a, b) => {
+  //   if (sortOrder === 'asc') {
+  //     return a.price - b.price;
+  //   } else {
+  //     return b.price - a.price;
+  //   }
+  // });
   const handleAddToCart = (product, quantity = 1) => {
     addToCart(product, quantity);
     setShowPopup(true);
-    setAddedPrd(product);
+    setAddedProduct(product);
   };
   useEffect(() => {
-    if (addedPrd) {
+    if (addedProduct) {
       const timeout = setTimeout(() => {
         setShowPopup(false);
-      }, 3000);
+      }, POPUP_TIMEOUT);
       return () => clearTimeout(timeout);
     }
-  }, [addedPrd]);
-  const categories = [
-    { name: 'All', value: '' },
-    { name: "Men's Clothing", value: "men's clothing" },
-    { name: "Women's Clothing", value: "women's clothing" },
-    { name: 'Jewelery', value: 'jewelery' },
-    { name: 'Electronics', value: 'electronics' },
-  ];
-  const sortOptions = [
-    { name: 'Low to High', value: 'asc' },
-    { name: 'High to Low', value: 'desc' },
-  ];
-
-  const filterByCategory = (category) => {
-    setSelectedCategory(category);
-  };
-  const sortByPrice = (order) => {
-    setSortOrder(order);
-  };
-
-  let filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
-  filteredProducts = filteredProducts.slice().sort((a, b) => {
-    if (sortOrder === 'asc') {
-      return a.price - b.price;
-    } else {
-      return b.price - a.price;
-    }
-  });
+  }, [addedProduct]);
   const closeForm = () => {
     setShowAddForm(false);
   };
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="products_page">
-      {loading && (
-        <div className="loading_container">
-          <div className="loading_animation"></div>
-        </div>
-      )}
-      {error && (
-        <div className="error_container">
-          <div className="error_message">Error: {error}</div>
-        </div>
-      )}
-      <div className="product_filter_bar">
-        <h4 className="category_title">{selectedCategory || 'All'}</h4>
-        <div className="categories">
-          {categories.map((category) => (
-            <button
-              key={category.value}
-              className={`category_btn ${
-                selectedCategory === category.value ? 'active' : ''
-              }`}
-              onClick={() => filterByCategory(category.value)}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-        <h4 className="sort_title">PRICE</h4>
-        <div className="price_sorting_bar">
-          {sortOptions.map((option) => (
-            <button
-              key={option.value}
-              className={`sort_by_price_btn ${
-                sortOrder === option.value ? 'active' : ''
-              }`}
-              onClick={() => sortByPrice(option.value)}
-            >
-              {option.name}
-            </button>
-          ))}
-        </div>
-      </div>
+      {error && <div className="form_error">{error}</div>}
+
+      <ProductFilterBar
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
       <div className="products_list">
         {isAdmin() && !showAddForm && (
           <article className="add_product" onClick={() => setShowAddForm(true)}>
@@ -113,10 +83,8 @@ const ProductsPage = () => {
             <img className="add_product_icon" src={addIcon} alt="add product" />
           </article>
         )}
-        {isAdmin() && showAddForm && (
-          <AddProductForm closeForm={closeForm} />
-        )}
-        {filteredProducts.map((product) => (
+        {isAdmin() && showAddForm && <AddProductForm closeForm={closeForm} />}
+        {sortedProducts.map((product) => (
           <ProductBox
             addToCart={handleAddToCart}
             product={product}
@@ -124,7 +92,7 @@ const ProductsPage = () => {
           />
         ))}
       </div>
-      {showPopup && addedPrd && <AddToCartPopup product={addedPrd} />}
+      {showPopup && addedProduct && <AddToCartPopup product={addedProduct} />}
     </div>
   );
 };

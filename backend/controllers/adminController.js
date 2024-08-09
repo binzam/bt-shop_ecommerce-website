@@ -1,6 +1,7 @@
 import { User } from '../models/userModel.js';
 import { Order } from '../models/orderModel.js';
 import { Feedback } from '../models/feedbackModel.js';
+import { Product } from '../models/productModel.js';
 
 const getUsers = async (req, res) => {
   try {

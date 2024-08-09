@@ -89,6 +89,11 @@
   font-size: 9px;
   font-weight: 500;
 }
+.green{
+  color: rgb(0, 255, 0);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 .order_table {
   width: 100%;
   display: flex;

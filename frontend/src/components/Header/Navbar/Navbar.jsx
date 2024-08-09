@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
 import CartIcon from '../../../assets/icon-cart.svg';
 import UserIcon from '../../../assets/avatar.svg';
@@ -11,8 +10,7 @@ import CloseMenuIcon from '../../../assets/close-for-menu.svg';
 import './Navbar.css';
 const Navbar = () => {
   const { isAdmin, user } = useContext(AuthContext);
-  const { cartItems, toggleCart, handleOpenUserOptions } =
-    useContext(ShopContext);
+  const { cartItems, toggleCart, handleOpenModal } = useContext(ShopContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   function toggleDropdown() {
@@ -89,24 +87,13 @@ const Navbar = () => {
           )}
         </li>
         <li>
-          {/* <div
-            onClick={handleOpenUserOptions}
+          <div
+            onClick={handleOpenModal}
             className="user_profile_icon"
             title="User"
           >
-            <img src={UserIcon} alt="avatar" />
-          </div> */}
-          <Link
-            onClick={handleOpenUserOptions}
-            to="/auth"
-            className="user_profile_icon"
-            title="User"
-          >
-            <img
-              src={user && user.profilePicture || UserIcon}
-              alt="avatar"
-            />
-          </Link>
+            <img src={(user && user.profilePicture) || UserIcon} alt="avatar" />
+          </div>
         </li>
       </ul>
     </nav>

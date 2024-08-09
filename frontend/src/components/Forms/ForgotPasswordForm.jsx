@@ -4,7 +4,7 @@ import Loading from '../Loading';
 import closeIcon from '../../assets/close_btn.svg';
 import { ShopContext } from '../../contexts/ShopContext';
 import CheckMarkIcon from '../../assets/check-solid.svg';
-import { Link } from 'react-router-dom';
+import './Forms.css';
 
 const ForgotPasswordForm = () => {
   const { handleCloseModal } = useContext(ShopContext);
@@ -23,9 +23,9 @@ const ForgotPasswordForm = () => {
 
   return (
     <>
-      <Link to="/home" onClick={handleCloseModal} className="close_popup_icon">
+      <button onClick={handleCloseModal} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
-      </Link>
+      </button>
       {isLoading && <Loading />}
       {!isResetEmailSent ? (
         <form className="reset_password_form" onSubmit={handleSubmit}>
@@ -52,8 +52,7 @@ const ForgotPasswordForm = () => {
       ) : (
         <div className="reset_email_sent">
           <div className="check_mark_img">
-          <img src={CheckMarkIcon} alt="check mark" />
-
+            <img src={CheckMarkIcon} alt="check mark" />
           </div>
           <h2>Email sent </h2>
 

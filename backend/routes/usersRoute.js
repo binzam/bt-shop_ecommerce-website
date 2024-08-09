@@ -7,7 +7,6 @@ import {
   forgotPassword,
   resetPassword,
   postFeedback,
-  updateUserShippingInfo,
   uploadProfilePicture,
   saveCartItems,
 } from '../controllers/userController.js';
@@ -50,7 +49,6 @@ router.post(
   upload.single('profilePicture'),
   uploadProfilePicture
 );
-router.put('/update_shipping', requireAuth, updateUserShippingInfo);
 
 // router.use(handleError)
 export default router;

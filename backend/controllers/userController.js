@@ -19,7 +19,6 @@ const getCurrentUser = async (req, res) => {
     }
 
     const userData = {
-      _id: user._id,
       email: user.email,
       orders: checkUndefined(user.orders),
       profilePicture: user.profilePicture,
@@ -44,7 +43,6 @@ const connectUser = async (req, res) => {
       token,
       username: user.username,
       email,
-      userId: user._id,
       role: user.role,
       profilePicture: user.profilePicture,
     };
@@ -67,7 +65,6 @@ const registerUser = async (req, res) => {
       token,
       username,
       email,
-      userId: user._id,
       role: user.role,
       profilePicture: user.profilePicture,
     });
@@ -157,35 +154,7 @@ const saveCartItems = async (req, res) => {
   }
 };
 
-const updateUserShippingInfo = async (req, res) => {
-  try {
-    const _id = req.user._id;
-    const { address } = req.body;
-    const { street, city, country, phoneNumber } = address;
-    if (!street || !city || !country || !phoneNumber) {
-      throw Error('All fields must be filled');
-    }
-    const updatedUser = await User.findOneAndUpdate(
-      {
-        _id,
-      },
-      {
-        address: address,
-      },
-      {
-        new: true,
-      }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    return res.status(200).json({
-      shippingInfoUpdated: true,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+
 
 const uploadProfilePicture = async (req, res) => {
   try {
@@ -312,7 +281,6 @@ export {
   registerUser,
   updateUserPassword,
   connectUser,
-  updateUserShippingInfo,
   getCurrentUser,
   forgotPassword,
   resetPassword,

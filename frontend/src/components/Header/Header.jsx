@@ -4,9 +4,10 @@ import './Header.css';
 import Navbar from './Navbar/Navbar';
 import Cart from './Cart/Cart';
 import { ShopContext } from '../../contexts/ShopContext';
+import Modal from './Modal/Modal';
 const Header = () => {
   const { user } = useAuthContext();
-  const { showCart } = useContext(ShopContext);
+  const { showCart, showModal } = useContext(ShopContext);
 
   return (
     <header>
@@ -18,6 +19,7 @@ const Header = () => {
       <Navbar />
 
       {showCart && <Cart />}
+      {showModal && <Modal />}
     </header>
   );
 };

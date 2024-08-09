@@ -4,7 +4,6 @@ import closeIcon from '../../assets/close_btn.svg';
 import './Forms.css';
 import Loading from '../Loading';
 import { ShopContext } from '../../contexts/ShopContext';
-import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   const { handleOpenPassResetModal, handleCloseForms } =
@@ -31,9 +30,9 @@ const LoginForm = () => {
 
   return (
     <>
-      <Link to="/auth" onClick={handleCloseForms} className="close_popup_icon">
+      <button onClick={handleCloseForms} className="close_popup_icon">
         <img src={closeIcon} alt="close login form" />
-      </Link>
+      </button>
       {isLoading && <Loading />}
 
       <form className="login_form" onSubmit={handleSubmit}>
@@ -69,14 +68,13 @@ const LoginForm = () => {
           Sign In
         </button>
         {error && <div className="form_error">{error}</div>}
-        <Link
+        <button
           onClick={handleOpenPassResetModal}
-          to="/auth/forgot_password"
           type="button"
           className="forgot_password_btn"
         >
           Forgot Password?
-        </Link>
+        </button>
       </form>
     </>
   );
