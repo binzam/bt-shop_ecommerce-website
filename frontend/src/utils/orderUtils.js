@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 async function createOrder(
   setError,
@@ -12,15 +12,9 @@ async function createOrder(
   setIsOrderPlaced(false);
 
   try {
-    const response = await axios.post(
-      'http://localhost:5555/api/orders/place_order',
-      { newOrder },
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.post('/orders/place_order', {
+      newOrder,
+    });
     console.log(response);
     if (response.data.orderCreated) {
       setError(null);
@@ -37,14 +31,7 @@ async function fetchUserOrders(user, setOrders, setError, setIsLoading) {
   try {
     setError(null);
     setIsLoading(true);
-    const response = await axios.get(
-      `http://localhost:5555/api/orders/user`,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.get(`/orders/user`);
     if (response.status === 200) {
       setOrders(response.data);
       setError(null);
@@ -58,14 +45,9 @@ async function fetchUserOrders(user, setOrders, setError, setIsLoading) {
 }
 async function cancelUserOrder(user, orderId, setError, setIsOrderCanceled) {
   try {
-    const response = await axios.post(
-      `http://localhost:5555/api/orders/cancel_order/${orderId}`,
-      null,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
+    const response = await axiosInstance.post(
+      `/orders/cancel_order/${orderId}`,
+      null
     );
 
     if (response.data.orderCancelled) {

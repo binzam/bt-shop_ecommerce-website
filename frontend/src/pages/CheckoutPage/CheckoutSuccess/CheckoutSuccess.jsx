@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import CheckMarkIcon from '../../../assets/check-solid.svg';
 import { ShopContext } from '../../../contexts/ShopContext';
 import './CheckoutSuccess.css';
+import axiosInstance from '../../../utils/axiosInstance';
 const CheckoutSuccess = () => {
   const { user } = useAuthContext();
   const { handleClearCart } = useContext(ShopContext);
@@ -19,18 +19,12 @@ const CheckoutSuccess = () => {
   }, []);
 
   useEffect(() => {
-    if (sessionId  && sessionId !== prevSessionId) {
+    if (sessionId && sessionId !== prevSessionId) {
       const verifyPayment = async () => {
         try {
-          const response = await axios.post(
-            'http://localhost:5555/api/payment/verify_payment',
-            { sessionId },
-            {
-              headers: {
-                Authorization: `Bearer ${user.token}`,
-              },
-            }
-          );
+          const response = await axiosInstance.post('/payment/verify_payment', {
+            sessionId,
+          });
           console.log(response);
 
           setPaymentStatus(response.data.status);

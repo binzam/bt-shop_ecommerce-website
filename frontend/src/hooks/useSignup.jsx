@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuthContext } from './useAuthContext';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
@@ -11,15 +11,12 @@ export const useSignup = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        'http://localhost:5555/api/users/register',
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-        }
-      );
+      const response = await axiosInstance.post('/users/register', {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
       if (response.status === 200) {
         localStorage.setItem('userInfo', JSON.stringify(response.data));
 

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
-
+import axiosInstance from '../utils/axiosInstance';
 export const useForgotPassword = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -12,8 +11,8 @@ export const useForgotPassword = () => {
       setIsLoading(true);
       setError(null);
 
-      const response = await axios.post(
-        'http://localhost:5555/api/users/forgot_password',
+      const response = await axiosInstance.post(
+        '/users/forgot_password',
         { email }
       );
       if (response.data.message) {

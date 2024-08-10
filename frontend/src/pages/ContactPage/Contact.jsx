@@ -3,7 +3,7 @@ import './Contact.css';
 import UserIcon from '../../assets/user-name-icon.svg';
 import EmailIcon from '../../assets/email-icon.svg';
 import MsgIcon from '../../assets/message-icon.svg';
-import axios from 'axios';
+import axiosInstance from '../../utils/axiosInstance';
 
 function Contact() {
   const [name, setName] = useState('');
@@ -15,7 +15,7 @@ function Contact() {
     e.preventDefault();
     setError(null);
     try {
-      const response = await axios.post('http://localhost:5555/api/users/feedback', {
+      const response = await axiosInstance.post('/users/feedback', {
         name,
         email,
         message,

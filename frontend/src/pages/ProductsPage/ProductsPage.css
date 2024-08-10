@@ -30,20 +30,21 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 6px;
 }
 .category_btn,
 .sort_by_price_btn {
-  padding: 5px 15px;
+  padding: 5px 10px;
   border: 1px solid #ed9121;
   border-radius: 5px;
   display: block;
   color: #333;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   background-color: white;
 }
+.sort_by_price_btn:hover,
 .category_btn:hover {
   color: #ed9121;
   background-color: #fff;
@@ -83,4 +84,10 @@
   width: 60%;
   height: 200px;
   object-fit: contain;
+}
+@media only screen and (max-width:700px){
+  .product_filter_bar{
+    border-radius: 0;
+    padding: 5px;
+  }
 }

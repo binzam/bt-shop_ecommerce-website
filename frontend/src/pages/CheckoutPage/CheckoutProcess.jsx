@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useContext, useState } from 'react';
 import { ShopContext } from '../../contexts/ShopContext';
 import ArrowRight from '../../assets/arrow-right-solid.svg';
-import axios from 'axios';
 import Loading from '../../components/Loading';
 import { loadStripe } from '@stripe/stripe-js';
+import axiosInstance from '../../utils/axiosInstance';
 
 const CheckoutProcess = ({
   isShippingAddressFilled,
@@ -17,7 +16,7 @@ const CheckoutProcess = ({
   const { user } = useAuthContext();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-  const { cartItems, handleOpenUserOptions } = useContext(ShopContext);
+  const { cartItems, handleOpenModal } = useContext(ShopContext);
   const orderedItems = cartItems.map(
     ({ _id, quantity, price, taxRate, title, image }) => ({
       product: _id,
@@ -29,21 +28,20 @@ const CheckoutProcess = ({
     })
   );
   const makePayment = async () => {
+    setIsLoading(true);
     try {
-      const response = await axios.post(
-        'http://localhost:5555/api/payment/create_checkout_session',
+      const response = await axiosInstance.post(
+        '/payment/create_checkout_session',
         { orderedItems, shippingAddress },
         {
           headers: {
-            Authorization: `Bearer ${user.token}`,
             'Content-Type': 'application/json',
           },
         }
       );
+      const { id } = response.data.stripeSession;
       const stripePromise = loadStripe(`${import.meta.env.VITE_STRIPE_KEY}`);
       const stripe = await stripePromise;
-      const { id } = response.data.stripeSession;
-      setIsLoading(true);
 
       await stripe.redirectToCheckout({ sessionId: id });
     } catch (error) {
@@ -67,12 +65,26 @@ const CheckoutProcess = ({
               Next <img src={ArrowRight} alt="Next" />
             </button>
           )}
+          {isShippingAddressFilled && (
+            <div className="shipping_address">
+              <div className='shipping_address_header'>Shipping Address</div>
+              <p>
+                Street: <strong>{shippingAddress.street}</strong>{' '}
+              </p>
+              <p>
+                City: <strong>{shippingAddress.city}</strong>{' '}
+              </p>
+              <p>
+                Country: <strong>{shippingAddress.country}</strong>{' '}
+              </p>
+              <p>
+                Phone: <strong>{shippingAddress.phoneNumber}</strong>{' '}
+              </p>
+            </div>
+          )}
 
           {!showShippingForm && isShippingAddressFilled && (
-            <button
-              onClick={makePayment}
-              className="checkout_login_btn"
-            >
+            <button onClick={makePayment} className="payment_btn">
               Proceed to payment
             </button>
           )}
@@ -80,13 +92,12 @@ const CheckoutProcess = ({
       )}
 
       {!user && cartItems.length > 0 && (
-        <Link
-          to="/auth"
-          onClick={handleOpenUserOptions}
+        <button
+          onClick={handleOpenModal}
           className="checkout_login_btn"
         >
           Login to Continue
-        </Link>
+        </button>
       )}
     </>
   );

@@ -26,7 +26,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navigation">
+    <nav className={`navigation ${isAdmin() ? 'adminmode' : ''}`}>
       {isDropdownOpen ? (
         <button onClick={closeDropdown} className="close_dropdown_btn">
           <img src={CloseMenuIcon} alt="close menu" />
@@ -36,36 +36,42 @@ const Navbar = () => {
           <img src={MenuIcon} alt="menu" />
         </button>
       )}
-      <ul className={`nav_links ${isDropdownOpen ? 'show' : 'hide'}`}>
-        <li>
-          <Link onClick={() => handleClick()} to="/home" className="nav_link">
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link
-            onClick={() => handleClick()}
-            to="/products"
-            className="nav_link"
-          >
-            Products
-          </Link>
-        </li>
-        <li>
-          <Link
-            onClick={() => handleClick()}
-            to="/checkout"
-            className="nav_link"
-          >
-            Checkout
-          </Link>
-        </li>
-        <li>
-          <Link onClick={() => handleClick()} to="/orders" className="nav_link">
-            Orders
-          </Link>
-        </li>
-      </ul>
+      {!isAdmin() && (
+        <ul className={`nav_links ${isDropdownOpen ? 'show' : 'hide'}`}>
+          <li>
+            <Link onClick={() => handleClick()} to="/home" className="nav_link">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              onClick={() => handleClick()}
+              to="/products"
+              className="nav_link"
+            >
+              Products
+            </Link>
+          </li>
+          <li>
+            <Link
+              onClick={() => handleClick()}
+              to="/checkout"
+              className="nav_link"
+            >
+              Checkout
+            </Link>
+          </li>
+          <li>
+            <Link
+              onClick={() => handleClick()}
+              to="/orders"
+              className="nav_link"
+            >
+              Orders
+            </Link>
+          </li>
+        </ul>
+      )}
       <ul className="nav_icons">
         <li>
           {isAdmin() ? (

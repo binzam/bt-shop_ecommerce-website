@@ -23,7 +23,7 @@ const ForgotPasswordForm = () => {
 
   return (
     <>
-      <button onClick={handleCloseModal} className="close_popup_icon">
+      <button onClick={handleCloseModal} className="close_modal">
         <img src={closeIcon} alt="close login form" />
       </button>
       {isLoading && <Loading />}

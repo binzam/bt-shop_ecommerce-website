@@ -18,7 +18,9 @@ const getCheckoutSession = async (req, res) => {
     }
     await saveCartItems(_id, orderedItems);
     const orderItems = await createLineItems(orderedItems);
+
     const session = await stripeClient.checkout.sessions.create({
+      payment_method_types: ['card'],
       client_reference_id: `${_id}`,
       customer_email: email,
       line_items: orderItems,
@@ -33,7 +35,6 @@ const getCheckoutSession = async (req, res) => {
       },
     });
    
-
     res.send({ stripeSession: session });
   } catch (error) {
     console.error(error);

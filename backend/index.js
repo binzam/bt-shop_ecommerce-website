@@ -30,15 +30,15 @@ app.use(express.json());
 // updateUserOrders()
 // clearAllCarts()
 // deleteAllOrders()
-app.get('/', (req, res) => {
-  return res.status(200).json('Welcome to bt-shop');
-});
 
 app.use('/api/products', productsRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/orders', ordersRoute);
 app.use('/api/admin', adminRoute);
 
+app.get('/', (req, res) => {
+  return res.status(200).json('Welcome to bt-shop');
+});
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

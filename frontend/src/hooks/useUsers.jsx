@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import axiosInstance from '../utils/axiosInstance';
 
 const useUsers = () => {
   const { user } = useContext(AuthContext);
@@ -12,11 +12,7 @@ const useUsers = () => {
     setLoading(true);
     try {
       if (user) {
-        const { data } = await axios.get('http://localhost:5555/api/admin/users', {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        const { data } = await axiosInstance.get('/admin/users');
 
         if (data) {
           setUsers(data.allUsers);
@@ -34,18 +30,13 @@ const useUsers = () => {
   useEffect(() => {
     fetchUsers();
   }, [user, fetchUsers]);
-  
+
   const removeUser = useCallback(
     async (userId) => {
       setLoading(true);
       try {
-        const response = await axios.delete(
-          `http://localhost:5555/api/admin/remove_user/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          }
+        const response = await axiosInstance.delete(
+          `/admin/remove_user/${userId}`
         );
         if (response.data.userRemoved) {
           fetchUsers();
@@ -56,7 +47,7 @@ const useUsers = () => {
         setLoading(false);
       }
     },
-    [user, fetchUsers]
+    [ fetchUsers]
   );
 
   const updateUsers = (updatedUsers) => {

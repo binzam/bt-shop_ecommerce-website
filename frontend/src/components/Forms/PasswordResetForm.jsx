@@ -44,7 +44,7 @@ const PasswordResetForm = () => {
 
       {!isResetSuccessful ? (
         <>
-          <button onClick={handleCloseModal} className="close_popup_icon">
+          <button onClick={handleCloseModal} className="close_modal">
             <img src={closeIcon} alt="close login form" />
           </button>
           <form className="reset_password_form" onSubmit={handleSubmit}>

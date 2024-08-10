@@ -6,6 +6,9 @@
   justify-content: space-between;
   position: relative;
 }
+.navigation.adminmode{
+  width: auto;
+}
 /* NAV LINKS/MEN,WOMEN,ELECTRONICS... */
 .open_dropdown_btn,
 .close_dropdown_btn {

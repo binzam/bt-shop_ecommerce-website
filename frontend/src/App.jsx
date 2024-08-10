@@ -1,5 +1,4 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { ShopContextProvider } from './contexts/ShopContext.jsx';
 import { useEffect } from 'react';
 import HomePage from './pages/HomePage/HomePage.jsx';
 import ProductDescription from './pages/ProductDescription/ProductDescription';
@@ -21,30 +20,30 @@ function App() {
   }, [pathname]);
 
   return (
-    <ShopContextProvider>
+    <div className='App'>
       <Header />
       <main className="main_content">
-          <Routes>
-            <Route index element={<HomePage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route
-              path="/products/categories/:category"
-              element={<ProductsPage />}
-            />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/:id" element={<ProductDescription />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/checkout_success" element={<CheckoutSuccess />} />
-            <Route path="/orders" element={<OrdersPage />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/users/:id" element={<UserProfilePage />} />
-          </Routes>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route
+            path="/products/categories/:category"
+            element={<ProductsPage />}
+          />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<ProductDescription />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/checkout_success" element={<CheckoutSuccess />} />
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/users/:id" element={<UserProfilePage />} />
+        </Routes>
       </main>
       <Footer />
-    </ShopContextProvider>
+    </div>
   );
 }
 

@@ -3,10 +3,10 @@ import { useContext, useState } from 'react';
 import ThumbsDownIcon from '../../assets/thumbs_down.svg';
 import ThumbsUpIcon from '../../assets/thumbs_up.svg';
 import './Forms.css';
-import axios from 'axios';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { ShopContext } from '../../contexts/ShopContext';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../utils/axiosInstance';
 const ProductRatingForm = ({ productId, setShowRatingForm }) => {
   const { user } = useAuthContext();
   const { handleOpenUserOptions } = useContext(ShopContext);
@@ -21,17 +21,12 @@ const ProductRatingForm = ({ productId, setShowRatingForm }) => {
     e.preventDefault();
     setError(null);
     try {
-      const response = await axios.post(
-        'http://localhost:5555/api/products/rate_product',
+      const response = await axiosInstance.post('/products/rate_product',
         {
           productId,
           rating,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
+        
       );
       console.log(response);
       const data = response.data;

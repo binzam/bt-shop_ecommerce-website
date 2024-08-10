@@ -13,7 +13,7 @@ import {
 } from '../controllers/adminController.js';
 const router = express.Router();
 
-router.get('/users', getUsers);
+router.get('/users', requireAuth, verifyAdmin, getUsers);
 router.get('/orders', getOrders);
 router.get('/users/:id', requireAuth, verifyAdmin, getUserById);
 router.get('/orders/:id', getOrderById);

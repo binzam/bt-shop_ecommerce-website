@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useLogout } from '../../../hooks/useLogout';
 import { ShopContext } from '../../../contexts/ShopContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
 import closeIcon from '../../../assets/close_btn.svg';
 import SignoutIcon from '../../../assets/sign-out.svg';
@@ -22,9 +22,9 @@ const UserProfile = () => {
 
   return (
     <div className="user_profile">
-      <Link to="/home" onClick={handleCloseModal} className="close_popup_icon">
+      <button onClick={handleCloseModal} className="close_modal">
         <img src={closeIcon} alt="close profile" />
-      </Link>
+      </button>
 
       <UserDetails />
       <UserSettings />

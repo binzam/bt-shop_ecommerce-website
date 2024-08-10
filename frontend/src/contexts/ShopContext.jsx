@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useState } from 'react';
 import { saveCartToDatabase } from '../utils/userUtils';
-import axios from 'axios';
 import { AuthContext } from './AuthContext';
 import { useSearchParams } from 'react-router-dom';
+import axiosInstance from '../utils/axiosInstance';
 
 const ShopContext = createContext();
 
@@ -31,10 +31,10 @@ const ShopContextProvider = ({ children }) => {
       setCartItems(JSON.parse(storedCart));
     }
   }, [user]);
-  
+
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5555/api/products');
+      const response = await axiosInstance.get('/products');
       if (response.status !== 200) {
         throw new Error('Failed to fetch products');
       }
@@ -49,13 +49,8 @@ const ShopContextProvider = ({ children }) => {
 
   const removeProduct = async (productId) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5555/api/admin/remove_product/${productId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
+      const response = await axiosInstance.delete(
+        `/admin/remove_product/${productId}`
       );
 
       if (response.data.productRemoved) {
@@ -67,14 +62,9 @@ const ShopContextProvider = ({ children }) => {
   };
   const addNewProduct = async (newProduct) => {
     try {
-      const response = await axios.post(
-        'http://localhost:5555/api/admin/add_product',
-        newProduct,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
+      const response = await axiosInstance.post(
+        '/admin/add_product',
+        newProduct
       );
 
       if (response.data.productAdded) {

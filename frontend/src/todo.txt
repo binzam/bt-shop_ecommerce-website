@@ -42,8 +42,5 @@ style payment succesful:done
 fix orderId data type in verify order endpoint:resolved(not neccessary, can find order by paymentid)
 restructor modal:done
 ...
-https://blog.logrocket.com/building-react-modal-module-with-react-router/
 ...
-a context to check if a user has placed orders?
-displaying the Stripe Checkout modal directly within the application.[ui: 'embeded']??
-how to handle expired jwts
+how to handle expired jwts/implement refresh token

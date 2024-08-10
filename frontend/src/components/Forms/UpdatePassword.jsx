@@ -1,12 +1,10 @@
 /* eslint-disable react/prop-types */
-import axios from 'axios';
 import { useState } from 'react';
-import { useAuthContext } from '../../hooks/useAuthContext';
 import './Forms.css';
 import Loading from '../Loading';
+import axiosInstance from '../../utils/axiosInstance';
 
 const UpdatePassword = ({ handleClose }) => {
-  const { user } = useAuthContext();
   const [form, setForm] = useState({
     currentPassword: '',
     newPassword: '',
@@ -30,15 +28,10 @@ const UpdatePassword = ({ handleClose }) => {
   const handleUpdatePassword = async (currentPassword, newPassword) => {
     setIsLoading(true);
     try {
-      const response = await axios.put(
-        'http://localhost:5555/api/users/update_pass',
-        { currentPassword, newPassword },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const response = await axiosInstance.put('/users/update_pass', {
+        currentPassword,
+        newPassword,
+      });
       if (response) {
         setIsLoading(false);
       }

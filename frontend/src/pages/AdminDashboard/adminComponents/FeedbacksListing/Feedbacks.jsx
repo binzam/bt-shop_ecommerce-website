@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import Loading from '../../../../components/Loading';
 import ConfirmationPopup from '../ConfirmationPopup';
 import { AuthContext } from '../../../../contexts/AuthContext';
-import axios from 'axios';
+import axiosInstance from '../../../../utils/axiosInstance';
 
 const Feedbacks = () => {
   const { user } = useContext(AuthContext);
@@ -20,14 +20,7 @@ const Feedbacks = () => {
     setLoading(true);
     try {
       if (user) {
-        const { data } = await axios.get(
-          'http://localhost:5555/api/admin/feedbacks',
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          }
-        );
+        const { data } = await axiosInstance.get('/admin/feedbacks');
         if (data) {
           setFeedbacks(data.allFeedbacks);
           setError(null);
@@ -49,13 +42,8 @@ const Feedbacks = () => {
   const removeFeedback = async (feedbackId) => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        `http://localhost:5555/api/admin/remove_feedback/${feedbackId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
+      const response = await axiosInstance.delete(
+        `/admin/remove_feedback/${feedbackId}`,
       );
       if (response.data.feedbackRemoved) {
         fetchFeedbacks();
@@ -89,7 +77,7 @@ const Feedbacks = () => {
                   <div className="user_detail">
                     Message: <span className="highlight">{user.message}</span>
                   </div>
-                  
+
                   <button
                     className="remove_user_btn"
                     onClick={() => handleRemoveFeedback(user._id)}

@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/userModel.js';
 
 const requireAuth = async (req, res, next) => {
+  console.log('1');
   const { authorization } = req.headers;
   if (!authorization) {
     return res.status(401).json({ error: 'Authorization token required' });
@@ -14,6 +15,7 @@ const requireAuth = async (req, res, next) => {
       return res.status(404).json({ error: 'User not found' });
     }
     req.user = user;
+    
     next();
   } catch (error) {
     res.status(401).json({ error: 'Request is not authorized' });
@@ -21,6 +23,8 @@ const requireAuth = async (req, res, next) => {
 };
 const verifyAdmin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
+    console.log('2');
+
     next();
   } else {
     res.status(401).json({ message: 'Unauthorized' });

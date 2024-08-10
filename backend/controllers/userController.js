@@ -6,6 +6,8 @@ import generateToken from '../utils/generateToken.js';
 import sendResetPasswordEmail from '../utils/sendEmail.js';
 import validator from 'validator';
 import path from 'path';
+import jwt from 'jsonwebtoken';
+
 const checkUndefined = (obj) => {
   const values = Object.values(obj);
   return values.every((value) => value !== undefined);
@@ -29,6 +31,19 @@ const getCurrentUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const refreshToken = async (req, res) => {
+  const { token } = req.body;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { userId } = decoded;
+
+    const newAccessToken = generateToken(userId);
+
+    res.json({ accessToken: newAccessToken });
+  } catch (error) {
+    res.status(401).json({ error: 'Invalid refresh token' });
+  }
+};
 
 const connectUser = async (req, res) => {
   const { email, password } = req.body;
@@ -37,17 +52,16 @@ const connectUser = async (req, res) => {
     if (!user) {
       return res.status(500).json({ message: 'User Not Found' });
     }
-    console.log('user>>>', user);
+    // console.log('user>>>', user);
     const token = generateToken(user._id);
     const userData = {
-      token,
       username: user.username,
       email,
       role: user.role,
       profilePicture: user.profilePicture,
     };
     const cartData = user.cart.length > 0 ? user.cart : [];
-    res.status(200).json({ userData, cartData });
+    res.status(200).json({ userData, cartData, token: token });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -144,7 +158,6 @@ const saveCartItems = async (req, res) => {
     }
 
     await user.save();
-    console.log('user cart>>', user.cart);
 
     return res.status(200).json({
       cartSaved: true,
@@ -153,8 +166,6 @@ const saveCartItems = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
 
 const uploadProfilePicture = async (req, res) => {
   try {
@@ -287,4 +298,5 @@ export {
   postFeedback,
   uploadProfilePicture,
   saveCartItems,
+  refreshToken,
 };

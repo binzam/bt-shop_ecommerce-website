@@ -41,20 +41,18 @@
   padding: 10px;
   position: relative;
 }
-.checkout_orders,
-.checkout_progress_wrapper {
+.checkout_orders {
   display: flex;
+  width: 48%;
   flex-direction: column;
   align-items: center;
-}
-.checkout_orders {
-  width: 48%;
-  /* position: relative; */
 }
 .checkout_progress_wrapper {
   width: 48%;
   position: relative;
   gap: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .pending_orders_count {
@@ -112,6 +110,7 @@
   gap: 10px;
   background-color: #028a18;
   width: 50%;
+  margin: 0 auto;
 }
 .checkout_next_btn:hover {
   background-color: green;
@@ -119,16 +118,22 @@
 .shop_link {
   margin-top: 20px;
 }
-/* .checkout_option_btns {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  margin-top: 20px;
-} */
-.checkout_login_btn,
+
 .view_orders_link {
+  padding: 10px 15px;
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 5px;
+  background-color: rgb(99, 95, 160);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+.checkout_login_btn,
+.payment_btn {
+  width: calc(60% - 20px);
+  margin: 0 20px;
   padding: 10px 15px;
   text-align: center;
   color: white;
@@ -143,6 +148,32 @@
 .view_orders_link:hover {
   background-color: #333;
   border: 1px solid #ed9121;
+}
+.shipping_address {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  padding: 0 20px;
+  font-size: 12px;
+}
+.shipping_address_header {
+  color: #000000;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+  margin: 10px 0 5px;
+  padding: 0 5px 3px;
+  border-bottom: 4px solid #ed9121;
+}
+.shipping_address p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  font-weight: 600;
+
+  border-bottom: 1px solid cadetblue;
+  color: #000000;
 }
 
 @media only screen and (max-width: 800px) {

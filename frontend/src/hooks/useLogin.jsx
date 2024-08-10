@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuthContext } from './useAuthContext';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../utils/axiosInstance';
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
@@ -14,8 +14,8 @@ export const useLogin = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        'http://localhost:5555/api/users/login',
+      const response = await axiosInstance.post(
+        '/users/login',
         {
           email,
           password,
@@ -27,6 +27,10 @@ export const useLogin = () => {
         localStorage.setItem(
           'userInfo',
           JSON.stringify(response.data.userData)
+        );
+        localStorage.setItem(
+          'token',
+          JSON.stringify(response.data.token)
         );
         localStorage.setItem('cart', JSON.stringify(response.data.cartData));
         dispatch({ type: 'LOGIN', payload: response.data.userData });

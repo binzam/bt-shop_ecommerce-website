@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 
 export const useResetPassword = () => {
   const [resetError, setResetError] = useState(null);
@@ -11,13 +11,10 @@ export const useResetPassword = () => {
     setResetError(null);
     setIsResetSuccessful(false);
     try {
-      const response = await axios.post(
-        'http://localhost:5555/api/users/reset_password',
-        {
-          token,
-          newPassword,
-        }
-      );
+      const response = await axiosInstance.post('/users/reset_password', {
+        token,
+        newPassword,
+      });
       console.log(response);
       if (response.data.resetPasswordSuccess) {
         setResetError(null);

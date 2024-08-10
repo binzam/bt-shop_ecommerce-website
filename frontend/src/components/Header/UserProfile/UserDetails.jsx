@@ -1,12 +1,11 @@
 import { useContext, useState } from 'react';
 import Avatar from '../../../assets/avatar.svg';
-// import PlusIcon from '../../../assets/icon-plus.svg';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ShopContext } from '../../../contexts/ShopContext';
 import UploadIcon from '../../../assets/upload-solid.svg';
 import Loading from '../../Loading';
 import { useAuthContext } from '../../../hooks/useAuthContext';
+import axiosInstance from '../../../utils/axiosInstance';
 
 const UserDetails = () => {
   const { user, updateProfilePicture } = useAuthContext();
@@ -33,13 +32,12 @@ const UserDetails = () => {
       const formData = new FormData();
       formData.append('profilePicture', profilePicture);
       console.log(formData);
-      const response = await axios.post(
-        'http://localhost:5555/api/users/upload_image',
+      const response = await axiosInstance.post(
+        '/users/upload_image',
         formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${user.token}`,
           },
         }
       );

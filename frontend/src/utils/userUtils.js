@@ -1,15 +1,11 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 async function getMe(user, setUserData, setError, setIsLoading) {
   setError(null);
   setIsLoading(true);
 
   try {
-    const response = await axios.get('http://localhost:5555/api/users/getMe', {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
+    const response = await axiosInstance.get('/users/getMe');
     console.log(response);
     if (response.status === 200) {
       setUserData(response.data);
@@ -27,14 +23,7 @@ async function getUserById(user, id, setSelectedUser, setError, setIsLoading) {
   setIsLoading(true);
 
   try {
-    const response = await axios.get(
-      `http://localhost:5555/api/admin/users/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.get(`/admin/users/${id}`);
     if (response.status === 200) {
       setSelectedUser(response.data.user);
       // console.log(response);
@@ -49,16 +38,7 @@ async function getUserById(user, id, setSelectedUser, setError, setIsLoading) {
 }
 async function saveCartToDatabase(user, cartItems) {
   try {
-    const response = await axios.post(
-      `http://localhost:5555/api/users/cart`,
-      { cartItems },
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
-   
+    const response = await axiosInstance.post(`/users/cart`, { cartItems });
 
     if (response.data.cartSaved) {
       console.log('cart saved');

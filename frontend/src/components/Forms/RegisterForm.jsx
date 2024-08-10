@@ -43,7 +43,7 @@ const RegisterForm = () => {
   };
   return (
     <>
-      <button onClick={handleCloseForms} className="close_popup_icon">
+      <button onClick={handleCloseForms} className="close_modal">
         <img src={closeIcon} alt="close login form" />
       </button>
       {isLoading && <Loading />}

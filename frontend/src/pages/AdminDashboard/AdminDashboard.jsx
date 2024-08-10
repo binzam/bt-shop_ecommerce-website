@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useLayoutEffect, useState } from 'react';
 import './AdminDashboard.css';
 import ProductsPage from '../ProductsPage/ProductsPage';
 import UsersList from './adminComponents/UsersListing/UsersList';
@@ -11,21 +11,21 @@ import { ShopContext } from '../../contexts/ShopContext';
 import Feedbacks from './adminComponents/FeedbacksListing/Feedbacks';
 
 const AdminDashboard = () => {
-  const { isAdmin } = useAuthContext();
+  const { isAdmin, user } = useAuthContext();
   const { toggleCart } = useContext(ShopContext);
   const [currentView, setCurrentView] = useState('customers');
   const [isUserAdmin, setIsUserAdmin] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
+  useLayoutEffect(() => {
     const checkAdminStatus = async () => {
       const isAuthorized = await isAdmin();
       setIsUserAdmin(isAuthorized);
-      if (isAuthorized === false) {
+      if (isAuthorized === false || !user) {
         navigate('/home');
       }
     };
     checkAdminStatus();
-  }, [isAdmin, navigate, toggleCart]);
+  }, [isAdmin, navigate, toggleCart, user]);
   const handleViewChange = (view) => setCurrentView(view);
 
   if (isUserAdmin === null) {
@@ -33,15 +33,12 @@ const AdminDashboard = () => {
   }
   return (
     <div className="admin_page">
-          <h1>Admin Dashboard</h1>
-          <AdminPanel
-            currentView={currentView}
-            onViewChange={handleViewChange}
-          />
-          {currentView === 'customers' && <UsersList />}
-          {currentView === 'orders' && <OrdersList />}
-          {currentView === 'products' && <ProductsPage />}
-          {currentView === 'feedbacks' && <Feedbacks />}
+      <h1>Admin Dashboard</h1>
+      <AdminPanel currentView={currentView} onViewChange={handleViewChange} />
+      {currentView === 'customers' && <UsersList />}
+      {currentView === 'orders' && <OrdersList />}
+      {currentView === 'products' && <ProductsPage />}
+      {currentView === 'feedbacks' && <Feedbacks />}
     </div>
   );
 };

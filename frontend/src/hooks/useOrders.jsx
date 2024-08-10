@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import axiosInstance from '../utils/axiosInstance';
 
 const useOrders = () => {
   const { user } = useContext(AuthContext);
@@ -12,11 +12,7 @@ const useOrders = () => {
     setLoading(true);
     try {
       if (user) {
-        const { data } = await axios.get('http://localhost:5555/api/admin/orders', {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        const { data } = await axiosInstance.get('/admin/orders');
         if (data) {
           setOrders(data.allOrders);
           setOrdersError(null);
@@ -39,17 +35,12 @@ const useOrders = () => {
     async (orderId) => {
       setLoading(true);
       try {
-        const response = await axios.delete(
-          `http://localhost:5555/api/admin/remove_order/${orderId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          }
+        const response = await axiosInstance.delete(
+          `/admin/remove_order/${orderId}`
         );
         if (response.data.orderRemoved) {
           fetchOrders();
-          setOrdersError(null)
+          setOrdersError(null);
         }
       } catch (error) {
         setOrdersError(error.message);
@@ -57,13 +48,20 @@ const useOrders = () => {
         setLoading(false);
       }
     },
-    [user, fetchOrders]
+    [ fetchOrders]
   );
 
   const updateOrders = (updatedOrders) => {
     setOrders(updatedOrders);
   };
-  return { orders, ordersError, loading, fetchOrders, removeOrder, updateOrders };
+  return {
+    orders,
+    ordersError,
+    loading,
+    fetchOrders,
+    removeOrder,
+    updateOrders,
+  };
 };
 
 export default useOrders;

@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-refresh/only-export-components */
-
 import { createContext, useReducer, useEffect } from 'react';
 
 export const AuthContext = createContext();
@@ -13,8 +12,6 @@ export const authReducer = (state, action) => {
       return { user: null };
     case 'UPDATE_PROFILE_PICTURE':
       return { user: { ...state.user, profilePicture: action.payload } };
-    // case 'UPDATE_SHIPPING_ADDRESS':
-    //   return { user: { ...state.user, hasAddress: action.payload } };
     default:
       return state;
   }
@@ -46,15 +43,7 @@ export const AuthContextProvider = ({ children }) => {
       JSON.stringify({ ...state.user, profilePicture: newProfilePicture })
     );
   };
-  // const updateShippingAddress = (shippingAddress) => {
-  //   dispatch({ type: 'UPDATE_SHIPPING_ADDRESS', payload: shippingAddress });
-  //   if (state.user) {
-  //     localStorage.setItem(
-  //       'userInfo',
-  //       JSON.stringify({ ...state.user, hasAddress: shippingAddress })
-  //     );
-  //   }
-  // };
+
  
   return (
     <AuthContext.Provider
@@ -64,7 +53,6 @@ export const AuthContextProvider = ({ children }) => {
         isAdmin,
         isLoggedIn,
         updateProfilePicture,
-        // updateShippingAddress,
       }}
     >
       {children}
